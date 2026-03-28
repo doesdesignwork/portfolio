@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Gerard Teo</title>
+  <meta name="description" content="Project case study — Gerard Teo, Brand Designer & Art Director" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    :root {
+      --bg-base:     #050508;
+      --bg-surface:  #0d0d1a;
+      --bg-raised:   #14142a;
+      --border:      rgba(139, 92, 246, 0.15);
+      --neon-cyan:   #00f0ff;
+      --neon-violet: #a855f7;
+      --neon-pink:   #f0abfc;
+      --neon-green:  #39ff14;
+      --text-primary:   #f0f0ff;
+      --text-secondary: #9090b8;
+      --text-muted:     #5a5a80;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(5,5,8,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 1.125rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: var(--text-secondary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem; font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--neon-cyan); }
+    .hire-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 1.1rem;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+      color: #050508;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem; font-weight: 700;
+      border-radius: 9999px; text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .hire-btn:hover { opacity: 0.88; }
+
+    /* Hero */
+    .hero {
+      margin-top: 70px;
+      position: relative;
+      height: min(70vh, 580px);
+      overflow: hidden;
+      background: #000;
+    }
+    .hero img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,5,8,0.9) 0%, rgba(5,5,8,0.3) 50%, rgba(5,5,8,0.1) 100%);
+    }
+    .hero-meta {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      width: 100%; max-width: 1280px;
+      padding: 0 2rem;
+    }
+    .hero-meta h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300; margin: 0 0 0.75rem;
+      letter-spacing: -0.01em; line-height: 1.1;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid rgba(0,240,255,0.25);
+      color: var(--neon-cyan);
+      background: rgba(0,240,255,0.07);
+      margin: 0 0.375rem 0.375rem 0;
+    }
+    .tag.violet { border-color: rgba(168,85,247,0.25); color: var(--neon-violet); background: rgba(168,85,247,0.07); }
+    .tag.green  { border-color: rgba(57,255,20,0.25);  color: var(--neon-green);  background: rgba(57,255,20,0.07); }
+    .tag.pink   { border-color: rgba(240,171,252,0.25); color: var(--neon-pink);  background: rgba(240,171,252,0.07); }
+
+    /* Content */
+    .content { max-width: 1280px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .content-grid { display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: start; }
+    .project-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8; }
+    .project-body p { margin: 0 0 1.25rem; }
+    .project-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem; font-weight: 600;
+      color: var(--text-primary); margin: 2.5rem 0 0.75rem;
+    }
+
+    /* Sidebar */
+    .sidebar { position: sticky; top: 90px; }
+    .sidebar-item { margin-bottom: 1.75rem; }
+    .sidebar-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .sidebar-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem; color: var(--text-primary); font-weight: 500;
+    }
+
+    /* Gallery */
+    .gallery { margin-top: 3.5rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-img {
+      border-radius: 12px; overflow: hidden;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+    }
+    .gallery-img img {
+      width: 100%; height: 260px;
+      object-fit: contain; object-position: center;
+      display: block; padding: 0.75rem;
+    }
+    .gallery-img img.photo {
+      object-fit: cover; padding: 0;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 3rem 0;
+    }
+
+    /* Next / Prev */
+    .nav-projects { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .nav-project-card {
+      flex: 1; min-width: 200px;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .nav-project-card:hover { border-color: rgba(0,240,255,0.3); color: var(--neon-cyan); }
+    .nav-project-card small {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .nav-project-card strong { font-weight: 600; font-size: 1rem; }
+
+    /* Footer */
+    footer {
+      padding: 2rem; text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.8125rem;
+    }
+    footer a { color: var(--neon-cyan); text-decoration: none; }
+
+    @media (max-width: 767px) {
+      .content-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .hero { height: 50vw; min-height: 240px; }
+      .gallery-img img { height: 200px; }
+      .content { padding: 2.5rem 1.25rem 4rem; }
+      .hero-meta { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to portfolio
+      </a>
+      <a href="index.html#contact" class="hire-btn">Hire me</a>
+    </div>
+  </nav>
+
+  <!-- Hero — filled by JS -->
+  <div class="hero" id="hero">
+    <img id="heroImg" src="" alt="" />
+    <div class="hero-overlay"></div>
+    <div class="hero-meta">
+      <div id="heroTags" style="margin-bottom:0.75rem;"></div>
+      <h1 id="heroTitle">Loading…</h1>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="content-grid">
+
+      <!-- Body -->
+      <div class="project-body" id="projectBody"></div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar"></aside>
+
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery" id="gallery"></div>
+
+    <div class="divider"></div>
+
+    <!-- Prev / Next -->
+    <div>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:1rem;">// More projects</p>
+      <div class="nav-projects" id="navProjects"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Gerard Teo — <a href="index.html">Portfolio</a> · <a href="index.html#contact">Contact</a></p>
+  </footer>
+
+  <script>
+    const PROJECTS = {
+      '100pp': {
+        title: '100 Pasir Panjang',
+        client: 'CEL Development',
+        discipline: 'Brand Identity',
+        year: '2014',
+        tags: [
+          { label: 'Brand Identity', style: 'pink' },
+          { label: 'Launch Campaign', style: 'pink' },
+          { label: 'Real Estate', style: '' }
+        ],
+        hero: 'assets/brand-100pp.jpg',
+        heroFit: 'cover',
+        body: `
+          <p>Positioned and named CEL Development's new premium industrial building at Pasir Panjang as <strong style="color:var(--text-primary);">"100"</strong> — a bold, single-word landmark identity that stood entirely apart from conventional property naming conventions.</p>
+          <p>The logo was crafted to mirror the building's distinctive slatted architecture — a grid of horizontal bars that form a number while echoing the facade's rhythm. Clean, contemporary, and unmistakably tied to the physical structure.</p>
+          <h2>Launch Campaign</h2>
+          <p>Beyond the identity, a full launch campaign was developed — property ads, direct mailers, and print material positioned 100 Pasir Panjang as a premium business destination. The campaign deliberately avoided industry clichés, instead using architectural photography and refined typography to communicate prestige.</p>
+        `,
+        meta: { 'Client': 'CEL Development', 'Discipline': 'Brand Identity & Campaign', 'Year': '2014', 'Deliverables': 'Logo, Guidelines, Print Campaign' },
+        gallery: [
+          { src: 'assets/logo-100pp.png', fit: 'contain', bg: '#fff' }
+        ]
+      },
+
+      'passion-group': {
+        title: 'The Passion Group',
+        client: 'FLM Group',
+        discipline: 'Brand Architecture',
+        year: '2016',
+        tags: [
+          { label: 'Brand Architecture', style: 'pink' },
+          { label: 'F&B', style: '' },
+          { label: 'Naming', style: 'violet' }
+        ],
+        hero: 'assets/brand-passion-group.jpg',
+        heroFit: 'cover',
+        body: `
+          <p>FLM Group operated six distinct restaurants and needed an overarching brand identity that could unify them without erasing each venue's unique character. The challenge: create a mother brand that worked as an umbrella, while giving each sub-brand enough room to breathe.</p>
+          <p>The name <strong style="color:var(--text-primary);">"The Passion Group"</strong> was conceived to reflect the founding family's personal story — a restaurant group built on genuine love for food and hospitality. Warmth, family, and culinary passion became the brand pillars.</p>
+          <h2>Sub-brand Architecture</h2>
+          <p>A scalable brand architecture was built to support 6 existing restaurants and future expansion. Each sub-brand carries a distinct identity while clearly belonging to The Passion Group family — enabling unified marketing communications while preserving venue personality. The system was designed to scale to new cuisines, formats, and markets.</p>
+        `,
+        meta: { 'Client': 'FLM Group', 'Discipline': 'Brand Architecture & Naming', 'Year': '2016', 'Deliverables': 'Brand Name, Architecture System, Sub-brand Identities' },
+        gallery: [
+          { src: 'assets/brand-passion.jpg', fit: 'cover' }
+        ]
+      },
+
+      'modajar': {
+        title: 'Modajar',
+        client: 'Palette 1.5',
+        discipline: 'Brand Identity',
+        year: '2015',
+        tags: [
+          { label: 'Brand Identity', style: '' },
+          { label: 'Naming', style: 'violet' },
+          { label: 'Fashion', style: 'pink' },
+          { label: 'E-commerce', style: '' }
+        ],
+        hero: 'assets/brand-modajar.jpg',
+        heroFit: 'contain',
+        heroBg: '#f5f2e8',
+        body: `
+          <p>Palette 1.5 — a fashion merchandising company — needed a brand-new name and identity for their fashion e-commerce platform, designed to compete with international players targeting young women and men in Southeast Asia.</p>
+          <p>The name <strong style="color:var(--text-primary);">"Modajar"</strong> was developed as a distinctive, phonetically memorable brand name blending fashion ("moda") with a unique suffix, giving it a stylish, international quality while remaining easy to recall.</p>
+          <h2>Visual Identity</h2>
+          <p>A distinctive bird mnemonic was created to symbolise freedom and creative expression — the idea that fashion liberates the wearer. The mark is minimal and geometric, translating across digital and physical touchpoints from app icon to shopping bag. Brand architecture, tone of voice, and visual persona were also developed to guide the platform's communications.</p>
+        `,
+        meta: { 'Client': 'Palette 1.5', 'Discipline': 'Brand Identity & Naming', 'Year': '2015', 'Deliverables': 'Brand Name, Logo, Identity System, Guidelines' },
+        gallery: []
+      },
+
+      'myanmar-beer': {
+        title: 'Myanmar Beer Lager — Carton Packaging',
+        client: 'Myanmar Beer Lager',
+        discipline: 'Packaging Design',
+        year: '2013',
+        tags: [
+          { label: 'Packaging', style: 'pink' },
+          { label: 'Structural Design', style: 'violet' },
+          { label: 'FMCG', style: '' }
+        ],
+        hero: 'assets/brand-mbl-carton.jpg',
+        heroFit: 'contain',
+        heroBg: '#f0f0f0',
+        body: `
+          <p>Myanmar Beer Lager needed full carton packaging design for their regional FMCG distribution — covering both the structural dieline and all six faces of the printed carton artwork.</p>
+          <p>The design drew on traditional Burmese cultural motifs and illustration style to communicate authentic heritage and premium quality. The golden and green colour palette reinforces the brand's visual language while standing out clearly on shelf.</p>
+          <h2>Deliverables</h2>
+          <p>Full structural dieline development, multi-face carton artwork with bleed marks, traditional illustration direction, brand hierarchy layout, and print-ready files for regional production. The packaging was designed to work across both retail and wholesale formats.</p>
+        `,
+        meta: { 'Client': 'Myanmar Beer Lager', 'Discipline': 'Packaging Design', 'Year': '2013', 'Deliverables': 'Structural Dieline, Carton Artwork, Print Files' },
+        gallery: []
+      },
+
+      'loreal-fwis': {
+        title: "L'Oréal — For Women in Science",
+        client: "L'Oréal Singapore",
+        discipline: 'Print Campaign',
+        year: '2013',
+        tags: [
+          { label: 'Print Campaign', style: 'violet' },
+          { label: 'Communications Design', style: '' },
+          { label: "L'Oréal", style: 'pink' }
+        ],
+        hero: 'assets/brand-loreal.jpg',
+        heroFit: 'contain',
+        heroBg: '#f4f4f4',
+        body: `
+          <p>L'Oréal Singapore's For Women in Science National Fellowships — supported by the Singapore National Commission for UNESCO and the Agency for Science, Technology and Research (A*STAR) — required campaign design to attract applications from top female scientific researchers.</p>
+          <p>The campaign positioned scientific achievement and female leadership as aspirational and culturally important, going beyond a purely functional call-for-applications format. Photography, layout, and typographic hierarchy were designed to elevate both the fellowship and the women it recognised.</p>
+          <h2>Campaign Materials</h2>
+          <p>Full suite of print materials: national newspaper ads, programme brochures, event collateral, and direct mail pieces — all produced to L'Oréal's brand standards while communicating the For Women in Science programme's distinct voice. The campaign ran across multiple years, with design evolution for each annual fellowship cycle.</p>
+        `,
+        meta: { 'Client': "L'Oréal Singapore", 'Discipline': 'Print & Campaign Design', 'Year': '2013', 'Deliverables': 'Ads, Brochures, Event Collateral, Direct Mail' },
+        gallery: [
+          { src: 'assets/brand-loreal-2.jpg', fit: 'contain', bg: '#f8f8f8' },
+          { src: 'assets/brand-loreal-fwis.jpg', fit: 'contain', bg: '#f8f8f8' }
+        ]
+      },
+
+      'cgh': {
+        title: 'Changi General Hospital — Corporate Identity',
+        client: 'Changi General Hospital',
+        discipline: 'Brand Guidelines',
+        year: '2012',
+        tags: [
+          { label: 'Corporate Identity', style: '' },
+          { label: 'Brand Guidelines', style: 'violet' },
+          { label: 'Healthcare', style: 'green' }
+        ],
+        hero: 'assets/brand-cgh.jpg',
+        heroFit: 'contain',
+        heroBg: '#eef2f8',
+        body: `
+          <p>Changi General Hospital — one of Singapore's largest public hospitals under the SingHealth cluster — required a comprehensive corporate identity guide to standardise the use of their brand across all internal and external touchpoints.</p>
+          <p>The identity guide established clear, enforceable rules for logo usage, colour system, typography, photographic style, and stationery — giving a large institution of thousands of staff a single source of truth for brand compliance.</p>
+          <h2>Scope</h2>
+          <p>The guide covered: logo clearspace and minimum size rules, colour palette specifications for print and digital, approved typeface usage, photography style direction, and full stationery suite examples including letterheads, name cards, and envelopes. Designed to be used directly by both in-house teams and external vendors.</p>
+        `,
+        meta: { 'Client': 'Changi General Hospital / SingHealth', 'Discipline': 'Corporate Identity & Brand Standards', 'Year': '2012', 'Deliverables': 'Identity Guide, Stationery Suite, Usage Standards' },
+        gallery: [
+          { src: 'assets/brand-cgh-2.jpg', fit: 'contain', bg: '#eef2f8' }
+        ]
+      },
+
+      'chinaplas': {
+        title: 'Dow Chemical — ChinaPlas Exhibition',
+        client: 'Dow Chemical',
+        discipline: '3D & Exhibition Design',
+        year: '2016',
+        tags: [
+          { label: 'Exhibition Design', style: 'green' },
+          { label: '3D Spatial', style: 'green' },
+          { label: 'Trade Show', style: '' }
+        ],
+        hero: 'assets/event-chinaplas-main.jpg',
+        heroFit: 'cover',
+        body: `
+          <p>ChinaPlas is one of Asia's largest plastics and rubber trade exhibitions, attracting hundreds of thousands of visitors annually. Dow Chemical required a series of large-scale exhibition booth designs to showcase their innovations across multiple industry verticals.</p>
+          <p>Each booth zone was designed to communicate Dow's solutions in a specific market — Industrial Packaging, Flexible Packaging, Transportation, and Consumer Durables — with spatial design, signage, display systems, and interactive elements working together to draw visitors in and communicate complex technical messaging clearly.</p>
+          <h2>Design & 3D Spatial Planning</h2>
+          <p>Full 3D booth design and visualisation from concept through production-ready drawings. The sweeping arch structure and open floor plan created maximum visibility from across the exhibition hall, while internal zones provided space for product demonstrations and one-on-one conversations with Dow specialists.</p>
+        `,
+        meta: { 'Client': 'Dow Chemical', 'Discipline': '3D Exhibition Design', 'Year': '2016', 'Deliverables': '3D Design, Spatial Planning, Production Drawings' },
+        gallery: [
+          { src: 'assets/event-chinaplas-2.jpg', fit: 'cover' },
+          { src: 'assets/event-chinaplas-detail.jpg', fit: 'cover' }
+        ]
+      },
+
+      'cocopops': {
+        title: "Kellogg's Coco Pops — 3D Product Extension",
+        client: "Beneo Palatinit / Kellogg's",
+        discipline: '3D Visualisation',
+        year: '2015',
+        tags: [
+          { label: '3D Visualisation', style: 'green' },
+          { label: 'Product Design', style: '' },
+          { label: 'FMCG', style: '' }
+        ],
+        hero: 'assets/3d-cocopops.jpg',
+        heroFit: 'contain',
+        heroBg: '#e8e4d8',
+        body: `
+          <p>Beneo Palatinit — the manufacturer of Palatinose™, a healthier low-GI sugar alternative — commissioned a new product extension concept for Kellogg's Coco Pops, using their ingredient as a differentiating platform.</p>
+          <p>The brief called for a new packaging format (a 330ml tetra carton), complete 3D product visualisation, branding for the new format, and label design — all built to showcase the Palatinose ingredient and High in Fibre / Low GI positioning.</p>
+          <h2>3D & Packaging Design</h2>
+          <p>Full 3D product modelling and photorealistic rendering of the carton in multiple angles. The label design maintained Kellogg's Coco Pops brand equity (yellow, Coco the monkey, bold script) while clearly communicating the new healthy-ingredient story. Outputs were used in trade presentations to Kellogg's and in Beneo Palatinit's ingredient marketing materials.</p>
+        `,
+        meta: { 'Client': "Beneo Palatinit / Kellogg's", 'Discipline': '3D Visualisation & Pack Design', 'Year': '2015', 'Deliverables': '3D Renders, Label Design, Trade Presentation Assets' },
+        gallery: []
+      },
+
+      'wrigleys': {
+        title: "Wrigley's Extra Dual Care — 3D Campaign",
+        client: "Wrigley's",
+        discipline: '3D Visualisation',
+        year: '2014',
+        tags: [
+          { label: '3D Visualisation', style: 'green' },
+          { label: 'Campaign', style: 'violet' },
+          { label: 'Packaging', style: '' }
+        ],
+        hero: 'assets/3d-wrigleys.jpg',
+        heroFit: 'cover',
+        body: `
+          <p>Wrigley's Extra Dual Care — a new chewing gum combining oral care benefits with mint freshness — needed high-quality 3D product renders for its regional launch campaign. The packaging combined a tin dispenser with an outer carton, requiring accurate modelling of both formats.</p>
+          <p>The brief emphasised a premium, "Feel the Benefit" brand message targeting adult consumers focused on oral hygiene. Photography of mint crystals and the clean, metallic blue packaging palette reinforced the clinical efficacy positioning.</p>
+          <h2>3D Renders & Campaign Visuals</h2>
+          <p>Full 3D modelling and photorealistic rendering of the Wrigley's Extra Dual Care pack family — hero product shots, lifestyle compositions, and detail renders. The outputs were used across regional point-of-sale, trade presentations, and marketing material for the SEA market launch.</p>
+        `,
+        meta: { 'Client': "Wrigley's", 'Discipline': '3D Visualisation', 'Year': '2014', 'Deliverables': '3D Renders, Campaign Visuals, POS Assets' },
+        gallery: [
+          { src: 'assets/3d-wrigleys-wire.jpg', fit: 'contain', bg: '#1a1a2a' }
+        ]
+      }
+    };
+
+    // Project ordering for prev/next navigation
+    const PROJECT_ORDER = ['100pp','passion-group','modajar','myanmar-beer','loreal-fwis','cgh','chinaplas','cocopops','wrigleys'];
+
+    function renderPage() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const project = PROJECTS[id];
+
+      if (!project) {
+        window.location.href = 'index.html#work';
+        return;
+      }
+
+      // Update page title
+      document.title = project.title + ' — Gerard Teo';
+
+      // Hero
+      const heroImg = document.getElementById('heroImg');
+      const heroEl  = document.getElementById('hero');
+      heroImg.src = project.hero;
+      heroImg.alt = project.title;
+      heroImg.style.objectFit = project.heroFit || 'cover';
+      if (project.heroFit === 'contain') {
+        heroImg.style.padding = '2rem';
+        heroEl.style.background = project.heroBg || '#111';
+      }
+
+      // Tags
+      const tagsEl = document.getElementById('heroTags');
+      tagsEl.innerHTML = project.tags.map(t =>
+        `<span class="tag ${t.style}">${t.label}</span>`
+      ).join('');
+
+      // Title
+      document.getElementById('heroTitle').textContent = project.title;
+
+      // Body
+      document.getElementById('projectBody').innerHTML = project.body;
+
+      // Sidebar
+      const sidebarEl = document.getElementById('sidebar');
+      sidebarEl.innerHTML = Object.entries(project.meta).map(([k, v]) => `
+        <div class="sidebar-item">
+          <div class="sidebar-label">${k}</div>
+          <div class="sidebar-value">${v}</div>
+        </div>
+      `).join('') + `
+        <div class="sidebar-item" style="margin-top:2rem;">
+          <a href="index.html#work" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.6rem 1.25rem; border:1px solid rgba(0,240,255,0.25); border-radius:9999px; color:var(--neon-cyan); font-family:'Space Grotesk',sans-serif; font-size:0.8rem; font-weight:600; text-decoration:none; transition:background 0.2s;"
+             onmouseover="this.style.background='rgba(0,240,255,0.07)'" onmouseout="this.style.background='transparent'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            All work
+          </a>
+        </div>
+      `;
+
+      // Gallery
+      const galleryEl = document.getElementById('gallery');
+      if (project.gallery && project.gallery.length > 0) {
+        galleryEl.innerHTML = `
+          <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:1rem;">// Gallery</p>
+          <div class="gallery-grid">
+            ${project.gallery.map(img => `
+              <div class="gallery-img" style="${img.bg ? 'background:'+img.bg+';' : ''}">
+                <img src="${img.src}" alt="${project.title}" class="${img.fit === 'cover' ? 'photo' : ''}" style="${img.fit === 'cover' ? 'height:260px;' : ''}">
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Prev / Next navigation
+      const idx = PROJECT_ORDER.indexOf(id);
+      const prevId = idx > 0 ? PROJECT_ORDER[idx - 1] : null;
+      const nextId = idx < PROJECT_ORDER.length - 1 ? PROJECT_ORDER[idx + 1] : null;
+      const navEl = document.getElementById('navProjects');
+
+      if (prevId) {
+        navEl.innerHTML += `
+          <a href="project.html?id=${prevId}" class="nav-project-card">
+            <small>← Previous</small>
+            <strong>${PROJECTS[prevId].title}</strong>
+          </a>`;
+      }
+      if (nextId) {
+        navEl.innerHTML += `
+          <a href="project.html?id=${nextId}" class="nav-project-card" style="text-align:right;">
+            <small>Next →</small>
+            <strong>${PROJECTS[nextId].title}</strong>
+          </a>`;
+      }
+
+      // Init Lucide icons
+      lucide.createIcons();
+    }
+
+    renderPage();
+  </script>
+</body>
+</html>
