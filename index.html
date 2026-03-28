@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerard Teo — Portfolio</title>
+  <meta name="description" content="Designer & developer crafting digital experiences that matter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --bg-base:        #050508;
+      --bg-surface:     #0d0d1a;
+      --bg-raised:      #14142a;
+      --bg-overlay:     #1c1c38;
+      --border:         rgba(139, 92, 246, 0.15);
+      --border-glow:    rgba(0, 240, 255, 0.3);
+
+      --neon-cyan:      #00f0ff;
+      --neon-violet:    #a855f7;
+      --neon-pink:      #f0abfc;
+      --neon-green:     #39ff14;
+
+      --text-primary:   #f0f0ff;
+      --text-secondary: #9090b8;
+      --text-muted:     #5a5a80;
+
+      --glow-cyan:      0 0 20px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.15);
+      --glow-violet:    0 0 20px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.15);
+      --glow-pink:      0 0 20px rgba(240, 171, 252, 0.4), 0 0 60px rgba(240, 171, 252, 0.15);
+    }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── Animated gradient mesh background ── */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-mesh::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      top: -200px; left: -200px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+      animation: driftA 18s ease-in-out infinite alternate;
+    }
+    .bg-mesh::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      bottom: -100px; right: -100px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.10) 0%, transparent 70%);
+      animation: driftB 14s ease-in-out infinite alternate;
+    }
+    .bg-mesh-mid {
+      position: fixed;
+      width: 400px; height: 400px;
+      top: 40%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(240, 171, 252, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: driftC 22s ease-in-out infinite alternate;
+    }
+    @keyframes driftA {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(80px, 60px) scale(1.15); }
+    }
+    @keyframes driftB {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-60px, -80px) scale(1.2); }
+    }
+    @keyframes driftC {
+      0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+    }
+
+    /* ── Typography ── */
+    h1, h2, h3, h4 {
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-weight: 100 !important;
+      letter-spacing: 0.01em !important;
+      line-height: 1.05 !important;
+      text-transform: uppercase !important;
+      margin: 0;
+      overflow: visible !important;
+    }
+    /* Oversized display scale — ~10% smaller, line-height 1.05 prevents clipping */
+    h1 { font-size: clamp(5rem, 14vw, 13rem) !important; letter-spacing: 0.01em !important; line-height: 1.0 !important; }
+    h2 { font-size: clamp(3.5rem, 9vw, 9rem) !important; letter-spacing: 0.01em !important; line-height: 1.0 !important; }
+    h3 { font-size: clamp(1.75rem, 3.5vw, 3.25rem) !important; font-weight: 200 !important; letter-spacing: 0.02em !important; line-height: 1.1 !important; }
+
+    /* ── Large body / intro text ── */
+    .text-intro {
+      font-size: clamp(1.125rem, 2vw, 1.625rem) !important;
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+    }
+    .text-body {
+      font-size: clamp(0.975rem, 1.4vw, 1.25rem);
+      line-height: 1.8;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 0.875rem !important;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+    }
+
+    /* ── Gradient text ── */
+    .text-gradient-cyan {
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-gradient-violet {
+      background: linear-gradient(135deg, var(--neon-violet) 0%, var(--neon-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Animated gradient text for hero ── */
+    .text-gradient-animated {
+      background: linear-gradient(270deg, var(--neon-cyan), var(--neon-violet), var(--neon-pink), var(--neon-cyan));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 5s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ── Glowing elements ── */
+    .glow-cyan  { text-shadow: var(--glow-cyan); }
+    .glow-box-cyan { box-shadow: var(--glow-cyan); }
+    .glow-box-violet { box-shadow: var(--glow-violet); }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(5, 5, 8, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--neon-cyan);
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+      box-shadow: var(--glow-cyan);
+    }
+    .nav-link:hover { color: var(--neon-cyan); }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* Mobile nav */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 8, 0.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* ── Buttons ── */
+
+    /* Morphing primary button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 100%);
+      background-size: 200% 200%;
+      color: #050508;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-radius 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s ease,
+                  background-position 0.4s ease;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), 0 0 40px rgba(168, 85, 247, 0.2);
+      text-decoration: none;
+      animation: btnGlowPulse 3s ease-in-out infinite;
+    }
+    /* Shimmer sweep overlay */
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+    .btn-primary:hover::before {
+      animation: btnShimmer 0.55s ease forwards;
+    }
+    /* Ripple canvas */
+    .btn-primary .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transform: scale(0);
+      animation: rippleAnim 0.55s linear;
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px;
+      transform: translateY(-3px) scale(1.03);
+      background-position: 100% 100%;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.55), 0 0 70px rgba(168, 85, 247, 0.3), 0 8px 25px rgba(0,0,0,0.3);
+    }
+    .btn-primary:active {
+      border-radius: 9999px;
+      transform: translateY(0) scale(0.97);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(168, 85, 247, 0.15);
+    }
+
+    @keyframes btnShimmer {
+      0%   { left: -100%; }
+      100% { left: 150%; }
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+    @keyframes btnGlowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,240,255,0.35), 0 0 40px rgba(168,85,247,0.2); }
+      50%       { box-shadow: 0 0 28px rgba(0,240,255,0.5), 0 0 60px rgba(168,85,247,0.3); }
+    }
+
+    /* Ghost button with traveling gradient border */
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-radius 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* Static border layer */
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(0,240,255,0.3), rgba(168,85,247,0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: border-radius 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* Traveling gradient border on hover */
+    .btn-ghost::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      padding: 1px;
+      background: conic-gradient(from var(--angle, 0deg), var(--neon-cyan), var(--neon-violet), var(--neon-pink), var(--neon-cyan));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s, border-radius 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-ghost:hover::after {
+      opacity: 1;
+      animation: borderSpin 2s linear infinite;
+    }
+    .btn-ghost:hover {
+      color: var(--neon-cyan);
+      transform: translateY(-2px) scale(1.02);
+      border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px;
+    }
+    .btn-ghost:hover::before { border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px; }
+    .btn-ghost:hover::after  { border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px; }
+    .btn-ghost:active { transform: translateY(0) scale(0.98); }
+
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes borderSpin {
+      to { --angle: 360deg; }
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.03), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.1);
+    }
+    .card:hover::before { opacity: 1; }
+
+    /* ── Section styling ── */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+    }
+
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-glow) 50%, transparent);
+      margin: 0;
+    }
+
+    /* ── Skill pill ── */
+    .skill-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.875rem;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      transition: color 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-pill:hover {
+      border-color: transparent;
+      color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0,240,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* ── Project tag ── */
+    .project-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      color: var(--neon-cyan);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Stat block ── */
+    .stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.2s ease;
+    }
+    .stat-number.scrambling {
+      filter: blur(1.5px) brightness(1.5);
+    }
+    .stat-number.done {
+      animation: statPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes statPop {
+      0%   { transform: scale(1); }
+      45%  { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .stat-block {
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .stat-block::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem; left: 50%; transform: translateX(-50%);
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));
+      border-radius: 9999px;
+      transition: width 0.35s ease;
+      box-shadow: 0 0 6px rgba(0,240,255,0.5);
+    }
+    .stat-block:hover { transform: scale(1.06); }
+    .stat-block:hover::after { width: 60%; }
+
+    /* ── Skill pill spinning border ── */
+    @property --pill-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    .skill-pill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      padding: 1px;
+      background: conic-gradient(from var(--pill-angle, 0deg), var(--neon-cyan), var(--neon-violet), var(--neon-pink), var(--neon-cyan));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .skill-pill:hover::after {
+      opacity: 1;
+      animation: pillBorderSpin 1.8s linear infinite;
+    }
+    @keyframes pillBorderSpin { to { --pill-angle: 360deg; } }
+
+    /* ── Scramble heading ── */
+    .scramble-ready { display: inline; }
+
+    /* ── Viewport aura ── */
+    @property --aura-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    #viewportAura {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9997;
+    }
+    /* Spinning conic-gradient 1px border along the frame edge */
+    #viewportAura::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 1.5px;
+      background: conic-gradient(
+        from var(--aura-angle),
+        transparent 0%,
+        var(--neon-cyan) 12%,
+        var(--neon-violet) 25%,
+        var(--neon-pink) 38%,
+        transparent 50%,
+        var(--neon-violet) 62%,
+        var(--neon-cyan) 75%,
+        transparent 88%,
+        transparent 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: auraSpin 10s linear infinite;
+      opacity: 0.65;
+    }
+    @keyframes auraSpin { to { --aura-angle: 360deg; } }
+    /* Soft inset bloom that breathes */
+    #viewportAura::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      animation: auraBreath 5s ease-in-out infinite alternate;
+    }
+    @keyframes auraBreath {
+      0%   { box-shadow: inset 0 0 120px rgba(0,240,255,0.06),   inset 0 0 60px rgba(168,85,247,0.04); }
+      50%  { box-shadow: inset 0 0 140px rgba(168,85,247,0.09),  inset 0 0 80px rgba(240,171,252,0.05); }
+      100% { box-shadow: inset 0 0 120px rgba(0,240,255,0.07),   inset 0 0 60px rgba(168,85,247,0.05); }
+    }
+
+    /* ── Profile halo animation ── */
+    @property --halo-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes haloSpin {
+      to { --halo-angle: 360deg; }
+    }
+
+    /* ── Heading scroll reveal ── */
+    .heading-reveal {
+      opacity: 0;
+      transform: translateY(28px) skewY(1.5deg);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+      display: block;
+    }
+    .heading-reveal.visible {
+      opacity: 1;
+      transform: translateY(0) skewY(0deg);
+    }
+    .heading-reveal.delay-1 { transition-delay: 0.08s; }
+    .heading-reveal.delay-2 { transition-delay: 0.16s; }
+
+    /* ── Contact form ── */
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
+    }
+
+    /* ── Custom cursor (desktop) ── */
+    @media (hover: hover) and (pointer: fine) {
+      * { cursor: none !important; }
+    }
+
+    /* Large ambient glow — stays as background halo */
+    .cursor-glow {
+      position: fixed;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      transition: opacity 0.4s;
+    }
+
+    /* Outer morphing ring */
+    #cursorRing {
+      position: fixed;
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0, 240, 255, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      /* NO css transition — JS lerp handles movement */
+      box-shadow: 0 0 10px rgba(0,240,255,0.25), inset 0 0 8px rgba(0,240,255,0.06);
+      animation: cursorRingMorph 4s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    /* Inner sharp dot */
+    #cursorDot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(0,240,255,0.5);
+      transition: transform 0.1s ease, background 0.2s ease, width 0.2s ease, height 0.2s ease;
+    }
+
+    /* Morph keyframes for the ring */
+    @keyframes cursorRingMorph {
+      0%   { border-radius: 50%;
+             border-color: rgba(0,240,255,0.7);
+             box-shadow: 0 0 10px rgba(0,240,255,0.3), inset 0 0 8px rgba(0,240,255,0.06); }
+      20%  { border-radius: 44% 56% 60% 40% / 40% 56% 44% 60%;
+             border-color: rgba(168,85,247,0.7);
+             box-shadow: 0 0 14px rgba(168,85,247,0.35), inset 0 0 10px rgba(168,85,247,0.08); }
+      40%  { border-radius: 60% 40% 44% 56% / 56% 44% 60% 40%;
+             border-color: rgba(240,171,252,0.7);
+             box-shadow: 0 0 12px rgba(240,171,252,0.3), inset 0 0 8px rgba(240,171,252,0.06); }
+      60%  { border-radius: 40% 60% 56% 44% / 60% 40% 56% 44%;
+             border-color: rgba(0,240,255,0.5);
+             box-shadow: 0 0 16px rgba(0,240,255,0.3), inset 0 0 10px rgba(0,240,255,0.07); }
+      80%  { border-radius: 56% 44% 40% 60% / 44% 60% 40% 56%;
+             border-color: rgba(168,85,247,0.6);
+             box-shadow: 0 0 12px rgba(168,85,247,0.28), inset 0 0 8px rgba(168,85,247,0.06); }
+      100% { border-radius: 50%;
+             border-color: rgba(0,240,255,0.7);
+             box-shadow: 0 0 10px rgba(0,240,255,0.3), inset 0 0 8px rgba(0,240,255,0.06); }
+    }
+
+    /* State: hovering a clickable element */
+    #cursorRing.is-hover {
+      width: 52px; height: 52px;
+      border-color: rgba(168,85,247,0.9);
+      background: rgba(168,85,247,0.06);
+      animation: cursorRingHover 1.8s ease-in-out infinite;
+    }
+    @keyframes cursorRingHover {
+      0%, 100% { border-radius: 40% 60% 55% 45% / 55% 40% 60% 45%;
+                 border-color: rgba(168,85,247,0.9); }
+      33%  { border-radius: 60% 40% 45% 55% / 45% 60% 40% 55%;
+             border-color: rgba(240,171,252,0.9); }
+      66%  { border-radius: 50% 50% 60% 40% / 40% 60% 50% 50%;
+             border-color: rgba(0,240,255,0.9); }
+    }
+    #cursorDot.is-hover {
+      width: 10px; height: 10px;
+      background: var(--neon-violet);
+      box-shadow: 0 0 12px var(--neon-violet), 0 0 28px rgba(168,85,247,0.5);
+    }
+
+    /* State: clicking */
+    #cursorRing.is-click {
+      width: 24px; height: 24px;
+      border-color: rgba(0,240,255,1);
+      border-radius: 50% !important;
+      animation: none;
+      box-shadow: 0 0 20px rgba(0,240,255,0.7);
+    }
+    #cursorDot.is-click {
+      width: 4px; height: 4px;
+      transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    /* State: hovering text / inputs */
+    #cursorRing.is-text {
+      width: 3px; height: 28px;
+      border-radius: 2px;
+      border-color: rgba(0,240,255,0.9);
+      background: rgba(0,240,255,0.15);
+      animation: none;
+    }
+    #cursorDot.is-text { opacity: 0; }
+
+    /* ── Scroll progress bar ── */
+    #scrollProgress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet), var(--neon-pink));
+      z-index: 200;
+      box-shadow: 0 0 8px rgba(0,240,255,0.6);
+      transition: width 0.05s linear;
+    }
+
+    /* ── Scroll animation base ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* From left */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-48px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    /* From right */
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(48px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    /* Scale up */
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.88);
+      transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── 3D card tilt ── */
+    .card-tilt {
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease, box-shadow 0.3s ease;
+    }
+
+    /* ── Parallax layers ── */
+    .parallax-slow  { will-change: transform; }
+    .parallax-med   { will-change: transform; }
+
+    /* ── Counter animation ── */
+    .stat-number[data-count] { transition: none; }
+
+    /* ── Hero typing cursor ── */
+    .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--neon-cyan);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── Floating social links ── */
+    .social-float {
+      position: fixed;
+      left: 1.5rem;
+      bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      z-index: 50;
+    }
+    .social-float::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, var(--border-glow), transparent);
+    }
+    .social-icon {
+      color: var(--text-muted);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .social-icon:hover {
+      color: var(--neon-cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ── Project image placeholder ── */
+    .project-visual {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Neon line divider ── */
+    .neon-line {
+      width: 60px;
+      height: 3px;
+      border-radius: 9999px;
+    }
+
+    /* ── Client logo marquee ── */
+    .marquee-track {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-wrap {
+      overflow: hidden;
+      position: relative;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    }
+    .client-logo {
+      flex-shrink: 0;
+      height: 44px;
+      padding: 0.625rem 1.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      cursor: default;
+      white-space: nowrap;
+    }
+    .client-logo:hover {
+      border-color: rgba(0,240,255,0.3);
+      box-shadow: 0 0 16px rgba(0,240,255,0.1);
+      transform: translateY(-2px);
+    }
+    .client-logo svg { flex-shrink: 0; }
+    .client-logo span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+      transition: color 0.25s;
+    }
+    .client-logo:hover span { color: var(--text-primary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 767px) {
+      .social-float { display: none; }
+      .desktop-nav { display: none; }
+    }
+    @media (min-width: 768px) {
+      .mobile-hamburger { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Scroll progress -->
+  <div id="scrollProgress" role="progressbar" aria-hidden="true"></div>
+
+  <!-- Viewport edge aura -->
+  <div id="viewportAura" aria-hidden="true"></div>
+
+  <!-- Custom cursor elements -->
+  <div id="cursorRing" aria-hidden="true"></div>
+  <div id="cursorDot"  aria-hidden="true"></div>
+
+  <!-- Background elements -->
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-mesh-mid" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- ────────────── NAVIGATION ────────────── -->
+  <nav id="mainNav" aria-label="Main navigation">
+    <div style="max-width:1280px; margin:0 auto; padding: 1.25rem 2rem; display:flex; align-items:center; justify-content:space-between;">
+
+      <!-- Logo -->
+      <a href="#" style="text-decoration:none; display:flex; align-items:center; line-height:0;">
+        <img src="assets/g_logo.png" alt="Gerard Teo"
+             style="height:40px; width:auto; mix-blend-mode:multiply; filter:brightness(1.4) contrast(1.1); transition:filter 0.25s ease, transform 0.25s ease;"
+             onmouseover="this.style.filter='brightness(1.8) contrast(1.2)'; this.style.transform='scale(1.08)'"
+             onmouseout="this.style.filter='brightness(1.4) contrast(1.1)'; this.style.transform='scale(1)'">
+      </a>
+
+      <!-- Desktop links -->
+      <div class="desktop-nav" style="display:flex; gap:2.5rem; align-items:center;">
+        <a href="#about"    class="nav-link">About</a>
+        <a href="#work"     class="nav-link">Work</a>
+        <a href="#skills"   class="nav-link">Skills</a>
+        <a href="#contact"  class="nav-link">Contact</a>
+      </div>
+
+      <!-- CTA -->
+      <div class="desktop-nav" style="display:flex; align-items:center; gap:1rem;">
+        <a href="#contact" class="btn-primary" style="padding: 0.5rem 1.25rem; font-size:0.875rem;">
+          <i data-lucide="send" style="width:14px;height:14px;"></i>
+          Hire me
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button class="mobile-hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false"
+              style="background:none;border:none;cursor:pointer;color:var(--text-primary);padding:0.5rem;">
+        <i data-lucide="menu" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation" aria-modal="true">
+    <button id="closeMenu" aria-label="Close menu"
+            style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;cursor:pointer;color:var(--text-primary);">
+      <i data-lucide="x" style="width:28px;height:28px;"></i>
+    </button>
+    <a href="#about"   class="nav-link" onclick="closeMobileMenu()">About</a>
+    <a href="#work"    class="nav-link" onclick="closeMobileMenu()">Work</a>
+    <a href="#skills"  class="nav-link" onclick="closeMobileMenu()">Skills</a>
+    <a href="#contact" class="nav-link" onclick="closeMobileMenu()">Contact</a>
+    <a href="#contact" class="btn-primary" onclick="closeMobileMenu()">
+      <i data-lucide="send" style="width:14px;height:14px;"></i>
+      Hire me
+    </a>
+  </div>
+
+  <!-- Floating socials -->
+  <aside class="social-float" aria-label="Social links">
+    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+      <i data-lucide="github" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+      <i data-lucide="linkedin" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter / X">
+      <i data-lucide="twitter" style="width:18px;height:18px;"></i>
+    </a>
+  </aside>
+
+  <!-- ────────────── HERO ────────────── -->
+  <section id="hero" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding: 7rem 2rem 4rem; max-width:1280px; margin:0 auto;">
+
+    <div class="reveal parallax-slow" style="max-width:1100px; overflow:visible;">
+      <p class="section-label" style="margin-bottom:1.5rem;">
+        <span aria-hidden="true">// </span>Available for new projects
+      </p>
+
+      <h1 style="margin:0 0 1.5rem; padding-bottom:0.1em; overflow:visible;">
+        <span style="color: var(--text-primary); display:block;">Hi, I'm</span>
+        <span class="text-gradient-animated" style="display:block;">Gerard</span>
+      </h1>
+
+      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:2rem; flex-wrap:wrap;">
+        <span style="background:var(--bg-raised); border:1px solid rgba(57, 255, 20, 0.3); border-radius:9999px; padding:0.375rem 1rem; font-family:'JetBrains Mono',monospace; font-size:0.875rem; color:#39ff14; display:flex; align-items:center; gap:0.4rem;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#39ff14;box-shadow:0 0 8px #39ff14;display:inline-block;animation: blink 2s ease-in-out infinite;"></span>
+          Open to work
+        </span>
+        <span style="color:var(--text-muted);">·</span>
+        <span style="background:var(--bg-raised); border:1px solid var(--border); border-radius:9999px; padding:0.375rem 1rem; font-family:'JetBrains Mono',monospace; font-size:0.875rem; color:var(--text-secondary);">
+          <span id="roleText">Brand Designer</span><span class="cursor-blink"></span>
+        </span>
+      </div>
+
+      <p class="text-intro" style="color:var(--text-secondary); max-width:680px; margin-bottom:2.5rem;">
+        Multidisciplinary designer working across brand identity, graphic design, and UX/UI — building visual systems that are as considered strategically as they are crafted aesthetically.
+      </p>
+
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+        <a href="#work" class="btn-primary">
+          <i data-lucide="folder-open" style="width:16px;height:16px;"></i>
+          View my work
+        </a>
+        <a href="#contact" class="btn-ghost">
+          <i data-lucide="mail" style="width:16px;height:16px;"></i>
+          Get in touch
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <div style="margin-top:5rem; display:flex; align-items:center; gap:0.75rem;" class="reveal reveal-delay-2">
+      <div style="width:40px; height:1px; background: linear-gradient(to right, var(--border-glow), transparent);"></div>
+      <a href="#about" style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-muted); letter-spacing:0.1em; text-decoration:none; display:flex; align-items:center; gap:0.5rem; transition:color 0.2s;"
+         onmouseover="this.style.color='var(--neon-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+        SCROLL DOWN
+        <i data-lucide="arrow-down" style="width:12px;height:12px;"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ────────────── STATS ────────────── -->
+  <section style="padding: 4rem 2rem; position:relative; z-index:1;">
+    <div style="max-width:1280px; margin:0 auto;">
+      <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:20px; padding:3rem 2rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:2rem; text-align:center; position:relative; overflow:hidden;">
+        <div style="position:absolute; inset:0; background: linear-gradient(135deg, rgba(0,240,255,0.03) 0%, transparent 50%); pointer-events:none;"></div>
+        <div class="reveal-scale stat-block" title="Click to replay">
+          <div class="stat-number" data-count="20" data-suffix="+">20+</div>
+          <div style="color:var(--text-muted); font-size:0.875rem; margin-top:0.5rem;">Years experience</div>
+        </div>
+        <div class="reveal-scale reveal-delay-1 stat-block" title="Click to replay">
+          <div class="stat-number" data-count="100" data-suffix="+">100+</div>
+          <div style="color:var(--text-muted); font-size:0.875rem; margin-top:0.5rem;">Projects delivered</div>
+        </div>
+        <div class="reveal-scale reveal-delay-2 stat-block" title="Click to replay">
+          <div class="stat-number" data-count="30" data-suffix="+">30+</div>
+          <div style="color:var(--text-muted); font-size:0.875rem; margin-top:0.5rem;">Satisfied customers</div>
+        </div>
+        <div class="reveal-scale reveal-delay-3 stat-block" title="Click to replay">
+          <div class="stat-number" data-count="100" data-suffix="%">100%</div>
+          <div style="color:var(--text-muted); font-size:0.875rem; margin-top:0.5rem;">Remote-ready</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ────────────── CLIENTS ────────────── -->
+  <section style="padding: 5rem 0; position:relative; z-index:1; overflow:hidden;">
+    <div style="max-width:1280px; margin:0 auto; padding:0 2rem; margin-bottom:2.5rem;" class="reveal">
+      <p class="section-label" style="text-align:center; margin-bottom:0.75rem;">// Trusted by</p>
+      <p style="text-align:center; color:var(--text-muted); font-family:'JetBrains Mono',monospace; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">Brands &amp; organisations I've had the privilege to work with</p>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marqueeTrack">
+
+        <!-- Set 1 -->
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(0,240,255,0.5)" stroke-width="1"/><path d="M5 8h6M8 5v6" stroke="rgba(0,240,255,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Axis Capital</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="rgba(168,85,247,0.5)" stroke-width="1"/><path d="M5 8.5l2 2 4-4" stroke="rgba(168,85,247,0.5)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Meridian Group</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,13 2,13" stroke="rgba(240,171,252,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Prism Studio</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="rgba(57,255,20,0.4)"/><circle cx="8" cy="8" r="6.5" stroke="rgba(57,255,20,0.25)" stroke-width="1"/></svg>
+          <span>Verdant Labs</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 11L8 3l6 8H2z" stroke="rgba(0,240,255,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Northstar Ventures</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="2" stroke="rgba(168,85,247,0.5)" stroke-width="1"/><path d="M5 6V5a3 3 0 016 0v1" stroke="rgba(168,85,247,0.5)" stroke-width="1" stroke-linecap="round"/></svg>
+          <span>Vault Finance</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="rgba(240,171,252,0.5)" stroke-width="1"/><path d="M8 5v3l2 2" stroke="rgba(240,171,252,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Tempo Agency</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13V7l5-5 5 5v6H9.5v-4h-3v4H3z" stroke="rgba(0,240,255,0.4)" stroke-width="1" fill="none"/></svg>
+          <span>Homeframe</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="rgba(168,85,247,0.3)"/><rect x="9" y="2" width="5" height="5" rx="1" fill="rgba(0,240,255,0.3)"/><rect x="2" y="9" width="5" height="5" rx="1" fill="rgba(0,240,255,0.3)"/><rect x="9" y="9" width="5" height="5" rx="1" fill="rgba(240,171,252,0.3)"/></svg>
+          <span>Quadrant Media</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L10.5 7H14l-3 2.5 1 4L8 11l-4 2.5 1-4L2 7h3.5L8 2z" stroke="rgba(57,255,20,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Lumen Creative</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" stroke="rgba(0,240,255,0.4)" stroke-width="1"/><path d="M5.5 8c0-1.4 1.1-2.5 2.5-2.5S10.5 6.6 10.5 8 9.4 10.5 8 10.5 5.5 9.4 5.5 8z" fill="rgba(0,240,255,0.2)"/></svg>
+          <span>Orbit Digital</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4h8v8H4z" stroke="rgba(168,85,247,0.5)" stroke-width="1" fill="none"/><path d="M6 6h4v4H6z" fill="rgba(168,85,247,0.25)"/></svg>
+          <span>Block Studio</span>
+        </div>
+
+        <!-- Set 2 — duplicate for seamless loop -->
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(0,240,255,0.5)" stroke-width="1"/><path d="M5 8h6M8 5v6" stroke="rgba(0,240,255,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Axis Capital</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="rgba(168,85,247,0.5)" stroke-width="1"/><path d="M5 8.5l2 2 4-4" stroke="rgba(168,85,247,0.5)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Meridian Group</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,13 2,13" stroke="rgba(240,171,252,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Prism Studio</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="rgba(57,255,20,0.4)"/><circle cx="8" cy="8" r="6.5" stroke="rgba(57,255,20,0.25)" stroke-width="1"/></svg>
+          <span>Verdant Labs</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 11L8 3l6 8H2z" stroke="rgba(0,240,255,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Northstar Ventures</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="2" stroke="rgba(168,85,247,0.5)" stroke-width="1"/><path d="M5 6V5a3 3 0 016 0v1" stroke="rgba(168,85,247,0.5)" stroke-width="1" stroke-linecap="round"/></svg>
+          <span>Vault Finance</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="rgba(240,171,252,0.5)" stroke-width="1"/><path d="M8 5v3l2 2" stroke="rgba(240,171,252,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Tempo Agency</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13V7l5-5 5 5v6H9.5v-4h-3v4H3z" stroke="rgba(0,240,255,0.4)" stroke-width="1" fill="none"/></svg>
+          <span>Homeframe</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="rgba(168,85,247,0.3)"/><rect x="9" y="2" width="5" height="5" rx="1" fill="rgba(0,240,255,0.3)"/><rect x="2" y="9" width="5" height="5" rx="1" fill="rgba(0,240,255,0.3)"/><rect x="9" y="9" width="5" height="5" rx="1" fill="rgba(240,171,252,0.3)"/></svg>
+          <span>Quadrant Media</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L10.5 7H14l-3 2.5 1 4L8 11l-4 2.5 1-4L2 7h3.5L8 2z" stroke="rgba(57,255,20,0.5)" stroke-width="1" fill="none"/></svg>
+          <span>Lumen Creative</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" stroke="rgba(0,240,255,0.4)" stroke-width="1"/><path d="M5.5 8c0-1.4 1.1-2.5 2.5-2.5S10.5 6.6 10.5 8 9.4 10.5 8 10.5 5.5 9.4 5.5 8z" fill="rgba(0,240,255,0.2)"/></svg>
+          <span>Orbit Digital</span>
+        </div>
+        <div class="client-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4h8v8H4z" stroke="rgba(168,85,247,0.5)" stroke-width="1" fill="none"/><path d="M6 6h4v4H6z" fill="rgba(168,85,247,0.25)"/></svg>
+          <span>Block Studio</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ────────────── ABOUT ────────────── -->
+  <section id="about" style="padding: 6rem 2rem; max-width:1280px; margin:0 auto;">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5rem; align-items:start;">
+
+      <!-- Left: text -->
+      <div class="reveal-left">
+        <p class="section-label" style="margin-bottom:1rem;">// About me</p>
+        <h2 class="scramble-h2" style="margin:0 0 1.5rem;">
+          Design that works<br>across every <span class="text-gradient-violet">discipline</span>
+        </h2>
+        <p class="text-body" style="color:var(--text-secondary); margin-bottom:1.25rem;">
+          I'm a multidisciplinary designer based in Singapore spanning brand identity, graphic design, and UX/UI. I work across the full visual spectrum — from brand strategy and print to digital interfaces and design systems.
+        </p>
+        <p class="text-body" style="color:var(--text-secondary); margin-bottom:2rem;">
+          Whether shaping a brand's visual language from scratch, art-directing print and digital collateral, or designing end-to-end product experiences, I bring the same rigour and craft to every brief.
+        </p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <i data-lucide="map-pin" style="width:16px;height:16px;color:var(--neon-cyan);flex-shrink:0;"></i>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">Singapore</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <i data-lucide="globe" style="width:16px;height:16px;color:var(--neon-cyan);flex-shrink:0;"></i>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">Remote worldwide</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <i data-lucide="briefcase" style="width:16px;height:16px;color:var(--neon-violet);flex-shrink:0;"></i>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">Freelance & fulltime</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <i data-lucide="graduation-cap" style="width:16px;height:16px;color:var(--neon-violet);flex-shrink:0;"></i>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">NTU, Singapore</span>
+          </div>
+        </div>
+
+        <a href="https://doesdesignwork.github.io/gerard-teo-cv/" target="_blank" rel="noopener noreferrer" class="btn-ghost" style="text-decoration:none;">
+          <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+          View CV
+        </a>
+      </div>
+
+      <!-- Right: photo — top-padded so photo bottom sits near end of heading -->
+      <div class="reveal-right" style="position:relative; padding-top:3rem;">
+        <div style="width:100%; max-width:400px; margin:0 auto; position:relative;">
+          <!-- Animated neon halo — rotating conic gradient ring -->
+          <div style="position:absolute; inset:-10px; border-radius:30px; z-index:0; animation:haloSpin 6s linear infinite; background: conic-gradient(from var(--halo-angle, 0deg), var(--neon-cyan), var(--neon-violet), var(--neon-pink), transparent, var(--neon-cyan)); filter:blur(14px); opacity:0.55;"></div>
+          <!-- Photo -->
+          <div style="position:relative; z-index:1; border-radius:24px; overflow:hidden; border:1px solid rgba(0,240,255,0.2); box-shadow: 0 0 40px rgba(0,240,255,0.08), 0 24px 60px rgba(0,0,0,0.5);">
+            <img src="assets/gerard.webp" alt="Gerard Teo"
+                 style="width:100%; height:auto; display:block; object-fit:cover; object-position: center; filter: brightness(1.02) contrast(1.04);">
+            <!-- Subtle neon overlay on hover -->
+            <div style="position:absolute; inset:0; background: linear-gradient(180deg, transparent 60%, rgba(0,240,255,0.06) 100%); pointer-events:none;"></div>
+          </div>
+        </div>
+
+        <!-- Floating badge -->
+        <div style="position:absolute; bottom:-1rem; right:1rem; background:var(--bg-raised); border:1px solid rgba(168,85,247,0.3); border-radius:12px; padding:0.75rem 1rem; box-shadow: var(--glow-violet); display:flex; align-items:center; gap:0.5rem; z-index:2;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--neon-green);box-shadow:0 0 8px var(--neon-green);"></div>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-primary);">Avail. Q2 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ────────────── WORK ────────────── -->
+  <section id="work" style="padding: 6rem 2rem; max-width:1280px; margin:0 auto;">
+    <div class="reveal" style="margin-bottom:4rem;">
+      <p class="section-label" style="margin-bottom:1rem;">// Selected work</p>
+      <h2 class="scramble-h2" style="margin:0 0 1rem;">
+        Three disciplines,<br><span class="text-gradient-cyan">one practice</span>
+      </h2>
+      <p class="text-body" style="color:var(--text-secondary); max-width:580px;">
+        Work spanning brand identity, graphic design, and UX/UI — each discipline informing the others.
+      </p>
+    </div>
+
+    <!-- ── DISCIPLINE 1: BRANDING ── -->
+    <div style="margin-bottom:4rem;">
+      <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+        <div style="width:3px; height:36px; background:linear-gradient(to bottom, var(--neon-cyan), var(--neon-violet)); border-radius:2px; box-shadow:0 0 10px rgba(0,240,255,0.4);"></div>
+        <div>
+          <p style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; color:var(--neon-cyan); text-transform:uppercase; margin:0 0 0.2rem;">01</p>
+          <h3 style="margin:0; font-size:1.5rem; font-weight:200;">Brand Identity</h3>
+        </div>
+      </div>
+
+      <!-- Featured branding project -->
+      <div class="card card-tilt reveal" style="margin-bottom:1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:0; min-height:320px;">
+        <div style="background:linear-gradient(135deg, #0e0816 0%, #1a0a2e 100%); display:flex; align-items:center; justify-content:center; padding:3rem; position:relative; overflow:hidden;">
+          <div style="position:absolute; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(240,171,252,0.15) 0%, transparent 70%); top:-60px; right:-40px;"></div>
+          <!-- Brand mark mockup -->
+          <div style="position:relative; z-index:1; text-align:center;">
+            <div style="width:90px; height:90px; margin:0 auto 1.5rem; position:relative;">
+              <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="45" cy="45" r="42" stroke="rgba(240,171,252,0.3)" stroke-width="1"/>
+                <polygon points="45,8 80,68 10,68" stroke="var(--neon-pink)" stroke-width="1.5" fill="none" style="filter:drop-shadow(0 0 6px rgba(240,171,252,0.5))"/>
+                <circle cx="45" cy="45" r="10" fill="rgba(240,171,252,0.15)" stroke="var(--neon-pink)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div style="font-family:'Syne',sans-serif; font-weight:200; font-size:1.4rem; letter-spacing:0.25em; color:var(--text-primary); text-transform:uppercase; margin-bottom:0.25rem;">AXIOM</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.2em; color:var(--text-muted); text-transform:uppercase;">Brand Identity System</div>
+            <!-- Colour swatches -->
+            <div style="display:flex; gap:0.5rem; justify-content:center; margin-top:1.25rem;">
+              <div style="width:20px; height:20px; border-radius:50%; background:#f0abfc; box-shadow:0 0 8px rgba(240,171,252,0.6);"></div>
+              <div style="width:20px; height:20px; border-radius:50%; background:#a855f7; box-shadow:0 0 8px rgba(168,85,247,0.5);"></div>
+              <div style="width:20px; height:20px; border-radius:50%; background:#1c1c38;"></div>
+              <div style="width:20px; height:20px; border-radius:50%; background:#f0f0ff; opacity:0.8;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:2.5rem; display:flex; flex-direction:column; justify-content:center;">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+            <span class="project-tag" style="color:var(--neon-pink); background:rgba(240,171,252,0.08); border-color:rgba(240,171,252,0.2);">Brand Identity</span>
+            <span class="project-tag" style="color:var(--neon-pink); background:rgba(240,171,252,0.08); border-color:rgba(240,171,252,0.2);">Visual System</span>
+          </div>
+          <h3 style="margin:0 0 1rem; color:var(--text-primary);">Axiom — Brand Identity</h3>
+          <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:2rem; font-size:0.95rem;">
+            Full brand identity for a fintech startup — logo system, typographic hierarchy, colour language, and a 40-page brand guidelines document covering digital and print applications.
+          </p>
+          <a href="#" class="btn-ghost" style="padding:0.6rem 1.25rem; font-size:0.875rem; text-decoration:none; align-self:flex-start;">
+            <i data-lucide="eye" style="width:14px;height:14px;"></i>
+            View case study
+          </a>
+        </div>
+      </div>
+
+      <!-- Branding grid -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
+        <div class="card card-tilt reveal reveal-delay-1">
+          <div class="project-visual" style="background:linear-gradient(135deg, #100816 0%, #1a1030 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%); top:-30px; right:-20px;"></div>
+            <div style="position:relative; z-index:1; text-align:center;">
+              <div style="width:70px; height:70px; margin:0 auto 1rem; border:1.5px solid rgba(168,85,247,0.6); border-radius:4px; display:flex; align-items:center; justify-content:center; transform:rotate(12deg); box-shadow:0 0 20px rgba(168,85,247,0.2);">
+                <span style="font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:700; color:var(--neon-violet); transform:rotate(-12deg);">V</span>
+              </div>
+              <div style="font-family:'Syne',sans-serif; font-weight:200; font-size:1rem; letter-spacing:0.2em; color:var(--text-primary); text-transform:uppercase;">VEIL</div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag" style="color:var(--neon-violet); background:rgba(168,85,247,0.08); border-color:rgba(168,85,247,0.2);">Brand Identity</span>
+              <span class="project-tag" style="color:var(--neon-violet); background:rgba(168,85,247,0.08); border-color:rgba(168,85,247,0.2);">Packaging</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Veil Cosmetics</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Luxury cosmetics brand — identity, packaging system, and brand language for a DTC launch across APAC.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+
+        <div class="card card-tilt reveal reveal-delay-2">
+          <div class="project-visual" style="background:linear-gradient(135deg, #0a120e 0%, #101a14 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(57,255,20,0.12) 0%, transparent 70%); bottom:-30px; left:-20px;"></div>
+            <div style="position:relative; z-index:1; text-align:center;">
+              <div style="display:flex; gap:0.3rem; justify-content:center; margin-bottom:0.875rem;">
+                <div style="width:14px; height:42px; background:#39ff14; border-radius:2px; box-shadow:0 0 10px rgba(57,255,20,0.5);"></div>
+                <div style="width:14px; height:28px; background:rgba(57,255,20,0.5); border-radius:2px; margin-top:14px;"></div>
+                <div style="width:14px; height:36px; background:rgba(57,255,20,0.3); border-radius:2px; margin-top:6px;"></div>
+              </div>
+              <div style="font-family:'Syne',sans-serif; font-weight:200; font-size:1rem; letter-spacing:0.2em; color:var(--text-primary); text-transform:uppercase;">GROVE</div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag" style="color:#39ff14; background:rgba(57,255,20,0.08); border-color:rgba(57,255,20,0.2);">Rebrand</span>
+              <span class="project-tag" style="color:#39ff14; background:rgba(57,255,20,0.08); border-color:rgba(57,255,20,0.2);">Brand Strategy</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Grove — Rebrand</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Strategic rebrand for a sustainable furniture label — repositioning, visual identity overhaul, and retail touchpoints.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DISCIPLINE 2: GRAPHIC DESIGN ── -->
+    <div style="margin-bottom:4rem;">
+      <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+        <div style="width:3px; height:36px; background:linear-gradient(to bottom, var(--neon-violet), var(--neon-pink)); border-radius:2px; box-shadow:0 0 10px rgba(168,85,247,0.4);"></div>
+        <div>
+          <p style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; color:var(--neon-violet); text-transform:uppercase; margin:0 0 0.2rem;">02</p>
+          <h3 style="margin:0; font-size:1.5rem; font-weight:200;">Graphic Design</h3>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
+
+        <div class="card card-tilt reveal">
+          <div class="project-visual" style="background:linear-gradient(135deg, #0d0816 0%, #180e28 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:2rem;">
+            <div style="position:absolute; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%); top:-40px; left:-30px;"></div>
+            <!-- Poster / editorial mockup -->
+            <div style="width:120px; background:var(--bg-overlay); border-radius:4px; padding:1rem 0.75rem; border:1px solid rgba(0,240,255,0.15); box-shadow:0 15px 40px rgba(0,0,0,0.5); position:relative; z-index:1; transform:rotate(-3deg);">
+              <div style="height:55px; background:linear-gradient(160deg, rgba(0,240,255,0.2), rgba(168,85,247,0.2)); border-radius:2px; margin-bottom:0.75rem;"></div>
+              <div style="height:3px; background:var(--neon-cyan); border-radius:1px; width:60%; margin-bottom:0.4rem; box-shadow:0 0 6px var(--neon-cyan);"></div>
+              <div style="height:2px; background:var(--bg-raised); border-radius:1px; margin-bottom:0.3rem;"></div>
+              <div style="height:2px; background:var(--bg-raised); border-radius:1px; width:80%; margin-bottom:0.3rem;"></div>
+              <div style="height:2px; background:var(--bg-raised); border-radius:1px; width:65%;"></div>
+            </div>
+            <div style="width:100px; background:var(--bg-overlay); border-radius:4px; padding:0.75rem 0.6rem; border:1px solid rgba(240,171,252,0.15); box-shadow:0 15px 40px rgba(0,0,0,0.4); position:absolute; right:2.5rem; bottom:2rem; transform:rotate(4deg);">
+              <div style="height:40px; background:linear-gradient(160deg, rgba(240,171,252,0.15), rgba(0,240,255,0.1)); border-radius:2px; margin-bottom:0.5rem;"></div>
+              <div style="height:2px; background:var(--neon-pink); border-radius:1px; width:70%; margin-bottom:0.3rem; box-shadow:0 0 5px var(--neon-pink);"></div>
+              <div style="height:2px; background:var(--bg-raised); border-radius:1px;"></div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag">Editorial</span>
+              <span class="project-tag">Print</span>
+              <span class="project-tag">Typography</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Fold Magazine</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Art direction and layout design for an independent culture magazine — editorial grid system, typographic identity, and cover series.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+
+        <div class="card card-tilt reveal reveal-delay-1">
+          <div class="project-visual" style="background:linear-gradient(135deg, #120810 0%, #1a0a18 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:2rem;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(240,171,252,0.12) 0%, transparent 70%); bottom:-30px; right:-20px;"></div>
+            <!-- Campaign poster -->
+            <div style="width:130px; position:relative; z-index:1;">
+              <div style="background:var(--bg-overlay); border:1px solid rgba(240,171,252,0.2); border-radius:4px; padding:1rem; box-shadow:0 15px 50px rgba(0,0,0,0.6);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem;">
+                  <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); box-shadow:0 0 12px rgba(240,171,252,0.4);"></div>
+                  <div style="width:20px; height:20px; border:1.5px solid rgba(0,240,255,0.5); border-radius:2px;"></div>
+                </div>
+                <div style="height:2px; background:var(--neon-pink); border-radius:1px; margin-bottom:0.3rem; box-shadow:0 0 5px var(--neon-pink);"></div>
+                <div style="height:2px; background:var(--bg-raised); border-radius:1px; margin-bottom:0.3rem; width:80%;"></div>
+                <div style="height:20px; background:rgba(240,171,252,0.06); border-radius:2px; margin-top:0.5rem; border:1px dashed rgba(240,171,252,0.15);"></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag" style="color:var(--neon-pink); background:rgba(240,171,252,0.08); border-color:rgba(240,171,252,0.2);">Campaign</span>
+              <span class="project-tag" style="color:var(--neon-pink); background:rgba(240,171,252,0.08); border-color:rgba(240,171,252,0.2);">OOH</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Lumis Campaign</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">360° campaign for a skincare launch — visual concept, poster series, social assets, and out-of-home executions across Singapore.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+
+        <div class="card card-tilt reveal reveal-delay-2">
+          <div class="project-visual" style="background:linear-gradient(135deg, #0a0e16 0%, #0d1422 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:2rem;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%); top:-20px; left:-20px;"></div>
+            <!-- Packaging mockup -->
+            <div style="position:relative; z-index:1; display:flex; gap:0.75rem; align-items:flex-end;">
+              <div style="width:45px; height:80px; background:linear-gradient(180deg, #1c1c38, var(--bg-overlay)); border:1px solid rgba(0,240,255,0.2); border-radius:4px; box-shadow:0 0 15px rgba(0,240,255,0.1);">
+                <div style="width:100%; height:3px; background:var(--neon-cyan); box-shadow:0 0 6px var(--neon-cyan);"></div>
+              </div>
+              <div style="width:55px; height:100px; background:linear-gradient(180deg, #1a1030, var(--bg-overlay)); border:1px solid rgba(168,85,247,0.2); border-radius:4px; box-shadow:0 0 15px rgba(168,85,247,0.1);">
+                <div style="width:100%; height:3px; background:var(--neon-violet); box-shadow:0 0 6px var(--neon-violet);"></div>
+                <div style="padding:0.4rem 0.3rem; margin-top:0.3rem;">
+                  <div style="height:2px; background:rgba(168,85,247,0.5); border-radius:1px; margin-bottom:0.25rem;"></div>
+                  <div style="height:2px; background:rgba(168,85,247,0.3); border-radius:1px; width:70%;"></div>
+                </div>
+              </div>
+              <div style="width:40px; height:70px; background:linear-gradient(180deg, #180e28, var(--bg-overlay)); border:1px solid rgba(240,171,252,0.2); border-radius:4px; box-shadow:0 0 15px rgba(240,171,252,0.08);">
+                <div style="width:100%; height:3px; background:var(--neon-pink); box-shadow:0 0 6px var(--neon-pink);"></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag">Packaging</span>
+              <span class="project-tag">Art Direction</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Oura Packaging</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Structural and surface design for a wellness supplement range — form, material selection, print finish specs, and retail shelf presence.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DISCIPLINE 3: UX/UI ── -->
+    <div>
+      <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+        <div style="width:3px; height:36px; background:linear-gradient(to bottom, var(--neon-cyan), #39ff14); border-radius:2px; box-shadow:0 0 10px rgba(0,240,255,0.4);"></div>
+        <div>
+          <p style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; color:var(--neon-cyan); text-transform:uppercase; margin:0 0 0.2rem;">03</p>
+          <h3 style="margin:0; font-size:1.5rem; font-weight:200;">UX / UI Design</h3>
+        </div>
+      </div>
+
+      <!-- Featured UX project -->
+      <div class="card card-tilt reveal" style="margin-bottom:1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:0; min-height:320px;">
+        <div style="background:linear-gradient(135deg, #050d10 0%, #0a1a20 100%); display:flex; align-items:center; justify-content:center; padding:2.5rem; position:relative; overflow:hidden;">
+          <div style="position:absolute; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(0,240,255,0.12) 0%, transparent 70%); bottom:-60px; right:-40px;"></div>
+          <!-- UI screen mockup -->
+          <div style="width:240px; background:var(--bg-overlay); border-radius:14px; border:1px solid rgba(0,240,255,0.2); overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.6); position:relative; z-index:1;">
+            <div style="height:5px; background:linear-gradient(90deg,var(--neon-cyan),var(--neon-violet)); width:100%;"></div>
+            <div style="padding:1rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <div>
+                  <div style="height:4px; background:rgba(0,240,255,0.4); border-radius:2px; width:60px; margin-bottom:0.3rem; box-shadow:0 0 5px rgba(0,240,255,0.3);"></div>
+                  <div style="height:3px; background:var(--bg-raised); border-radius:1px; width:40px;"></div>
+                </div>
+                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, rgba(0,240,255,0.2), rgba(168,85,247,0.2)); border:1px solid rgba(0,240,255,0.2);"></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.75rem;">
+                <div style="height:48px; background:linear-gradient(135deg,rgba(0,240,255,0.08),rgba(168,85,247,0.05)); border-radius:8px; border:1px solid rgba(0,240,255,0.12); padding:0.5rem;">
+                  <div style="height:3px; background:var(--neon-cyan); border-radius:1px; width:50%; margin-bottom:0.3rem;"></div>
+                  <div style="height:2px; background:var(--bg-raised); border-radius:1px; width:70%;"></div>
+                </div>
+                <div style="height:48px; background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(240,171,252,0.05)); border-radius:8px; border:1px solid rgba(168,85,247,0.12); padding:0.5rem;">
+                  <div style="height:3px; background:var(--neon-violet); border-radius:1px; width:50%; margin-bottom:0.3rem;"></div>
+                  <div style="height:2px; background:var(--bg-raised); border-radius:1px; width:70%;"></div>
+                </div>
+              </div>
+              <div style="height:3px; background:rgba(0,240,255,0.15); border-radius:1px; margin-bottom:0.35rem;"></div>
+              <div style="height:3px; background:var(--bg-raised); border-radius:1px; margin-bottom:0.35rem; width:80%;"></div>
+              <div style="height:24px; background:linear-gradient(90deg,var(--neon-cyan),var(--neon-violet)); border-radius:4px; margin-top:0.75rem; box-shadow:0 0 10px rgba(0,240,255,0.3);"></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:2.5rem; display:flex; flex-direction:column; justify-content:center;">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+            <span class="project-tag">UX/UI</span>
+            <span class="project-tag">Design System</span>
+            <span class="project-tag">Figma</span>
+          </div>
+          <h3 style="margin:0 0 1rem; color:var(--text-primary);">Meridian — Product Design</h3>
+          <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:2rem; font-size:0.95rem;">
+            End-to-end UX/UI for a B2B logistics platform — user research, information architecture, wireframes, hi-fi screens, and a component library handed off to a team of 6 engineers.
+          </p>
+          <a href="#" class="btn-ghost" style="padding:0.6rem 1.25rem; font-size:0.875rem; text-decoration:none; align-self:flex-start;">
+            <i data-lucide="eye" style="width:14px;height:14px;"></i>
+            View case study
+          </a>
+        </div>
+      </div>
+
+      <!-- UX grid -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
+        <div class="card card-tilt reveal reveal-delay-1">
+          <div class="project-visual" style="background:linear-gradient(135deg, #0a1208 0%, #0e1a0e 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:2rem;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(57,255,20,0.1) 0%, transparent 70%); top:-30px; right:-20px;"></div>
+            <!-- Mobile UI -->
+            <div style="width:100px; background:var(--bg-overlay); border-radius:16px; border:1px solid rgba(57,255,20,0.2); overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.5); position:relative; z-index:1;">
+              <div style="height:4px; background:linear-gradient(90deg,#39ff14,rgba(0,240,255,0.8));"></div>
+              <div style="padding:0.75rem 0.6rem;">
+                <div style="width:24px; height:24px; border-radius:50%; background:rgba(57,255,20,0.15); border:1px solid rgba(57,255,20,0.3); margin:0 auto 0.5rem;"></div>
+                <div style="height:3px; background:rgba(57,255,20,0.4); border-radius:1px; margin-bottom:0.3rem; box-shadow:0 0 4px rgba(57,255,20,0.3);"></div>
+                <div style="height:2px; background:var(--bg-raised); border-radius:1px; margin-bottom:0.25rem; width:80%;"></div>
+                <div style="height:2px; background:var(--bg-raised); border-radius:1px; margin-bottom:0.5rem; width:60%;"></div>
+                <div style="height:18px; background:rgba(57,255,20,0.1); border-radius:3px; border:1px solid rgba(57,255,20,0.15);"></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag" style="color:#39ff14; background:rgba(57,255,20,0.08); border-color:rgba(57,255,20,0.2);">Mobile UX</span>
+              <span class="project-tag" style="color:#39ff14; background:rgba(57,255,20,0.08); border-color:rgba(57,255,20,0.2);">iOS</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Hatch — Finance App</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Mobile UX/UI for a youth savings and investment app — onboarding flows, dashboard, and transaction experience.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+
+        <div class="card card-tilt reveal reveal-delay-2">
+          <div class="project-visual" style="background:linear-gradient(135deg, #0d0816 0%, #160d24 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:2rem;">
+            <div style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%); bottom:-30px; left:-20px;"></div>
+            <!-- Design system tokens -->
+            <div style="position:relative; z-index:1; display:flex; flex-direction:column; gap:0.5rem; width:160px;">
+              <div style="background:var(--bg-overlay); border-radius:8px; border:1px solid var(--border); padding:0.5rem 0.75rem; display:flex; align-items:center; gap:0.5rem;">
+                <div style="width:14px; height:14px; border-radius:50%; background:var(--neon-violet); box-shadow:0 0 6px var(--neon-violet); flex-shrink:0;"></div>
+                <div style="height:2px; background:rgba(168,85,247,0.5); border-radius:1px; flex:1;"></div>
+              </div>
+              <div style="background:var(--bg-overlay); border-radius:8px; border:1px solid var(--border); padding:0.5rem 0.75rem; display:flex; align-items:center; gap:0.5rem;">
+                <div style="width:14px; height:14px; border-radius:3px; background:rgba(0,240,255,0.2); border:1px solid rgba(0,240,255,0.4); flex-shrink:0;"></div>
+                <div style="height:2px; background:rgba(0,240,255,0.4); border-radius:1px; flex:1;"></div>
+              </div>
+              <div style="background:var(--bg-overlay); border-radius:8px; border:1px solid var(--border); padding:0.5rem 0.75rem; display:flex; align-items:center; gap:0.5rem;">
+                <div style="width:14px; height:14px; border-radius:2px; background:linear-gradient(135deg,var(--neon-pink),var(--neon-violet)); flex-shrink:0;"></div>
+                <div style="height:2px; background:rgba(240,171,252,0.4); border-radius:1px; flex:1;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
+              <span class="project-tag" style="color:var(--neon-violet); background:rgba(168,85,247,0.08); border-color:rgba(168,85,247,0.2);">Design System</span>
+              <span class="project-tag" style="color:var(--neon-violet); background:rgba(168,85,247,0.08); border-color:rgba(168,85,247,0.2);">Tokens</span>
+            </div>
+            <h3 style="margin:0 0 0.6rem;">Prism Design System</h3>
+            <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">Multi-brand design system with semantic token architecture, Figma component library, and documentation for a 20-person product team.</p>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; text-decoration:none;">
+              <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>Case study
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:3.5rem;">
+      <a href="https://doesdesignwork.github.io/gerard-teo-cv/" target="_blank" rel="noopener noreferrer" class="btn-ghost" style="text-decoration:none;">
+        <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+        See full CV & portfolio
+      </a>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ────────────── SKILLS ────────────── -->
+  <section id="skills" style="padding: 6rem 2rem; max-width:1280px; margin:0 auto;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <p class="section-label" style="margin-bottom:1rem;">// Disciplines & tools</p>
+      <h2 class="scramble-h2" style="margin:0;">
+        What I <span class="text-gradient-cyan">bring</span>
+      </h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;">
+
+      <div class="card reveal" style="padding:1.75rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(240,171,252,0.1);border:1px solid rgba(240,171,252,0.2);display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="hexagon" style="width:16px;height:16px;color:var(--neon-pink);"></i>
+          </div>
+          <h3 style="font-size:1.1rem; font-weight:300; margin:0; color:var(--text-primary); letter-spacing:0.02em;">Brand Design</h3>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          <span class="skill-pill">Identity Systems</span>
+          <span class="skill-pill">Brand Strategy</span>
+          <span class="skill-pill">Logo Design</span>
+          <span class="skill-pill">Guidelines</span>
+          <span class="skill-pill">Tone of Voice</span>
+          <span class="skill-pill">Naming</span>
+        </div>
+      </div>
+
+      <div class="card reveal reveal-delay-1" style="padding:1.75rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="layout" style="width:16px;height:16px;color:var(--neon-violet);"></i>
+          </div>
+          <h3 style="font-size:1.1rem; font-weight:300; margin:0; color:var(--text-primary); letter-spacing:0.02em;">Graphic Design</h3>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          <span class="skill-pill">Art Direction</span>
+          <span class="skill-pill">Editorial</span>
+          <span class="skill-pill">Typography</span>
+          <span class="skill-pill">Packaging</span>
+          <span class="skill-pill">Print</span>
+          <span class="skill-pill">Campaign</span>
+        </div>
+      </div>
+
+      <div class="card reveal reveal-delay-2" style="padding:1.75rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.2);display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="monitor" style="width:16px;height:16px;color:var(--neon-cyan);"></i>
+          </div>
+          <h3 style="font-size:1.1rem; font-weight:300; margin:0; color:var(--text-primary); letter-spacing:0.02em;">UX / UI</h3>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          <span class="skill-pill">User Research</span>
+          <span class="skill-pill">Wireframing</span>
+          <span class="skill-pill">Prototyping</span>
+          <span class="skill-pill">Design Systems</span>
+          <span class="skill-pill">Figma</span>
+          <span class="skill-pill">Accessibility</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ────────────── CONTACT ────────────── -->
+  <section id="contact" style="padding: 6rem 2rem; max-width:1280px; margin:0 auto;">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5rem; align-items:start;">
+
+      <!-- Left -->
+      <div class="reveal">
+        <p class="section-label" style="margin-bottom:1rem;">// Get in touch</p>
+        <h2 class="heading-reveal" style="margin:0 0 1.5rem;">
+          Let's build something <span class="text-gradient-animated">amazing</span> together
+        </h2>
+        <p class="text-body" style="color:var(--text-secondary); margin-bottom:2.5rem;">
+          Have a project in mind, an opportunity to discuss, or just want to say hello? My inbox is always open.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:2rem;">
+          <a href="mailto:g@doesdesignwork.com" style="display:flex; align-items:center; gap:1rem; color:var(--text-secondary); text-decoration:none; transition:color 0.2s; group;"
+             onmouseover="this.style.color='var(--neon-cyan)'" onmouseout="this.style.color='var(--text-secondary)'">
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-raised);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i data-lucide="mail" style="width:16px;height:16px;color:var(--neon-cyan);"></i>
+            </div>
+            <span>g@doesdesignwork.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:1rem; color:var(--text-secondary); text-decoration:none; transition:color 0.2s;"
+             onmouseover="this.style.color='var(--neon-violet)'" onmouseout="this.style.color='var(--text-secondary)'">
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-raised);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i data-lucide="linkedin" style="width:16px;height:16px;color:var(--neon-violet);"></i>
+            </div>
+            <span>linkedin.com/in/gerard-teo</span>
+          </a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:1rem; color:var(--text-secondary); text-decoration:none; transition:color 0.2s;"
+             onmouseover="this.style.color='var(--neon-pink)'" onmouseout="this.style.color='var(--text-secondary)'">
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-raised);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i data-lucide="github" style="width:16px;height:16px;color:var(--neon-pink);"></i>
+            </div>
+            <span>github.com/gerardteo</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="card reveal reveal-delay-2" style="padding:2rem;">
+        <form onsubmit="handleFormSubmit(event)" novalidate>
+          <div style="margin-bottom:1.25rem;">
+            <label for="name" style="display:block; font-family:'Space Grotesk',sans-serif; font-size:0.875rem; font-weight:500; color:var(--text-primary); margin-bottom:0.5rem;">Name</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="Jane Smith" autocomplete="name" required />
+          </div>
+          <div style="margin-bottom:1.25rem;">
+            <label for="email" style="display:block; font-family:'Space Grotesk',sans-serif; font-size:0.875rem; font-weight:500; color:var(--text-primary); margin-bottom:0.5rem;">Email address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="name@company.com" autocomplete="email" required />
+          </div>
+          <div style="margin-bottom:1.25rem;">
+            <label for="subject" style="display:block; font-family:'Space Grotesk',sans-serif; font-size:0.875rem; font-weight:500; color:var(--text-primary); margin-bottom:0.5rem;">Subject</label>
+            <input type="text" id="subject" name="subject" class="form-input" placeholder="Project brief, job opportunity..." required />
+          </div>
+          <div style="margin-bottom:1.75rem;">
+            <label for="message" style="display:block; font-family:'Space Grotesk',sans-serif; font-size:0.875rem; font-weight:500; color:var(--text-primary); margin-bottom:0.5rem;">Message</label>
+            <textarea id="message" name="message" class="form-input" rows="4" placeholder="Tell me about your project..." required style="resize:vertical; min-height:100px;"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+            <i data-lucide="send" style="width:16px;height:16px;"></i>
+            Send message
+          </button>
+          <div id="formSuccess" style="display:none; margin-top:1rem; padding:0.75rem 1rem; background:rgba(57,255,20,0.08); border:1px solid rgba(57,255,20,0.2); border-radius:8px; font-size:0.875rem; color:#39ff14; text-align:center;">
+            Message sent! I'll get back to you within 24 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── FOOTER ────────────── -->
+  <footer style="padding:2.5rem 2rem; position:relative; z-index:1; border-top:1px solid var(--border);">
+    <div style="max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+      <div style="line-height:0;">
+        <img src="assets/g_logo.png" alt="Gerard Teo"
+             style="height:34px; width:auto; mix-blend-mode:multiply; filter:brightness(1.3) contrast(1.1); opacity:0.8;">
+      </div>
+      <p style="font-size:0.8125rem; color:var(--text-muted); margin:0;">
+        © 2026 Gerard Teo. Designed & built with care.
+      </p>
+      <div style="display:flex; gap:1.25rem;">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); transition:color 0.2s; text-decoration:none;" aria-label="GitHub"
+           onmouseover="this.style.color='var(--neon-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+          <i data-lucide="github" style="width:16px;height:16px;"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); transition:color 0.2s; text-decoration:none;" aria-label="LinkedIn"
+           onmouseover="this.style.color='var(--neon-violet)'" onmouseout="this.style.color='var(--text-muted)'">
+          <i data-lucide="linkedin" style="width:16px;height:16px;"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); transition:color 0.2s; text-decoration:none;" aria-label="Twitter"
+           onmouseover="this.style.color='var(--neon-pink)'" onmouseout="this.style.color='var(--text-muted)'">
+          <i data-lucide="twitter" style="width:16px;height:16px;"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ────────────── SCRIPTS ────────────── -->
+  <script>
+    // ── Init Lucide icons
+    lucide.createIcons();
+
+    // ── Extra keyframes via JS
+    const extraStyle = document.createElement('style');
+    extraStyle.textContent = `
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes morphBtn {
+        0%   { border-radius: 9999px; }
+        40%  { border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px; }
+        70%  { border-radius: 20px 14px 22px 14px / 14px 20px 14px 22px; }
+        100% { border-radius: 9999px; }
+      }
+    `;
+    document.head.appendChild(extraStyle);
+
+    // ── Morphing custom cursor
+    const cursorRing = document.getElementById('cursorRing');
+    const cursorDot  = document.getElementById('cursorDot');
+    const cursorGlow = document.getElementById('cursorGlow');
+
+    // Only on true pointer devices (desktop)
+    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (!isDesktop) {
+      cursorRing.style.display = 'none';
+      cursorDot.style.display  = 'none';
+      cursorGlow.style.display = 'none';
+    } else {
+      // Lerp targets
+      let mouseX = window.innerWidth  / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX  = mouseX, ringY = mouseY;
+
+      // Track raw mouse — dot follows instantly
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        // Dot: instant
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top  = mouseY + 'px';
+        // Glow halo
+        cursorGlow.style.left = mouseX + 'px';
+        cursorGlow.style.top  = mouseY + 'px';
+      });
+
+      // Ring: smooth lerp loop
+      function lerpRing() {
+        const ease = 0.13;
+        ringX += (mouseX - ringX) * ease;
+        ringY += (mouseY - ringY) * ease;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top  = ringY + 'px';
+        requestAnimationFrame(lerpRing);
+      }
+      lerpRing();
+
+      // ── Cursor state: hover on interactive elements
+      const clickables = 'a, button, [role="button"], label, input, textarea, select, .card, .skill-pill, .nav-link';
+      const textInputs  = 'input[type="text"], input[type="email"], textarea';
+
+      document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest(clickables);
+        if (!target) return;
+        if (target.matches(textInputs)) {
+          cursorRing.classList.add('is-text');
+          cursorRing.classList.remove('is-hover');
+          cursorDot.classList.add('is-text');
+          cursorDot.classList.remove('is-hover');
+        } else {
+          cursorRing.classList.add('is-hover');
+          cursorRing.classList.remove('is-text');
+          cursorDot.classList.add('is-hover');
+          cursorDot.classList.remove('is-text');
+        }
+      });
+      document.addEventListener('mouseout', (e) => {
+        const target = e.target.closest(clickables);
+        if (!target) return;
+        cursorRing.classList.remove('is-hover', 'is-text');
+        cursorDot.classList.remove('is-hover', 'is-text');
+      });
+
+      // ── Cursor state: click burst
+      document.addEventListener('mousedown', () => {
+        cursorRing.classList.add('is-click');
+        cursorDot.classList.add('is-click');
+      });
+      document.addEventListener('mouseup', () => {
+        cursorRing.classList.remove('is-click');
+        cursorDot.classList.remove('is-click');
+      });
+
+      // Hide when pointer leaves viewport
+      document.addEventListener('mouseleave', () => {
+        cursorRing.style.opacity = '0';
+        cursorDot.style.opacity  = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        cursorRing.style.opacity = '1';
+        cursorDot.style.opacity  = '1';
+      });
+    }
+
+    // ── Scroll progress bar
+    const progressBar = document.getElementById('scrollProgress');
+    function updateProgress() {
+      const scrollTop  = window.scrollY;
+      const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+      const pct        = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+
+    // ── Nav scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > 40) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+      updateProgress();
+      runParallax(y);
+    }, { passive: true });
+
+    // ── Parallax handler
+    function runParallax(y) {
+      document.querySelectorAll('.parallax-slow').forEach(el => {
+        el.style.transform = `translateY(${y * 0.08}px)`;
+      });
+      document.querySelectorAll('.parallax-med').forEach(el => {
+        el.style.transform = `translateY(${y * 0.18}px)`;
+      });
+    }
+
+    // ── Mobile menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu   = document.getElementById('mobileMenu');
+    const closeMenuBtn = document.getElementById('closeMenu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    });
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    closeMenuBtn.addEventListener('click', closeMobileMenu);
+    mobileMenu.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobileMenu(); });
+
+    // ── Scroll reveal (all variants)
+    const revealSelectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+    const revealEls = document.querySelectorAll(revealSelectors);
+    const countersDone = new WeakSet();
+
+    // Scramble-count animation: fast random chars → slow → lock on target
+    function animateCounter(el, force) {
+      if (!force && countersDone.has(el)) return;
+      countersDone.add(el);
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const chars  = '0123456789';
+      const dur    = 1600;
+      const start  = performance.now();
+      el.classList.add('scrambling');
+
+      function step(now) {
+        const progress = Math.min((now - start) / dur, 1);
+        // Ease out expo
+        const eased = progress < 1 ? 1 - Math.pow(2, -10 * progress) : 1;
+        const currentVal = Math.round(eased * target);
+
+        if (progress < 0.65) {
+          // Scramble phase: blend random digits with real value
+          const scramblePct = 1 - (progress / 0.65);
+          const numStr = String(currentVal);
+          let displayed = '';
+          for (let i = 0; i < numStr.length; i++) {
+            displayed += Math.random() < scramblePct
+              ? chars[Math.floor(Math.random() * chars.length)]
+              : numStr[i];
+          }
+          el.textContent = displayed + suffix;
+        } else {
+          el.textContent = currentVal + suffix;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = target + suffix;
+          el.classList.remove('scrambling');
+          el.classList.add('done');
+          setTimeout(() => el.classList.remove('done'), 500);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.querySelectorAll('[data-count]').forEach(el => animateCounter(el, false));
+          if (entry.target.hasAttribute('data-count')) animateCounter(entry.target, false);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // ── Stat block hover/click replay
+    document.querySelectorAll('.stat-block').forEach(block => {
+      const num = block.querySelector('[data-count]');
+      if (!num) return;
+      function replay() {
+        countersDone.delete(num);
+        animateCounter(num, true);
+      }
+      block.addEventListener('mouseenter', replay);
+      block.addEventListener('click', replay);
+    });
+
+    // ── Scramble heading effect on reveal
+    const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    function scrambleText(el) {
+      const original = el.textContent;
+      const len = original.length;
+      let frame = 0;
+      const totalFrames = 18;
+      function tick() {
+        let out = '';
+        for (let i = 0; i < len; i++) {
+          if (original[i] === ' ' || original[i] === '\n') { out += original[i]; continue; }
+          const revealAt = Math.floor((i / len) * totalFrames * 0.7);
+          if (frame >= revealAt + 4) {
+            out += original[i];
+          } else if (frame >= revealAt) {
+            out += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          } else {
+            out += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          }
+        }
+        el.textContent = out;
+        frame++;
+        if (frame <= totalFrames) requestAnimationFrame(tick);
+        else el.textContent = original;
+      }
+      tick();
+    }
+
+    // Observe .scramble-h2 headings — but only scramble plain text nodes (skip gradient spans)
+    const scrambleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const h2 = entry.target;
+          // Walk text nodes directly in h2, scramble each
+          h2.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+              const span = document.createElement('span');
+              span.textContent = node.textContent;
+              node.parentNode.replaceChild(span, node);
+              setTimeout(() => scrambleText(span), 100);
+            }
+          });
+          scrambleObserver.unobserve(h2);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.scramble-h2').forEach(el => scrambleObserver.observe(el));
+
+    // ── Heading scroll reveal (h1 in sections, all h2, all h3)
+    // Skip hero h1 — it's visible on load; target only section headings
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          headingObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('section h2, section h3').forEach((el) => {
+      const inReveal = el.closest('.reveal, .reveal-left, .reveal-right');
+      // Always observe if explicitly tagged, or if not inside a reveal block
+      if (!inReveal || el.classList.contains('heading-reveal')) {
+        if (!el.classList.contains('heading-reveal')) el.classList.add('heading-reveal');
+        headingObserver.observe(el);
+      }
+    });
+
+    // ── 3D Card tilt
+    document.querySelectorAll('.card-tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect   = card.getBoundingClientRect();
+        const x      = (e.clientX - rect.left) / rect.width  - 0.5;
+        const y      = (e.clientY - rect.top)  / rect.height - 0.5;
+        const rotX   = (-y * 8).toFixed(2);
+        const rotY   = ( x * 8).toFixed(2);
+        card.style.transform     = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px) scale(1.01)`;
+        card.style.boxShadow     = `${-x * 20}px ${-y * 20}px 40px rgba(0,0,0,0.3), 0 0 20px rgba(0,240,255,0.12)`;
+        card.style.transition    = 'box-shadow 0.1s ease';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform  = '';
+        card.style.boxShadow  = '';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.5s ease';
+      });
+    });
+
+    // ── Button ripple effect
+    function addRipple(btn) {
+      btn.addEventListener('click', function(e) {
+        const rect   = btn.getBoundingClientRect();
+        const size   = Math.max(rect.width, rect.height) * 2;
+        const x      = e.clientX - rect.left - size / 2;
+        const y      = e.clientY - rect.top  - size / 2;
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+        btn.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+    }
+    document.querySelectorAll('.btn-primary').forEach(addRipple);
+
+    // ── Magnetic button effect (desktop)
+    if (isDesktop) {
+      document.querySelectorAll('.btn-primary, .btn-ghost').forEach(btn => {
+        let rafId;
+        btn.addEventListener('mousemove', (e) => {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const rect   = btn.getBoundingClientRect();
+            const cx     = rect.left + rect.width  / 2;
+            const cy     = rect.top  + rect.height / 2;
+            const dx     = (e.clientX - cx) * 0.22;
+            const dy     = (e.clientY - cy) * 0.22;
+            // Preserve existing hover transform and add magnetic offset
+            const base = btn.classList.contains('btn-primary')
+              ? `translateY(-3px) scale(1.03)`
+              : `translateY(-2px) scale(1.02)`;
+            btn.style.transform = `${base} translate(${dx}px, ${dy}px)`;
+          });
+        });
+        btn.addEventListener('mouseleave', () => {
+          cancelAnimationFrame(rafId);
+          btn.style.transform = '';
+        });
+      });
+    }
+
+    // ── Typing role animation
+    const roles  = ['Brand Designer', 'Graphic Designer', 'Visual Designer', 'UX/UI Designer'];
+    let roleIdx  = 0, charIdx = 0, deleting = false;
+    const roleEl = document.getElementById('roleText');
+
+    function typeRole() {
+      const current = roles[roleIdx];
+      if (deleting) {
+        roleEl.textContent = current.slice(0, charIdx--);
+        if (charIdx < 0) {
+          deleting = false;
+          roleIdx  = (roleIdx + 1) % roles.length;
+          charIdx  = 0;
+          setTimeout(typeRole, 400);
+          return;
+        }
+        setTimeout(typeRole, 50);
+      } else {
+        roleEl.textContent = current.slice(0, ++charIdx);
+        if (charIdx === current.length) {
+          deleting = true;
+          setTimeout(typeRole, 2200);
+          return;
+        }
+        setTimeout(typeRole, 80);
+      }
+    }
+    setTimeout(typeRole, 1200);
+
+    // ── Contact form (demo)
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader-2" style="width:16px;height:16px;animation:spin 1s linear infinite;"></i> Sending…';
+      lucide.createIcons();
+      setTimeout(() => {
+        document.getElementById('formSuccess').style.display = 'block';
+        btn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i> Sent!';
+        btn.style.background = 'linear-gradient(135deg, #39ff14 0%, #00f0ff 100%)';
+        btn.style.animation = 'morphBtn 0.6s ease forwards';
+        lucide.createIcons();
+        e.target.reset();
+      }, 1400);
+    }
+  </script>
+</body>
+</html>
