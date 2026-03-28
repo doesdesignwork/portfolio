@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>HealthHub 2.0 — Prototype</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Loading screen — fades out once iframe fires load */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #050508;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      z-index: 10;
+      transition: opacity 0.5s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+
+    .spinner {
+      width: 36px; height: 36px;
+      border: 2px solid rgba(0,240,255,0.15);
+      border-top-color: #00f0ff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #loader p {
+      font-family: 'SF Mono', 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(0,240,255,0.5);
+    }
+
+    /* Fallback — shown if iframe content is blocked */
+    #fallback {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #050508;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      z-index: 20;
+    }
+    #fallback.show { display: flex; }
+    #fallback p {
+      font-family: 'SF Pro', system-ui, sans-serif;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+    #fallback a {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid rgba(0,240,255,0.4);
+      border-radius: 9999px;
+      color: #00f0ff;
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    /* Back button — minimal, top-left */
+    #backBtn {
+      position: fixed;
+      top: 12px; left: 12px;
+      z-index: 30;
+      background: rgba(5,5,8,0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9999px;
+      padding: 6px 12px 6px 8px;
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.5);
+      font-family: system-ui, sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #backBtn:hover { color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); }
+    #backBtn svg { flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Loading screen -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Loading prototype</p>
+  </div>
+
+  <!-- Fallback if iframe is blocked -->
+  <div id="fallback">
+    <p>This prototype can't be embedded.<br>Open it directly in your browser.</p>
+    <a href="https://daily-slide-01341607.figma.site" target="_top">Open prototype ↗</a>
+  </div>
+
+  <!-- The prototype iframe -->
+  <iframe
+    id="frame"
+    src="https://daily-slide-01341607.figma.site"
+    allow="fullscreen; autoplay"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+  ></iframe>
+
+  <!-- Minimal back link -->
+  <a id="backBtn" href="javascript:window.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Close
+  </a>
+
+  <script>
+    const loader   = document.getElementById('loader');
+    const fallback = document.getElementById('fallback');
+    const frame    = document.getElementById('frame');
+
+    frame.addEventListener('load', function () {
+      // Try to access the frame's location.
+      // Cross-origin (Figma loaded) → throws → iframe is working, hide loader.
+      // Same-origin about:blank or error → accessible → show fallback.
+      try {
+        const href = frame.contentWindow.location.href;
+        // If we reach here, it's same-origin (likely blocked/blank)
+        if (!href || href === 'about:blank') {
+          loader.classList.add('hidden');
+          fallback.classList.add('show');
+        } else {
+          loader.classList.add('hidden');
+        }
+      } catch (e) {
+        // Cross-origin error = Figma content loaded successfully
+        loader.classList.add('hidden');
+      }
+    });
+
+    // Safety net: if nothing happens in 8s, show fallback
+    setTimeout(function () {
+      if (!loader.classList.contains('hidden')) {
+        loader.classList.add('hidden');
+        fallback.classList.add('show');
+      }
+    }, 8000);
+  </script>
+
+</body>
+</html>

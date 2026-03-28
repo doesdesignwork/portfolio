@@ -387,27 +387,35 @@
     }
 
     /* ── Cards ── */
+    @keyframes cardHaloSpin {
+      0%   { box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1.5px var(--neon-cyan),   0 0 28px rgba(0,240,255,0.35),   0 0 70px rgba(0,240,255,0.12);   border-color: rgba(0,240,255,0.55); }
+      25%  { box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1.5px var(--neon-violet), 0 0 28px rgba(168,85,247,0.35),  0 0 70px rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.55); }
+      50%  { box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1.5px var(--neon-pink),   0 0 28px rgba(240,171,252,0.35), 0 0 70px rgba(240,171,252,0.12); border-color: rgba(240,171,252,0.55); }
+      75%  { box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1.5px var(--neon-violet), 0 0 28px rgba(168,85,247,0.35),  0 0 70px rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.55); }
+      100% { box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1.5px var(--neon-cyan),   0 0 28px rgba(0,240,255,0.35),   0 0 70px rgba(0,240,255,0.12);   border-color: rgba(0,240,255,0.55); }
+    }
+
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
       position: relative;
     }
     .card::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.03), transparent 50%);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.04), transparent 50%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.35s;
       pointer-events: none;
+      z-index: 0;
     }
     .card:hover {
-      border-color: rgba(0, 240, 255, 0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.1);
+      transform: translateY(-5px);
+      animation: cardHaloSpin 3s linear infinite;
     }
     .card:hover::before { opacity: 1; }
 
@@ -1527,7 +1535,7 @@
             </div>
             <h3 style="margin:0 0 0.6rem;">HealthHub 2.0 — Redesign</h3>
             <p style="color:var(--text-secondary); font-size:0.875rem; line-height:1.7; margin-bottom:1.25rem;">A full redesign of a healthcare platform — streamlined navigation, accessible data visualisation, and an interactive Figma prototype.</p>
-            <button onclick="(function(){var w=430,h=932,l=Math.round((screen.width-w)/2),t=Math.round((screen.height-h)/2);window.open('https://daily-slide-01341607.figma.site','healthhub-proto','width='+w+',height='+h+',left='+l+',top='+t+',resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,status=no');})()" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; cursor:pointer; border:none; font-family:inherit;">
+            <button onclick="(function(){var w=430,h=932,l=Math.round((screen.width-w)/2),t=Math.round((screen.height-h)/2);window.open('prototype.html','healthhub-proto','popup,width='+w+',height='+h+',left='+l+',top='+t+',resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,status=no');})()" class="btn-ghost" style="padding:0.5rem 1rem; font-size:0.8rem; cursor:pointer; border:none; font-family:inherit;">
               <i data-lucide="smartphone" style="width:13px;height:13px;"></i>View prototype
             </button>
           </div>
