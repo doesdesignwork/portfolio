@@ -10,6 +10,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Gerard Teo",
+    "url": "https://doesdesignwork.github.io/portfolio/",
+    "jobTitle": "Brand Designer & Art Director",
+    "description": "Independent brand and design specialist with 26 years of experience across branding, packaging, communications design, and 3D visualisation.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Singapore" },
+    "sameAs": ["https://www.linkedin.com/in/gerard-teo-0b106429/"]
+  }
+  </script>
 
   <style>
     /* ── Design Tokens ── */
@@ -838,9 +850,26 @@
 
     /* ── Project image placeholder ── */
     .project-visual {
-      height: 200px;
+      height: 220px;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .project-visual img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .project-visual img.img-cover {
+      object-fit: cover;
+      object-position: center center;
+    }
+    .project-visual img.img-contain {
+      object-fit: contain;
+      object-position: center center;
+      padding: 1rem;
     }
 
     /* ── Neon line divider ── */
@@ -1229,8 +1258,8 @@
       <!-- Branding grid -->
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
         <div class="card card-tilt reveal reveal-delay-1">
-          <div class="project-visual" style="background:#000; padding:0;">
-            <img src="assets/brand-passion-group.jpg" alt="The Passion Group brand campaign" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+          <div class="project-visual" style="background:#1a0808;">
+            <img src="assets/brand-passion-group.jpg" alt="The Passion Group brand campaign" class="img-cover">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1246,8 +1275,8 @@
         </div>
 
         <div class="card card-tilt reveal reveal-delay-2">
-          <div class="project-visual" style="background:#f5f5f0; padding:0;">
-            <img src="assets/brand-modajar.jpg" alt="Modajar brand identity" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+          <div class="project-visual" style="background:#f5f2e8;">
+            <img src="assets/brand-modajar.jpg" alt="Modajar brand identity" class="img-contain">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1279,8 +1308,8 @@
 
         <!-- Myanmar Beer Lager — packaging -->
         <div class="card card-tilt reveal">
-          <div class="project-visual" style="background:#fff; padding:0;">
-            <img src="assets/brand-mbl-carton.jpg" alt="Myanmar Beer Lager carton packaging design" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+          <div class="project-visual" style="background:#f0f0f0;">
+            <img src="assets/brand-mbl-carton.jpg" alt="Myanmar Beer Lager carton packaging design" class="img-contain">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1298,8 +1327,8 @@
 
         <!-- L'Oréal For Women in Science -->
         <div class="card card-tilt reveal reveal-delay-1">
-          <div class="project-visual" style="background:#f8f8f8; padding:0;">
-            <img src="assets/brand-loreal.jpg" alt="L'Oréal For Women in Science campaign" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+          <div class="project-visual" style="background:#f4f4f4;">
+            <img src="assets/brand-loreal.jpg" alt="L'Oréal For Women in Science campaign" class="img-contain">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1316,8 +1345,8 @@
 
         <!-- Changi General Hospital -->
         <div class="card card-tilt reveal reveal-delay-2">
-          <div class="project-visual" style="background:#1a2a3a; padding:0;">
-            <img src="assets/brand-cgh.jpg" alt="Changi General Hospital corporate identity" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+          <div class="project-visual" style="background:#1a2030;">
+            <img src="assets/brand-cgh.jpg" alt="Changi General Hospital corporate identity" class="img-contain">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1371,8 +1400,8 @@
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
         <!-- Beneo Palatinit / Kellogg's 3D -->
         <div class="card card-tilt reveal reveal-delay-1">
-          <div class="project-visual" style="background:#e8e4dc; padding:0;">
-            <img src="assets/3d-cocopops.jpg" alt="Kellogg's Coco Pops 3D product render" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+          <div class="project-visual" style="background:#e8e4d8;">
+            <img src="assets/3d-cocopops.jpg" alt="Kellogg's Coco Pops 3D product render" class="img-contain">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
@@ -1388,8 +1417,8 @@
         </div>
 
         <div class="card card-tilt reveal reveal-delay-2">
-          <div class="project-visual" style="background:#001040; padding:0;">
-            <img src="assets/3d-wrigleys.jpg" alt="Wrigley's Extra Dual Care 3D pack visual" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+          <div class="project-visual" style="background:#001040;">
+            <img src="assets/3d-wrigleys.jpg" alt="Wrigley's Extra Dual Care 3D pack visual" class="img-cover">
           </div>
           <div style="padding:1.5rem;">
             <div style="display:flex; gap:0.5rem; margin-bottom:0.875rem; flex-wrap:wrap;">
