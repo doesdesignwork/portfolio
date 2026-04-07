@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getProjectBySlug, getAllProjectTeasers } from '@/lib/mockData';
 import { ContentBlock } from '@/types/project';
 import CaseStudyHero from '@/components/CaseStudyHero';
+import ParallaxImage from '@/components/ParallaxImage';
 import { SectionReveal, RevealItem } from '@/components/SectionReveal';
 
 export function generateStaticParams() {
@@ -27,13 +28,14 @@ function ContentBlockRenderer({ block, index }: { block: ContentBlock; index: nu
     return (
       <SectionReveal stagger={false}>
         <figure className="my-2">
-          <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <Image
+          {/* Full-bleed process image with parallax */}
+          <div style={{ aspectRatio: '16/9' }}>
+            <ParallaxImage
               src={block.asset.url}
               alt={block.asset.altText}
-              fill
               sizes="(max-width:768px) 100vw, 80vw"
-              className="object-cover"
+              strength={0.1}
+              className="h-full w-full"
             />
           </div>
           {block.caption && (
@@ -282,13 +284,13 @@ export default async function CaseStudyPage({
               <SectionReveal className="grid gap-4 mt-6 sm:grid-cols-2">
                 {gallery.map((asset, i) => (
                   <RevealItem key={i}>
-                    <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
-                      <Image
+                    <div style={{ aspectRatio: '4/3' }}>
+                      <ParallaxImage
                         src={asset.url}
                         alt={asset.altText}
-                        fill
                         sizes="(max-width:768px) 100vw, 50vw"
-                        className="object-cover transition-transform duration-700 hover:scale-[1.04]"
+                        strength={0.08}
+                        className="h-full w-full"
                       />
                     </div>
                   </RevealItem>

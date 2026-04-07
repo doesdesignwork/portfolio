@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import ParallaxImage from '@/components/ParallaxImage';
 import { SectionReveal, RevealItem } from '@/components/SectionReveal';
 
 const disciplines = [
@@ -80,24 +80,22 @@ export default function AboutPage() {
             </RevealItem>
           </SectionReveal>
 
-          {/* Portrait */}
+          {/* Portrait — ParallaxImage with 0.1× scroll drift */}
           <SectionReveal stagger={false}>
-            <div
-              className="relative overflow-hidden"
-              style={{ aspectRatio: '3/4' }}
-            >
-              <Image
+            <div className="relative" style={{ aspectRatio: '3/4' }}>
+              <ParallaxImage
                 src="/assets/portrait.png"
                 alt="Gerard Teo — portrait"
-                fill
-                className="object-cover object-top"
                 sizes="(max-width:1024px) 100vw, 360px"
-                unoptimized
-              />
-              <div
+                strength={0.1}
                 className="absolute inset-0"
+              />
+              {/* Bottom gradient, above the parallax layer */}
+              <div
+                className="absolute inset-0 pointer-events-none"
                 style={{
                   background: 'linear-gradient(to bottom, transparent 60%, rgba(5,5,8,0.6) 100%)',
+                  zIndex: 1,
                 }}
               />
             </div>

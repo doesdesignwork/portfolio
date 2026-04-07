@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ProjectTeaser } from '@/types/project';
+import ParallaxImage from '@/components/ParallaxImage';
 
 interface ProjectCardProps {
   project: ProjectTeaser;
@@ -50,14 +50,14 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           whileHover={{ scale: 1.01 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Thumbnail image */}
-          <Image
+          {/* Scroll parallax thumbnail — image drifts at 0.12× scroll speed */}
+          <ParallaxImage
             src={thumbnail.url}
             alt={thumbnail.altText}
-            fill
             sizes={featured ? '(max-width:768px) 100vw, 66vw' : '(max-width:768px) 100vw, 33vw'}
-            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
             priority={featured}
+            strength={0.12}
+            className="absolute inset-0"
           />
 
           {/* Hover video overlay */}
@@ -68,23 +68,23 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
               muted
               loop
               playsInline
-              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 z-[1]"
               style={{ opacity: hovered ? 1 : 0 }}
             />
           )}
 
           {/* Dark gradient overlay */}
           <div
-            className="absolute inset-0 transition-opacity duration-400"
+            className="absolute inset-0 z-[2] transition-opacity duration-400"
             style={{
               background: `linear-gradient(to top, rgba(5,5,8,0.92) 0%, rgba(5,5,8,0.3) 50%, transparent 100%)`,
               opacity: hovered ? 1 : 0.6,
             }}
           />
 
-          {/* Accent top border that reveals on hover */}
+          {/* Accent top border */}
           <motion.div
-            className="absolute top-0 left-0 right-0 h-[2px]"
+            className="absolute top-0 left-0 right-0 h-[2px] z-[3]"
             style={{ backgroundColor: accentColor }}
             initial={{ scaleX: 0, transformOrigin: 'left' }}
             animate={{ scaleX: hovered ? 1 : 0 }}
@@ -92,7 +92,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
           />
 
           {/* Content overlay */}
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-[3]">
             <motion.span
               className="tag mb-3 self-start"
               style={{ color: accentColor, borderColor: accentColor }}
@@ -103,7 +103,7 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
             </motion.span>
 
             <motion.h3
-              className="font-display text-xl font-[200] tracking-[0.06em] uppercase text-text-primary"
+              className="font-display text-xl font-[200] tracking-[0.06em] uppercase"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}
               animate={{ y: hovered ? 0 : 8 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -111,13 +111,9 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
               {title}
             </motion.h3>
 
-            {/* Arrow */}
             <motion.div
               className="mt-4 flex items-center gap-2 text-xs tracking-widest uppercase"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--color-text-secondary)',
-              }}
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-secondary)' }}
               animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -10 }}
               transition={{ duration: 0.35, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
             >
