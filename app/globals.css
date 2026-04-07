@@ -1,26 +1,122 @@
+/* ── Google Fonts (must precede @import "tailwindcss") ── */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Tailwind v4 Design Tokens ── */
+@theme {
+  /* Fonts — resolved directly from the Google Fonts CSS import above */
+  --font-display: 'Josefin Sans', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Background colours */
+  --color-bg-base:    #050508;
+  --color-bg-surface: #0d0d1a;
+  --color-bg-raised:  #14142a;
+  --color-bg-overlay: #1c1c38;
+
+  /* Accent neons */
+  --color-neon-cyan:   #00f0ff;
+  --color-neon-violet: #a855f7;
+  --color-neon-pink:   #f0abfc;
+  --color-neon-green:  #39ff14;
+
+  /* Text */
+  --color-text-primary:   #f0f0ff;
+  --color-text-secondary: #9090b8;
+  --color-text-muted:     #5a5a80;
+
+  /* Border */
+  --color-border-subtle: rgba(139, 92, 246, 0.15);
+  --color-border-glow:   rgba(0, 240, 255, 0.3);
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body, 'Space Grotesk', sans-serif);
+  font-size: 1rem;
+  line-height: 1.7;
+  min-height: 100dvh;
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: var(--color-bg-base); }
+::-webkit-scrollbar-thumb  { background: var(--color-neon-violet); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-neon-cyan); }
+
+/* ── Text Selection ── */
+::selection {
+  background: rgba(0, 240, 255, 0.25);
+  color: #fff;
+}
+
+/* ── Typography Scale ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, 'Josefin Sans', sans-serif);
+  font-weight: 200;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: clamp(2.5rem, 7vw, 6rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.1rem, 2.5vw, 1.75rem); }
+
+p { color: var(--color-text-secondary); max-width: 68ch; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Glow Utilities (non-Tailwind, used via className in JSX) ── */
+.glow-cyan   { box-shadow: 0 0 20px rgba(0,240,255,0.35), 0 0 60px rgba(0,240,255,0.1); }
+.glow-violet { box-shadow: 0 0 20px rgba(168,85,247,0.35), 0 0 60px rgba(168,85,247,0.1); }
+.glow-text-cyan { text-shadow: 0 0 20px rgba(0,240,255,0.6); }
+
+/* ── Nav border ── */
+.nav-border {
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+/* ── Project card image zoom ── */
+.card-image {
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.card-image:hover { transform: scale(1.06); }
+
+/* ── Thin horizontal rule ── */
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-neon-violet) 40%, var(--color-neon-cyan) 60%, transparent);
+}
+
+/* ── Category tag ── */
+.tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+  color: var(--color-neon-cyan);
+  line-height: 1;
 }
