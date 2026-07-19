@@ -1,7 +1,5 @@
 import { projects } from "../data/projects";
-
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
-const lastModified = "2026-07-19";
+import { lastModified, siteUrl } from "@/lib/site";
 
 const escapeXml = (value: string) =>
   value

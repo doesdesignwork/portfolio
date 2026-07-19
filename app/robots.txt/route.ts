@@ -1,4 +1,4 @@
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
+import { siteUrl } from "@/lib/site";
 
 const robots = `User-agent: OAI-SearchBot
 Allow: /
