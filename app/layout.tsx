@@ -1,167 +1,238 @@
-import type { Metadata } from 'next';
-import Nav from '@/components/Nav';
-import PageTransition from '@/components/PageTransition';
-import './globals.css';
-// Fonts are loaded via CSS @import in globals.css (Josefin Sans, Space Grotesk, JetBrains Mono).
-// next/font/google is avoided here because the build environment has no outbound network access.
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { projects } from "./data/projects";
+import "./globals.css";
+
+const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
+const siteTitle = "Gerard Teo | Art Director & Creative Designer Singapore";
+const siteDescription =
+  "Gerard Teo is a Singapore art director and creative designer working across brand identity, campaigns, packaging, 3D visualisation and experiential design.";
+const lastModified = "2026-07-19";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'Gerard Teo — Portfolio',
-  description:
-    'Multidisciplinary designer crafting brand identities, graphic systems, and digital experiences.',
+  metadataBase: new URL(siteUrl),
+  applicationName: "Gerard Teo Portfolio",
+  title: {
+    default: siteTitle,
+    template: "%s — Gerard Teo",
+  },
+  description: siteDescription,
+  keywords: [
+    "Gerard Teo",
+    "art director Singapore",
+    "senior creative designer Singapore",
+    "creative direction",
+    "brand identity design",
+    "campaign design",
+    "experiential design",
+    "packaging design",
+    "visual identity",
+    "creative portfolio",
+  ],
+  authors: [{ name: "Gerard Teo", url: siteUrl }],
+  creator: "Gerard Teo",
+  publisher: "Gerard Teo",
+  category: "Design",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+    types: {
+      "text/markdown": "/llms.txt",
+      "text/plain": "/llms-full.txt",
+      "application/json": "/agent-index.json",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    url: siteUrl,
+    siteName: "Gerard Teo Portfolio",
+    title: siteTitle,
+    description: siteDescription,
+    images: [
+      {
+        url: "/assets/modajar-identity-final.webp",
+        width: 1026,
+        height: 716,
+        alt: "Gerard Teo portfolio — Modajar fashion brand identity",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/assets/modajar-identity-final.webp"],
+  },
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
-const inputBase =
-  'w-full px-4 py-3 rounded-sm text-sm transition-colors duration-200 outline-none focus:ring-1';
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0a" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f0e8" },
+  ],
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: "Gerard Teo",
+      url: siteUrl,
+      email: "mailto:g@doesdesignwork.com",
+      jobTitle: "Art Director & Senior Creative Designer",
+      sameAs: ["https://doesdesignwork.github.io/gerard-teo-cv/"],
+      mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
+      subjectOf: {
+        "@type": "WebPage",
+        name: "Gerard Teo — Online CV",
+        url: "https://doesdesignwork.github.io/gerard-teo-cv/",
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "SG",
+        addressLocality: "Singapore",
+      },
+      knowsAbout: [
+        "Creative direction",
+        "Brand identity",
+        "Campaign systems",
+        "Experiential design",
+        "Packaging design",
+        "Motion storytelling",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Gerard Teo Portfolio",
+      description: siteDescription,
+      inLanguage: "en-SG",
+      publisher: { "@id": `${siteUrl}/#person` },
+      copyrightHolder: { "@id": `${siteUrl}/#person` },
+      dateModified: lastModified,
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}/#profile-page`,
+      url: siteUrl,
+      name: "Gerard Teo — Art Director & Senior Creative Designer",
+      description: siteDescription,
+      inLanguage: "en-SG",
+      mainEntity: { "@id": `${siteUrl}/#person` },
+      dateModified: lastModified,
+      hasPart: {
+        "@type": "ItemList",
+        name: "Selected work",
+        numberOfItems: projects.length,
+        itemListElement: projects.map((project, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: { "@id": `${siteUrl}/#project-${project.number}` },
+        })),
+      },
+    },
+    ...projects.map((project) => ({
+      "@type": "CreativeWork",
+      "@id": `${siteUrl}/#project-${project.number}`,
+      identifier: `gerard-teo-project-${project.number}`,
+      url: `${siteUrl}/#project-${project.number}`,
+      name: `${project.client} — ${project.title}`,
+      headline: project.title,
+      description: project.summary,
+      genre: project.discipline.split(" · "),
+      image: project.images.map((image) => `${siteUrl}${image}`),
+      thumbnailUrl: `${siteUrl}${project.images[0]}`,
+      creator: { "@id": `${siteUrl}/#person` },
+      copyrightHolder: { "@id": `${siteUrl}/#person` },
+      isPartOf: { "@id": `${siteUrl}/#profile-page` },
+      keywords: project.discipline,
+      dateModified: lastModified,
+      inLanguage: "en-SG",
+    })),
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <body>
-        <Nav />
-
-        {/* Offset for fixed nav */}
-        <div className="pt-[72px]">
-          <PageTransition>{children}</PageTransition>
-        </div>
-
-        {/* ── Footer / Contact ── */}
-        <footer
-          id="contact"
-          className="border-t mt-32"
-          style={{ borderColor: 'var(--color-border-subtle)' }}
-        >
-          <div className="mx-auto max-w-7xl px-6 py-24 md:px-16 lg:px-24">
-            <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-              {/* Left */}
-              <div>
-                <p
-                  className="text-xs tracking-[0.2em] uppercase mb-4"
-                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-                >
-                  Get in touch
-                </p>
-                <h2
-                  className="mb-6"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  Let&apos;s make something
-                  <br />
-                  <span style={{ color: 'var(--color-neon-cyan)' }}>worth remembering.</span>
-                </h2>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  Available for brand identity, spatial graphics, and digital product design
-                  engagements. Based in Singapore — working globally.
-                </p>
-              </div>
-
-              {/* Right: form */}
-              <form className="flex flex-col gap-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="flex flex-col gap-1.5">
-                    <label
-                      htmlFor="f-name"
-                      className="text-xs tracking-widest uppercase"
-                      style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-                    >
-                      Name
-                    </label>
-                    <input
-                      id="f-name"
-                      name="name"
-                      type="text"
-                      required
-                      className={inputBase}
-                      style={{
-                        background: 'var(--color-bg-surface)',
-                        border: '1px solid var(--color-border-subtle)',
-                        color: 'var(--color-text-primary)',
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label
-                      htmlFor="f-email"
-                      className="text-xs tracking-widest uppercase"
-                      style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="f-email"
-                      name="email"
-                      type="email"
-                      required
-                      className={inputBase}
-                      style={{
-                        background: 'var(--color-bg-surface)',
-                        border: '1px solid var(--color-border-subtle)',
-                        color: 'var(--color-text-primary)',
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="f-message"
-                    className="text-xs tracking-widest uppercase"
-                    style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="f-message"
-                    name="message"
-                    rows={5}
-                    required
-                    className={inputBase}
-                    style={{
-                      background: 'var(--color-bg-surface)',
-                      border: '1px solid var(--color-border-subtle)',
-                      color: 'var(--color-text-primary)',
-                      resize: 'none',
-                    }}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="mt-2 self-start px-8 py-3 text-xs tracking-[0.15em] uppercase transition-all duration-300 hover:glow-cyan"
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    border: '1px solid var(--color-neon-cyan)',
-                    color: 'var(--color-neon-cyan)',
-                    background: 'transparent',
-                  }}
-                >
-                  Send Message →
-                </button>
-              </form>
-            </div>
-
-            <div
-              className="mt-16 pt-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-t"
-              style={{ borderColor: 'var(--color-border-subtle)' }}
-            >
-              <p
-                className="text-xs tracking-widest"
-                style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-              >
-                © {new Date().getFullYear()} Gerard Teo. All rights reserved.
-              </p>
-              <a
-                href="https://www.linkedin.com/in/gerard-teo-0b106429/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs tracking-widest hover:text-neon-cyan transition-colors duration-200"
-                style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}
-              >
-                LinkedIn ↗
-              </a>
-            </div>
-          </div>
-        </footer>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href="/llms.txt"
+          title="LLM-readable site summary"
+        />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms-full.txt"
+          title="Full machine-readable project catalogue"
+        />
+        <link
+          rel="alternate"
+          type="application/json"
+          href="/agent-index.json"
+          title="Structured portfolio index"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('gerard-theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}})();`,
+          }}
+        />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
       </body>
     </html>
   );
