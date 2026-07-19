@@ -1,4 +1,4 @@
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
+import { lastModified, siteUrl } from "@/lib/site";
 
 const content = `# Gerard Teo — Art Director & Senior Creative Designer
 
@@ -6,7 +6,7 @@ const content = `# Gerard Teo — Art Director & Senior Creative Designer
 
 This is Gerard Teo's official portfolio. It covers selected work, professional background, capabilities, client experience and contact information.
 
-Last updated: 2026-07-19
+Last updated: ${lastModified}
 
 ## Primary pages and resources
 

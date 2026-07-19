@@ -1,6 +1,5 @@
 import { projects } from "../data/projects";
-
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
+import { lastModified, siteUrl } from "@/lib/site";
 
 const index = {
   schemaVersion: 2,
@@ -9,7 +8,7 @@ const index = {
   description:
     "Official portfolio of Gerard Teo, a Singapore art director and creative designer working across identity, campaigns, packaging, 3D visualisation and experiential design.",
   language: "en-SG",
-  lastModified: "2026-07-19",
+  lastModified,
   contentType: "professional-portfolio",
   person: {
     name: "Gerard Teo",

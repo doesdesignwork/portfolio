@@ -1,203 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { projects } from "./data/projects";
 
-/*
-const projects = [
-  {
-    number: "01",
-    title: "Building a fashion brand with its own attitude.",
-    client: "Modajar",
-    discipline: "Naming · Brand Identity · Digital Retail",
-    summary: "Created the name, visual identity, brand persona and e-commerce expression for a fashion concept designed to compete with global online retailers.",
-    images: [
-      "/assets/modajar-identity-final.webp",
-      "/assets/modajar-digital-final.webp",
-      "/assets/modajar-bag-final.webp",
-      "/assets/modajar-stationery-final.webp",
-    ],
-    presentation: "contain",
-    alt: "Modajar fashion identity and branded applications",
-  },
-  {
-    number: "02",
-    title: "Giving every beer its own character.",
-    client: "Brewerkz",
-    discipline: "Packaging · Illustration · Product Range",
-    summary: "Developed a label system built around quirky illustrations, giving each craft beer a distinct personality while holding the full range together.",
-    images: [
-      "/assets/brewerkz-packaging.webp",
-      "/assets/brewerkz-campaign.webp",
-      "/assets/brewerkz-wall.webp",
-    ],
-    presentation: "contain",
-    alt: "Brewerkz illustrated beer packaging and campaign imagery",
-  },
-  {
-    number: "03",
-    title: "Designing status for different Asian markets.",
-    client: "American Express",
-    discipline: "Product Design · Card Systems · Regional Markets",
-    summary: "Created card designs for multiple Asian markets, balancing a premium global brand with the cultural nuances and expectations of distinct customer segments.",
-    images: ["/assets/american-express-cards.webp"],
-    presentation: "contain",
-    alt: "American Express premium card designs for Asian markets",
-  },
-  {
-    number: "04",
-    title: "Refreshing a global haircare icon.",
-    client: "Sunsilk · Unilever",
-    discipline: "FMCG Branding · Label Design · Product Shaping",
-    summary: "Reframed Sunsilk's consumer-facing identity across brand expression, labels and product form as part of a wider visual refresh for Unilever.",
-    images: [
-      "/assets/sunsilk-damage.webp",
-      "/assets/sunsilk-seda.webp",
-      "/assets/sunsilk-range.webp",
-      "/assets/sunsilk-black.webp",
-    ],
-    presentation: "contain",
-    alt: "Sunsilk haircare brand refresh and product campaign applications",
-  },
-  {
-    number: "05",
-    title: "Taking a fresh-food brand across every touchpoint.",
-    client: "The Herdsman · Perth",
-    discipline: "Retail Identity · Packaging · Environmental Design",
-    summary: "Extended the established fresh-food brand into a new city store, spanning interiors, packaging, uniforms, advertising and the full customer experience.",
-    images: [
-      "/assets/herdsman-packaging.webp",
-      "/assets/herdsman-sauces.webp",
-      "/assets/herdsman-egg.webp",
-      "/assets/herdsman-store.webp",
-    ],
-    presentation: "contain",
-    alt: "The Herdsman premium food packaging range",
-  },
-  {
-    number: "06",
-    title: "Giving an industrial address stature.",
-    client: "100 Pasir Panjang",
-    discipline: "Brand Strategy · Identity · Launch Campaign",
-    summary: "Named and positioned CEL Development's industrial building as a premium business address, with an identity inspired by its distinctive slatted architecture.",
-    images: [
-      "/assets/100-brochure-01.webp",
-      "/assets/100-brochure-02.webp",
-    ],
-    presentation: "contain",
-    alt: "100 Pasir Panjang identity and launch brochure",
-  },
-  {
-    number: "07",
-    title: "Turning healthier ingredients into tangible products.",
-    client: "Beneo Palatinit",
-    discipline: "3D Visualisation · Packaging · Product Concepts",
-    summary: "Created new product concepts and packaging visualisations that helped Beneo present natural sugar-replacement and health-focused ingredients as credible consumer propositions.",
-    images: [
-      "/assets/beneo-noodles.webp",
-      "/assets/beneo-cereal.webp",
-      "/assets/beneo-grains.webp",
-      "/assets/beneo-supplement.webp",
-    ],
-    presentation: "contain",
-    alt: "Beneo consumer product and packaging concepts",
-  },
-  {
-    number: "08",
-    title: "Making innovation tangible.",
-    client: "Dow Chemical · ChinaPlas",
-    discipline: "Experiential Design · 3D Visualisation · Exhibition",
-    summary: "Developed a series of exhibition environments that translated Dow's product innovations into clear, physical experiences for the ChinaPlas tradeshow.",
-    images: [
-      "/assets/dow-exhibition.webp",
-      "/assets/dow-exhibition-02.webp",
-      "/assets/dow-exhibition-03.webp",
-      "/assets/dow-exhibition-04.webp",
-    ],
-    presentation: "contain",
-    alt: "Dow Chemical exhibition environment at ChinaPlas",
-  },
-  {
-    number: "09",
-    title: "Modernising heritage without losing its authority.",
-    client: "Raffles Institution",
-    discipline: "Institutional Identity · Editorial · Environmental",
-    summary: "Refined the visual expression of a historic institution across publications, stationery and campus signage, balancing established heritage cues with a cleaner contemporary system.",
-    images: [
-      "/assets/raffles-institution.webp",
-      "/assets/raffles-card.webp",
-      "/assets/raffles-signage.webp",
-    ],
-    presentation: "contain",
-    alt: "Raffles Institution identity across editorial, stationery and signage",
-  },
-  {
-    number: "10",
-    title: "Making healthier ingredients feel desirable.",
-    client: "Beneo Concept Lab",
-    discipline: "Product Concepts · Packaging · 3D Visualisation",
-    summary: "Developed consumer-ready product ideas around functional ingredients, then turned them into convincing packaging and campaign propositions spanning confectionery, snacks and sports nutrition.",
-    images: [
-      "/assets/beneo-fruity-sensations.webp",
-      "/assets/beneo-sound-candy.webp",
-      "/assets/beneo-oikos.webp",
-      "/assets/beneo-sportsgel.webp",
-    ],
-    presentation: "contain",
-    alt: "Beneo product innovation concepts and packaging visualisations",
-  },
-  {
-    number: "11",
-    title: "Giving Chinese hospitality a more contemporary appetite.",
-    client: "Passion · Fu Lin Men",
-    discipline: "Hospitality Branding · Editorial · Environmental",
-    summary: "Created a contemporary hospitality identity for Fu Lin Men, extending its refined East-meets-West character across editorial material, restaurant signage and the physical guest experience.",
-    images: [
-      "/assets/passion-editorial.webp",
-      "/assets/passion-entrance.webp",
-      "/assets/passion-signage.webp",
-    ],
-    presentation: "contain",
-    alt: "Passion by Fu Lin Men hospitality branding and restaurant applications",
-  },
-  {
-    number: "12",
-    title: "Building a food brand with an appetite for personality.",
-    client: "MUNCH",
-    discipline: "Brand Identity · Menu Design · Retail Experience",
-    summary: "Developed an energetic orange-led identity across product presentation, menus and outlet graphics, giving the fast-casual concept a consistent voice from counter to takeaway.",
-    images: [
-      "/assets/munch-packaging.webp",
-      "/assets/munch-menu-board.webp",
-      "/assets/munch-typography.webp",
-      "/assets/munch-menu.webp",
-    ],
-    presentation: "contain",
-    alt: "MUNCH food and beverage identity across packaging, menus and retail graphics",
-  },
-  {
-    number: "13",
-    title: "Turning innovation into a system people could recognise.",
-    client: "SGInnovate",
-    discipline: "Brand Identity · Campaign Design · Motion",
-    summary: "Built a flexible identity system for Singapore's innovation ecosystem, then carried it into stationery, events, campaigns and motion—making a technical organisation feel distinctive, confident and human.",
-    images: [
-      "/assets/sginnovate-identity.webp",
-      "/assets/sginnovate-logo-motion.webp",
-      "/assets/sginnovate-stationery.webp",
-      "/assets/sginnovate-banners.webp",
-      "/assets/sginnovate-pass.webp",
-      "/assets/sginnovate-mit-sticker.webp",
-      "/assets/sginnovate-cny.webp",
-      "/assets/sginnovate-christmas-type.webp",
-      "/assets/sginnovate-christmas-motion.webp",
-    ],
-    presentation: "contain",
-    alt: "SGInnovate identity system across brand, campaign, event and motion applications",
-  },
-];
-*/
 
 const capabilities = [
   "Creative direction",
@@ -226,8 +33,9 @@ export default function Home() {
       : window.matchMedia("(prefers-color-scheme: light)").matches
         ? "light"
         : "dark";
-    setTheme(initial);
     document.documentElement.dataset.theme = initial;
+    const frame = window.requestAnimationFrame(() => setTheme(initial));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -445,7 +253,14 @@ export default function Home() {
       <header className="site-header">
         <a className="skip-link" href="#work">Skip to selected work</a>
         <a className="wordmark" href="#top" aria-label="Gerard Teo, home">
-          <img src="/assets/g-image.webp" alt="" width="640" height="640" loading="eager" decoding="async" fetchPriority="high" />
+          <Image
+            src="/assets/g-image.webp"
+            alt=""
+            width={640}
+            height={640}
+            sizes="64px"
+            priority
+          />
         </a>
         <nav aria-label="Primary navigation">
           <a href="#work">Work</a>
@@ -553,13 +368,12 @@ export default function Home() {
               aria-label={`Open ${project.client}: ${project.title}`}
             >
               <span className="project-tile-media">
-                <img
+                <Image
                   src={project.images[0]}
                   alt={project.alt}
-                  width="1600"
-                  height="1200"
-                  loading="lazy"
-                  decoding="async"
+                  width={1600}
+                  height={1200}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
                 />
               </span>
               <span className="project-tile-copy">
@@ -622,7 +436,7 @@ export default function Home() {
           <h2 id="brand-proof-title" data-scroll-text data-text-delay="1">Trusted by leaders.</h2>
         </div>
         <div className="brand-name-grid" data-parallax="0.028">
-          <span>Apple</span><span>L'Oréal</span><span>Unilever</span><span>Dow</span>
+          <span>Apple</span><span>L’Oréal</span><span>Unilever</span><span>Dow</span>
           <span>Singtel</span><span>StarHub</span><span>BlackBerry</span><span>MTV Asia</span>
           <span>EMI Music</span><span>American Express</span><span>Red Bull</span><span>Tiger Beer</span>
         </div>
@@ -664,7 +478,13 @@ export default function Home() {
           </button>
           <div className="project-page-shell" onClick={(event) => event.stopPropagation()}>
             <div className="project-page-media">
-              <img src={selectedImage} alt={selectedImageAlt} width="1800" height="1400" decoding="async" />
+              <Image
+                src={selectedImage}
+                alt={selectedImageAlt}
+                width={1800}
+                height={1400}
+                sizes="100vw"
+              />
               {selectedProject.images.length > 1 && (
                 <>
                   <button className="project-page-arrow is-previous" type="button" onClick={showPreviousImage} aria-label="Previous project image">←</button>
@@ -688,7 +508,7 @@ export default function Home() {
                     aria-label={`Show image ${index + 1} of ${selectedProject.images.length}`}
                     aria-pressed={activeImageIndex === index}
                   >
-                    <img src={image} alt="" width="320" height="220" loading="lazy" decoding="async" />
+                    <Image src={image} alt="" width={320} height={220} sizes="110px" />
                   </button>
                 ))}
               </div>

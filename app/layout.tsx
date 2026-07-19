@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { projects } from "./data/projects";
+import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
 const siteTitle = "Gerard Teo | Art Director & Creative Designer Singapore";
 const siteDescription =
   "Gerard Teo is a Singapore art director and creative designer working across brand identity, campaigns, packaging, 3D visualisation and experiential design.";
-const lastModified = "2026-07-19";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

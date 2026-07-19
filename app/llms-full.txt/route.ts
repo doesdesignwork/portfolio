@@ -1,6 +1,5 @@
 import { projects } from "../data/projects";
-
-const siteUrl = "https://cinematic-site-studio.gerardteo.chatgpt.site";
+import { lastModified, siteUrl } from "@/lib/site";
 
 const projectCatalogue = projects
   .map((project) => {
@@ -27,7 +26,7 @@ const content = `# Gerard Teo — Full Portfolio Catalogue
 
 Canonical portfolio: ${siteUrl}/
 
-Last updated: 2026-07-19
+Last updated: ${lastModified}
 
 Gerard Teo is a Singapore-based Art Director and Senior Creative Designer with more than 26 years of experience. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation, motion and UX thinking.
 
