@@ -13,6 +13,80 @@ export function ScrollMotion() {
     if (!scope) return;
 
     let isActive = true;
+    let snapReady = false;
+    let isSnapping = false;
+    let snapTimer: number | undefined;
+    let snapTween: gsap.core.Tween | undefined;
+    const snapSections = Array.from(
+      scope.querySelectorAll<HTMLElement>("[data-snap-section]"),
+    );
+
+    const cancelSnap = () => {
+      if (snapTween) snapTween.kill();
+      snapTween = undefined;
+      isSnapping = false;
+    };
+
+    const snapToNearestSection = () => {
+      if (!snapReady || isSnapping || snapSections.length === 0) return;
+
+      const headerHeight =
+        document.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
+      const currentScroll = window.scrollY;
+      const sectionPositions = snapSections.map((section) =>
+        Math.max(0, currentScroll + section.getBoundingClientRect().top - headerHeight),
+      );
+      const targetScroll = sectionPositions.reduce((nearest, position) =>
+        Math.abs(position - currentScroll) < Math.abs(nearest - currentScroll)
+          ? position
+          : nearest,
+      );
+      const distance = targetScroll - currentScroll;
+      const snapRange = Math.min(300, window.innerHeight * 0.34);
+
+      if (Math.abs(distance) < 2 || Math.abs(distance) > snapRange) return;
+
+      const position = { y: currentScroll };
+      isSnapping = true;
+      snapTween = gsap.to(position, {
+        y: targetScroll,
+        duration: 0.52,
+        ease: "power3.out",
+        overwrite: true,
+        onUpdate: () => window.scrollTo(0, position.y),
+        onComplete: () => {
+          snapTween = undefined;
+          isSnapping = false;
+        },
+        onInterrupt: () => {
+          snapTween = undefined;
+          isSnapping = false;
+        },
+      });
+    };
+
+    const queueSnap = () => {
+      if (!snapReady || isSnapping) return;
+      window.clearTimeout(snapTimer);
+      snapTimer = window.setTimeout(snapToNearestSection, 140);
+    };
+
+    const handleSnapKey = (event: KeyboardEvent) => {
+      if (
+        ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(
+          event.key,
+        )
+      ) {
+        cancelSnap();
+      }
+    };
+
+    window.addEventListener("scroll", queueSnap, { passive: true });
+    window.addEventListener("wheel", cancelSnap, { passive: true });
+    window.addEventListener("touchstart", cancelSnap, { passive: true });
+    window.addEventListener("pointerdown", cancelSnap, { passive: true });
+    window.addEventListener("keydown", handleSnapKey);
+
     const context = gsap.context(() => {
       gsap.from(".site-header", {
         autoAlpha: 0,
@@ -246,44 +320,35 @@ export function ScrollMotion() {
         },
       });
 
-      const snapSections = gsap.utils.toArray<HTMLElement>("[data-snap-section]");
-      ScrollTrigger.create({
-        id: "section-snap",
-        start: 0,
-        end: () => ScrollTrigger.maxScroll(window),
-        snap: {
-          snapTo: (progress) => {
-            const maxScroll = ScrollTrigger.maxScroll(window);
-            if (!maxScroll) return progress;
-
-            const snapPoints = snapSections.map((section) =>
-              gsap.utils.clamp(0, 1, section.offsetTop / maxScroll),
-            );
-            const nearest = snapPoints.reduce((closest, point) =>
-              Math.abs(point - progress) < Math.abs(closest - progress) ? point : closest,
-            snapPoints[0] ?? progress);
-            const distance = Math.abs(nearest - progress) * maxScroll;
-            const snapRange = Math.min(window.innerHeight * 0.3, 280);
-
-            return distance <= snapRange ? nearest : progress;
-          },
-          delay: 0.05,
-          duration: { min: 0.18, max: 0.38 },
-          ease: "power2.inOut",
-          inertia: false,
-        },
-      });
     }, scope);
 
     const refresh = () => ScrollTrigger.refresh();
-    document.fonts.ready.then(() => {
-      if (isActive) refresh();
+    const layoutImages = Array.from(
+      scope.querySelectorAll<HTMLImageElement>(".hero img, .featured-work img"),
+    );
+    Promise.all([
+      document.fonts.ready,
+      ...layoutImages.map((image) => image.decode().catch(() => undefined)),
+    ]).then(() => {
+      if (!isActive) return;
+      window.requestAnimationFrame(() => {
+        if (!isActive) return;
+        refresh();
+        snapReady = true;
+      });
     });
     window.addEventListener("load", refresh, { once: true });
     window.requestAnimationFrame(refresh);
 
     return () => {
       isActive = false;
+      window.clearTimeout(snapTimer);
+      cancelSnap();
+      window.removeEventListener("scroll", queueSnap);
+      window.removeEventListener("wheel", cancelSnap);
+      window.removeEventListener("touchstart", cancelSnap);
+      window.removeEventListener("pointerdown", cancelSnap);
+      window.removeEventListener("keydown", handleSnapKey);
       window.removeEventListener("load", refresh);
       context.revert();
     };
