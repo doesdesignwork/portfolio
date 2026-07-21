@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Newsreader } from "next/font/google";
+import { Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -8,15 +8,15 @@ const siteTitle = "Gerard Teo | Art Director & Creative Lead Singapore";
 const siteDescription =
   "Gerard Teo is a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.";
 
-const displayFont = Bricolage_Grotesque({
-  variable: "--font-display",
+const bodyFont = Plus_Jakarta_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const editorialFont = Newsreader({
-  variable: "--font-editorial",
+const headingFont = Space_Mono({
+  variable: "--font-heading",
   subsets: ["latin"],
-  style: ["normal", "italic"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -225,7 +225,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${displayFont.variable} ${editorialFont.variable} antialiased`}
+        className={`${bodyFont.variable} ${headingFont.variable} antialiased`}
       >
         {children}
       </body>

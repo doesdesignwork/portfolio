@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { ScrollMotion } from "./components/scroll-motion";
 import { projects, type Project } from "./data/projects";
 
 const featuredProjectNumbers = ["13", "08", "01"];
@@ -11,6 +12,21 @@ const featuredProjects = featuredProjectNumbers
 const selectedProjects = projects.filter(
   (project) => !featuredProjectNumbers.includes(project.number),
 );
+
+const galleryTileSizes = [
+  "tile-2x2",
+  "tile-1x1",
+  "tile-1x1",
+  "tile-2x1",
+  "tile-1x1",
+  "tile-1x1",
+  "tile-2x1",
+  "tile-1x1",
+  "tile-1x1",
+  "tile-2x2",
+  "tile-1x1",
+  "tile-1x1",
+];
 
 const capabilities = [
   "Creative direction",
@@ -22,35 +38,12 @@ const capabilities = [
 ];
 
 export default function Home() {
-  const rootRef = useRef<HTMLElement>(null);
   const projectDialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastProjectTriggerRef = useRef<HTMLButtonElement>(null);
   const [activeProject, setActiveProject] = useState(0);
   const [activeProjectImage, setActiveProjectImage] = useState(0);
   const [isProjectOpen, setIsProjectOpen] = useState(false);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -7%" },
-    );
-
-    root.querySelectorAll("[data-reveal]").forEach((element) => {
-      revealObserver.observe(element);
-    });
-
-    return () => revealObserver.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!isProjectOpen) return;
@@ -147,7 +140,6 @@ export default function Home() {
       type="button"
       onClick={(event) => openProject(project, event.currentTarget)}
       aria-label={`Open ${project.client}: ${project.title}`}
-      data-reveal
     >
       <span className="featured-project-media">
         <Image
@@ -174,11 +166,10 @@ export default function Home() {
     <button
       key={project.number}
       id={`project-${project.number}`}
-      className={`selected-project selected-project-${(index % 6) + 1}`}
+      className={`selected-project ${galleryTileSizes[index] ?? "tile-1x1"}`}
       type="button"
       onClick={(event) => openProject(project, event.currentTarget)}
       aria-label={`Open ${project.client}: ${project.title}`}
-      data-reveal
     >
       <span className="selected-project-media">
         <Image
@@ -186,7 +177,7 @@ export default function Home() {
           alt={project.alt}
           width={1400}
           height={1100}
-          sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw"
+          sizes={galleryTileSizes[index] === "tile-1x1" ? "(max-width: 720px) 50vw, 25vw" : "(max-width: 720px) 100vw, 50vw"}
         />
       </span>
       <span className="selected-project-copy">
@@ -198,7 +189,8 @@ export default function Home() {
   );
 
   return (
-    <main ref={rootRef} className="site-shell">
+    <main className="site-shell">
+      <ScrollMotion />
       <a className="skip-link" href="#work">Skip to selected work</a>
 
       <header className="site-header">
@@ -273,7 +265,10 @@ export default function Home() {
       </section>
 
       <section className="manifesto" aria-labelledby="manifesto-title" data-reveal>
-        <h2 id="manifesto-title">The idea has to work before the design can.</h2>
+        <h2 id="manifesto-title">
+          <span>The idea has to work.</span>
+          <span>Before the design can.</span>
+        </h2>
         <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
       </section>
 
@@ -299,7 +294,10 @@ export default function Home() {
 
       <section id="about" className="about-section" aria-labelledby="about-title">
         <div className="about-heading" data-reveal>
-          <h2 id="about-title">I lead the work. I still make it.</h2>
+          <h2 id="about-title">
+            <span>I lead the work.</span>
+            <span>I still make it.</span>
+          </h2>
         </div>
         <div className="about-content" data-reveal>
           <div className="about-copy">
@@ -323,7 +321,10 @@ export default function Home() {
 
       <section className="process-section" aria-labelledby="process-title">
         <div className="process-heading" data-reveal>
-          <h2 id="process-title">One idea. Built all the way through.</h2>
+          <h2 id="process-title">
+            <span>One idea.</span>
+            <span>Built all the way through.</span>
+          </h2>
         </div>
         <ol data-reveal>
           <li><b>01</b><h3>Find the real brief</h3><p>Agree on the audience, the problem and the decision the work needs to influence.</p></li>
@@ -333,7 +334,10 @@ export default function Home() {
       </section>
 
       <footer id="contact" className="contact-section">
-        <h2 data-reveal>Have a role or a brief worth solving?</h2>
+        <h2 data-reveal>
+          <span>Have a role?</span>
+          <span>Or a brief worth solving?</span>
+        </h2>
         <div className="contact-links" data-reveal>
           <a href="mailto:g@doesdesignwork.com"><span>Email Gerard</span><small>g@doesdesignwork.com</small></a>
           <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer"><span>Leadership CV</span><small>Experience and role fit</small></a>
