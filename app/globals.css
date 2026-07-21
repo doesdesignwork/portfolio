@@ -575,7 +575,7 @@ img { max-width: 100%; }
 .career-ledger div {
   padding: 24px 0 28px;
   display: grid;
-  grid-template-columns: minmax(100px, .65fr) 1fr;
+  grid-template-columns: minmax(155px, .75fr) 1fr;
   gap: 22px;
   border-bottom: 1px solid var(--line);
 }
@@ -587,6 +587,7 @@ img { max-width: 100%; }
   font-style: italic;
   font-weight: 440;
   line-height: .9;
+  white-space: nowrap;
 }
 
 .career-ledger span {
@@ -796,6 +797,12 @@ img { max-width: 100%; }
   color: var(--paper);
   font-size: 13px;
   cursor: pointer;
+}
+
+.project-image-controls button {
+  border-bottom-color: #171714;
+  color: #171714;
+  font-weight: 620;
 }
 
 .project-image-controls span {
@@ -1019,7 +1026,7 @@ img { max-width: 100%; }
   .selected-project:nth-child(n) .selected-project-media { height: 78vw; min-height: 290px; }
 
   .about-copy p { font-size: 18px; }
-  .career-ledger div { grid-template-columns: 110px 1fr; }
+  .career-ledger div { grid-template-columns: 145px 1fr; }
   .capability-index { grid-template-columns: 1fr; gap: 22px; }
   .capability-index span { font-size: 29px; }
 
