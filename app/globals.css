@@ -785,14 +785,20 @@ img { max-width: 100%; }
   top: 0;
   height: 100dvh;
   display: grid;
-  place-items: center;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 18px;
   overflow: hidden;
   background: var(--image-ground);
 }
 
 .project-dialog-media > img {
+  min-width: 0;
+  min-height: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
   object-fit: contain;
   background: var(--image-ground);
@@ -800,10 +806,8 @@ img { max-width: 100%; }
 }
 
 .project-image-controls {
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 18px;
+  position: static;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1074,8 +1078,7 @@ img { max-width: 100%; }
   .footer-line { grid-template-columns: 1fr; }
 
   .project-dialog-close { top: 12px; right: 16px; }
-  .project-dialog-media { height: 55dvh; min-height: 360px; }
-  .project-image-controls { left: 12px; right: 12px; bottom: 12px; }
+  .project-dialog-media { height: 55dvh; min-height: 360px; gap: 10px; padding: 12px; }
   .project-image-controls button { max-width: 92px; }
   .project-dialog-copy { padding: 62px 16px 28px; }
   .project-dialog-copy > h2 { font-size: 38px; }
