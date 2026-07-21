@@ -267,9 +267,10 @@ export function ScrollMotion() {
 
             return distance <= snapRange ? nearest : progress;
           },
-          delay: 0.1,
-          duration: { min: 0.22, max: 0.5 },
+          delay: 0.05,
+          duration: { min: 0.18, max: 0.38 },
           ease: "power2.inOut",
+          inertia: false,
         },
       });
     }, scope);
