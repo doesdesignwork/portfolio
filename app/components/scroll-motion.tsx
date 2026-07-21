@@ -256,7 +256,9 @@ export function ScrollMotion() {
             const maxScroll = ScrollTrigger.maxScroll(window);
             if (!maxScroll) return progress;
 
-            const snapPoints = snapSections.map((section) => section.offsetTop / maxScroll);
+            const snapPoints = snapSections.map((section) =>
+              gsap.utils.clamp(0, 1, section.offsetTop / maxScroll),
+            );
             const nearest = snapPoints.reduce((closest, point) =>
               Math.abs(point - progress) < Math.abs(closest - progress) ? point : closest,
             snapPoints[0] ?? progress);
