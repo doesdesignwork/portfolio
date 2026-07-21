@@ -13,6 +13,8 @@ export function ScrollMotion() {
     if (!scope) return;
 
     let isActive = true;
+    let snapTrigger: ScrollTrigger | undefined;
+    const snapSections = gsap.utils.toArray<HTMLElement>("[data-snap-section]");
     const context = gsap.context(() => {
       gsap.from(".site-header", {
         autoAlpha: 0,
@@ -246,19 +248,25 @@ export function ScrollMotion() {
         },
       });
 
-      const snapSections = gsap.utils.toArray<HTMLElement>("[data-snap-section]");
-      ScrollTrigger.create({
+    }, scope);
+
+    const createSnapTrigger = () => {
+      snapTrigger?.kill();
+      snapTrigger = ScrollTrigger.create({
         id: "section-snap",
         start: 0,
         end: () => ScrollTrigger.maxScroll(window),
+        invalidateOnRefresh: true,
         snap: {
           snapTo: (progress) => {
             const maxScroll = ScrollTrigger.maxScroll(window);
             if (!maxScroll) return progress;
 
-            const snapPoints = snapSections.map((section) =>
-              gsap.utils.clamp(0, 1, section.offsetTop / maxScroll),
-            );
+            const headerOffset = scope.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
+            const snapPoints = snapSections.map((section) => {
+              const target = Math.max(0, section.offsetTop - headerOffset);
+              return gsap.utils.clamp(0, 1, target / maxScroll);
+            });
             const nearest = snapPoints.reduce((closest, point) =>
               Math.abs(point - progress) < Math.abs(closest - progress) ? point : closest,
             snapPoints[0] ?? progress);
@@ -273,11 +281,22 @@ export function ScrollMotion() {
           inertia: false,
         },
       });
-    }, scope);
+    };
 
     const refresh = () => ScrollTrigger.refresh();
-    document.fonts.ready.then(() => {
-      if (isActive) refresh();
+    const layoutImages = Array.from(
+      scope.querySelectorAll<HTMLImageElement>(".hero img, .featured-work img"),
+    );
+    Promise.all([
+      document.fonts.ready,
+      ...layoutImages.map((image) => image.decode().catch(() => undefined)),
+    ]).then(() => {
+      if (!isActive) return;
+      window.requestAnimationFrame(() => {
+        if (!isActive) return;
+        context.add(createSnapTrigger);
+        refresh();
+      });
     });
     window.addEventListener("load", refresh, { once: true });
     window.requestAnimationFrame(refresh);
@@ -285,6 +304,7 @@ export function ScrollMotion() {
     return () => {
       isActive = false;
       window.removeEventListener("load", refresh);
+      snapTrigger?.kill();
       context.revert();
     };
   }, []);
