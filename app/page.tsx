@@ -223,6 +223,7 @@ export default function Home() {
           <p className="hero-eyebrow">Gerard Teo / Art Director and Creative Lead / Singapore</p>
           <h1 id="hero-title">
             <span>Clear thinking.</span>
+            {" "}
             <em>Properly made.</em>
           </h1>
         </div>
@@ -267,6 +268,7 @@ export default function Home() {
       <section className="manifesto" aria-labelledby="manifesto-title" data-reveal>
         <h2 id="manifesto-title">
           <span>The idea has to work</span>
+          {" "}
           <span>before the design can.</span>
         </h2>
         <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
@@ -296,6 +298,7 @@ export default function Home() {
         <div className="about-heading" data-reveal>
           <h2 id="about-title">
             <span>I lead the work.</span>
+            {" "}
             <span>I still make it.</span>
           </h2>
         </div>
@@ -323,6 +326,7 @@ export default function Home() {
         <div className="process-heading" data-reveal>
           <h2 id="process-title">
             <span>One idea.</span>
+            {" "}
             <span>Built all the way through.</span>
           </h2>
         </div>
@@ -336,6 +340,7 @@ export default function Home() {
       <footer id="contact" className="contact-section">
         <h2 data-reveal>
           <span>Have a role?</span>
+          {" "}
           <span>Or a brief worth solving?</span>
         </h2>
         <div className="contact-links" data-reveal>
