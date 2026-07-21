@@ -1133,13 +1133,40 @@ img { max-width: 100%; }
 .marquee-track span { padding-right: 56px; font-size: clamp(34px,4.5vw,68px); font-weight: 500; line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
 .marquee-track i { padding-left: 56px; color: var(--acid); }
 .about { min-height: 82svh; align-items: center; }
+.about-stat { align-self: center; min-width: 0; }
 .about-number {
   color: transparent;
-  -webkit-text-stroke: 2px var(--signal);
-  font-size: clamp(112px, 16vw, 228px);
+  -webkit-text-stroke: clamp(1px, .11vw, 1.6px) var(--signal);
+  display: grid;
+  grid-template-columns: auto min-content auto;
+  gap: clamp(10px, 1.3vw, 20px);
+  align-items: center;
+  justify-content: start;
+  font-size: clamp(104px, 13.7vw, 196px);
   font-weight: 520;
-  letter-spacing: -.1em;
+  font-variant-numeric: lining-nums tabular-nums;
+  line-height: .76;
+  letter-spacing: -.075em;
   white-space: nowrap;
+}
+.about-number small {
+  color: var(--signal);
+  -webkit-text-stroke: 0;
+  font-size: clamp(11px, .9vw, 14px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.about-stat > p {
+  margin: clamp(22px, 3vw, 38px) 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 .about-copy h2 { font-size: clamp(52px,5.7vw,82px); font-weight: 510; line-height: .88; letter-spacing: -.07em; }
 .brand-proof { min-height: 70svh; background: var(--surface-raised); }
@@ -1282,7 +1309,9 @@ img { max-width: 100%; }
   .lightbox-arrow.is-previous { left: 9px; }
   .lightbox-arrow.is-next { right: 9px; }
   .about { padding: 98px 20px 106px; grid-template-columns: 1fr; }
-  .about-number { font-size: min(38vw, 220px); }
+  .about-stat { width: min(100%, 520px); }
+  .about-number { font-size: min(31vw, 178px); gap: clamp(9px, 3vw, 18px); }
+  .about-stat > p { margin-top: 24px; }
   .brand-proof { padding: 82px 20px 92px; }
   .brand-proof-heading { grid-template-columns: 1fr; gap: 28px; }
   .brand-proof-heading h2 { font-size: clamp(58px,13vw,94px); }

@@ -445,7 +445,14 @@ export default function Home() {
       </section>
 
       <section id="about" className="about" aria-labelledby="about-title" data-reveal data-scroll-section>
-        <div className="about-number" data-parallax="0.08" data-scroll-text aria-label="Grew a creative team from three to fifteen">3→15</div>
+        <div className="about-stat" data-parallax="0.08" data-scroll-text aria-label="Grew a creative team from three to fifteen">
+          <div className="about-number" aria-hidden="true">
+            <span>3</span>
+            <small>to</small>
+            <span>15</span>
+          </div>
+          <p>Creative team growth</p>
+        </div>
         <div className="about-copy" data-parallax="0.035">
           <p className="section-kicker" data-scroll-text>Hands-on creative leadership</p>
           <h2 id="about-title" data-scroll-text data-text-delay="1">I lead the work. I still make it.</h2>
