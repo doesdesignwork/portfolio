@@ -30,7 +30,7 @@ ${images}`;
   })
   .join("\n\n");
 
-const content = `# Gerard Teo — Full Portfolio Catalogue
+const content = `# Gerard Teo - Full Portfolio Catalogue
 
 > Machine-readable companion to Gerard Teo's visual portfolio.
 

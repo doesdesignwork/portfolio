@@ -1,5 +1,5 @@
 const manifest = {
-  name: "Gerard Teo — Art Director & Creative Lead",
+  name: "Gerard Teo - Art Director & Creative Lead",
   short_name: "Gerard Teo",
   description:
     "Selected brand, campaign and experiential work by Singapore art director and creative lead Gerard Teo.",

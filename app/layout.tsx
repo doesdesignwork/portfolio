@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Newsreader } from "next/font/google";
 import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -8,14 +8,15 @@ const siteTitle = "Gerard Teo | Art Director & Creative Lead Singapore";
 const siteDescription =
   "Gerard Teo is a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const displayFont = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const editorialFont = Newsreader({
+  variable: "--font-editorial",
   subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   applicationName: "Gerard Teo Portfolio",
   title: {
     default: siteTitle,
-    template: "%s — Gerard Teo",
+    template: "%s - Gerard Teo",
   },
   description: siteDescription,
   keywords: [
@@ -79,7 +80,7 @@ export const metadata: Metadata = {
         url: "/assets/modajar-identity-final.webp",
         width: 1026,
         height: 716,
-        alt: "Gerard Teo portfolio — Modajar fashion brand identity",
+        alt: "Gerard Teo portfolio, Modajar fashion brand identity",
       },
     ],
   },
@@ -100,11 +101,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  colorScheme: "dark light",
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0b0b0a" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f0e8" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#0c0c0b",
 };
 
 const structuredData = {
@@ -124,7 +122,7 @@ const structuredData = {
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
       subjectOf: {
         "@type": "WebPage",
-        name: "Gerard Teo — Online CV",
+        name: "Gerard Teo - Online CV",
         url: "https://doesdesignwork.github.io/gerard-teo-cv/",
       },
       address: {
@@ -156,7 +154,7 @@ const structuredData = {
       "@type": "ProfilePage",
       "@id": `${siteUrl}/#profile-page`,
       url: siteUrl,
-      name: "Gerard Teo — Art Director & Creative Lead",
+      name: "Gerard Teo - Art Director & Creative Lead",
       description: siteDescription,
       inLanguage: "en-SG",
       mainEntity: { "@id": `${siteUrl}/#person` },
@@ -177,7 +175,7 @@ const structuredData = {
       "@id": `${siteUrl}/#project-${project.number}`,
       identifier: `gerard-teo-project-${project.number}`,
       url: `${siteUrl}/#project-${project.number}`,
-      name: `${project.client} — ${project.title}`,
+      name: `${project.client} - ${project.title}`,
       headline: project.title,
       description: project.summary,
       genre: project.discipline.split(" · "),
@@ -199,7 +197,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link
           rel="alternate"
@@ -225,14 +223,9 @@ export default function RootLayout({
             __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('gerard-theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}})();`,
-          }}
-        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${displayFont.variable} ${editorialFont.variable} antialiased`}
       >
         {children}
       </body>
