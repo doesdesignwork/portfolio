@@ -15,6 +15,16 @@ const projectCatalogue = projects
 
 ${project.summary}
 
+**Context:** ${project.context}
+
+**Role:** ${project.role}
+
+**Challenge:** ${project.challenge}
+
+**Approach:** ${project.approach}
+
+**Result:** ${project.result}
+
 **Portfolio images:**
 ${images}`;
   })
@@ -28,7 +38,7 @@ Canonical portfolio: ${siteUrl}/
 
 Last updated: ${lastModified}
 
-Gerard Teo is a Singapore-based Art Director and Senior Creative Designer with more than 26 years of experience. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation, motion and UX thinking.
+Gerard Teo is a Singapore-based Art Director and Creative Lead who stays close to the work from pitch through production. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation, motion and UX thinking.
 
 ${projectCatalogue}
 
