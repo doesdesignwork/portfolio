@@ -448,7 +448,7 @@ export default function Home() {
         <div className="about-stat" data-parallax="0.08" data-scroll-text aria-label="Grew a creative team from three to fifteen">
           <div className="about-number" aria-hidden="true">
             <span>3</span>
-            <small>to</small>
+            <span className="about-number-separator" />
             <span>15</span>
           </div>
           <p>Creative team growth</p>
