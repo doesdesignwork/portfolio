@@ -1,6 +1,6 @@
 import { lastModified, siteUrl } from "@/lib/site";
 
-const content = `# Gerard Teo — Art Director & Creative Lead
+const content = `# Gerard Teo - Art Director & Creative Lead
 
 > Hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.
 
