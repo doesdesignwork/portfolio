@@ -218,7 +218,7 @@ export default function Home() {
         </nav>
       </header>
 
-      <section id="top" className="hero" aria-labelledby="hero-title">
+      <section id="top" className="hero" aria-labelledby="hero-title" data-snap-section>
         <div className="hero-heading">
           <p className="hero-eyebrow">Gerard Teo / Art Director and Creative Lead / Singapore</p>
           <h1 id="hero-title">
@@ -265,7 +265,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="manifesto" aria-labelledby="manifesto-title" data-reveal>
+      <section className="manifesto" aria-labelledby="manifesto-title" data-reveal data-snap-section>
         <h2 id="manifesto-title">
           <span>The idea has to work</span>
           {" "}
@@ -274,7 +274,7 @@ export default function Home() {
         <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
       </section>
 
-      <section id="work" className="work-section" aria-labelledby="work-title">
+      <section id="work" className="work-section" aria-labelledby="work-title" data-snap-section>
         <header className="work-heading" data-reveal>
           <p>Strategy / Direction / Execution</p>
           <h2 id="work-title">Selected work</h2>
@@ -285,7 +285,7 @@ export default function Home() {
           {featuredProjects.map(renderFeaturedProject)}
         </div>
 
-        <header className="more-work-heading" data-reveal>
+        <header className="more-work-heading" data-reveal data-snap-section>
           <h3>More work</h3>
           <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
         </header>
@@ -294,7 +294,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="about-section" aria-labelledby="about-title">
+      <section id="about" className="about-section" aria-labelledby="about-title" data-snap-section>
         <div className="about-heading" data-reveal>
           <h2 id="about-title">
             <span>I lead the work.</span>
@@ -322,7 +322,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="process-section" aria-labelledby="process-title">
+      <section className="process-section" aria-labelledby="process-title" data-snap-section>
         <div className="process-heading" data-reveal>
           <h2 id="process-title">
             <span>One idea.</span>
@@ -337,7 +337,7 @@ export default function Home() {
         </ol>
       </section>
 
-      <footer id="contact" className="contact-section">
+      <footer id="contact" className="contact-section" data-snap-section>
         <h2 data-reveal>
           <span>Have a role?</span>
           {" "}
