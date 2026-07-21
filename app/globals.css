@@ -1021,7 +1021,7 @@ img { max-width: 100%; }
   }
   .selected-project-copy strong { font-size: clamp(12px, 3.4vw, 16px); }
   .selected-project-copy span,
-  .selected-project-copy small { font-size: 9px; }
+  .selected-project-copy small { font-size: 10px; }
 
   .about-copy p { font-size: 18px; }
   .career-ledger div { grid-template-columns: 145px 1fr; }

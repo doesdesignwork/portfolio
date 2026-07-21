@@ -266,8 +266,8 @@ export default function Home() {
 
       <section className="manifesto" aria-labelledby="manifesto-title" data-reveal>
         <h2 id="manifesto-title">
-          <span>The idea has to work.</span>
-          <span>Before the design can.</span>
+          <span>The idea has to work</span>
+          <span>before the design can.</span>
         </h2>
         <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
       </section>
