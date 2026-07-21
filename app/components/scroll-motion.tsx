@@ -71,7 +71,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".manifesto",
           start: "top 76%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -83,7 +83,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".manifesto",
           start: "top 66%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -96,7 +96,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".work-heading",
           start: "top 82%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -107,7 +107,7 @@ export function ScrollMotion() {
           scrollTrigger: {
             trigger: project,
             start: "top 84%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         });
 
@@ -135,24 +135,24 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".more-work-heading",
           start: "top 82%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
-      ScrollTrigger.batch(".selected-project", {
-        start: "top 88%",
-        once: true,
-        onEnter: (items) => {
-          gsap.from(items, {
-            autoAlpha: 0,
-            y: 26,
-            scale: 0.985,
-            duration: 0.58,
-            stagger: 0.055,
-            ease: "power3.out",
-            clearProps: "transform",
-          });
-        },
+      gsap.utils.toArray<HTMLElement>(".selected-project").forEach((project, index) => {
+        gsap.from(project, {
+          autoAlpha: 0,
+          y: 26,
+          scale: 0.985,
+          duration: 0.58,
+          delay: (index % 4) * 0.045,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: project,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        });
       });
 
       gsap.from(".about-heading h2 span", {
@@ -164,7 +164,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".about-heading",
           start: "top 82%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -177,7 +177,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".about-content",
           start: "top 84%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -190,7 +190,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".capability-index",
           start: "top 86%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -203,7 +203,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".process-heading",
           start: "top 82%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -216,7 +216,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".process-section ol",
           start: "top 84%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -229,7 +229,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".contact-section",
           start: "top 78%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
@@ -242,7 +242,7 @@ export function ScrollMotion() {
         scrollTrigger: {
           trigger: ".contact-links",
           start: "top 88%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
       });
 
