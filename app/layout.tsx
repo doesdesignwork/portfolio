@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
+import { Inter, Krub } from "next/font/google";
 import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -8,15 +8,15 @@ const siteTitle = "Gerard Teo | Art Director & Creative Lead Singapore";
 const siteDescription =
   "Gerard Teo is a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.";
 
-const bodyFont = Plus_Jakarta_Sans({
+const bodyFont = Krub({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const headingFont = Space_Mono({
+const headingFont = Inter({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
