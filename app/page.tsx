@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { ScrollMotion } from "./components/scroll-motion";
 import { projects, type Project } from "./data/projects";
 
@@ -27,6 +28,37 @@ const galleryTileSizes = [
   "tile-1x1",
   "tile-1x1",
 ];
+
+const modalImageLimits: Record<string, { width: number; height: number }> = {
+  "/assets/brewerkz-packaging.webp": { width: 526, height: 466 },
+  "/assets/brewerkz-campaign.webp": { width: 325, height: 469 },
+  "/assets/brewerkz-wall.webp": { width: 321, height: 469 },
+  "/assets/herdsman-packaging.webp": { width: 500, height: 378 },
+  "/assets/herdsman-sauces.webp": { width: 511, height: 360 },
+  "/assets/herdsman-egg.webp": { width: 514, height: 362 },
+  "/assets/herdsman-store.webp": { width: 516, height: 362 },
+  "/assets/raffles-card.webp": { width: 493, height: 362 },
+  "/assets/raffles-signage.webp": { width: 248, height: 362 },
+  "/assets/passion-entrance.webp": { width: 640, height: 620 },
+  "/assets/passion-signage.webp": { width: 437, height: 424 },
+  "/assets/munch-packaging.webp": { width: 515, height: 362 },
+  "/assets/munch-menu-board.webp": { width: 514, height: 392 },
+  "/assets/munch-menu.webp": { width: 330, height: 232 },
+};
+
+const imagePreloadCache = new Map<string, HTMLImageElement>();
+
+const preloadProjectImages = (project: Project) => {
+  if (typeof window === "undefined") return;
+
+  project.images.forEach((source) => {
+    if (imagePreloadCache.has(source)) return;
+    const image = new window.Image();
+    image.decoding = "async";
+    image.src = source;
+    imagePreloadCache.set(source, image);
+  });
+};
 
 const capabilities = [
   "Creative direction",
@@ -99,9 +131,18 @@ export default function Home() {
     activeProjectImage,
     selectedProject.images.length - 1,
   );
+  const selectedImageSource = selectedProject.images[selectedImageIndex];
+  const selectedImageLimit = modalImageLimits[selectedImageSource];
+  const selectedImageStyle = selectedImageLimit
+    ? ({
+        "--modal-image-max-width": `${Math.round(selectedImageLimit.width * 1.35)}px`,
+        "--modal-image-max-height": `${Math.round(selectedImageLimit.height * 1.35)}px`,
+      } as CSSProperties)
+    : undefined;
 
   const openProject = (project: Project, trigger: HTMLButtonElement) => {
     const projectIndex = projects.indexOf(project);
+    preloadProjectImages(project);
     lastProjectTriggerRef.current = trigger;
     setActiveProject(projectIndex);
     setActiveProjectImage(0);
@@ -109,12 +150,16 @@ export default function Home() {
   };
 
   const showPreviousProject = () => {
-    setActiveProject((current) => (current - 1 + projects.length) % projects.length);
+    const previousProject = (activeProject - 1 + projects.length) % projects.length;
+    preloadProjectImages(projects[previousProject]);
+    setActiveProject(previousProject);
     setActiveProjectImage(0);
   };
 
   const showNextProject = () => {
-    setActiveProject((current) => (current + 1) % projects.length);
+    const nextProject = (activeProject + 1) % projects.length;
+    preloadProjectImages(projects[nextProject]);
+    setActiveProject(nextProject);
     setActiveProjectImage(0);
   };
 
@@ -139,6 +184,8 @@ export default function Home() {
       className={`featured-project featured-project-${index + 1}`}
       type="button"
       onClick={(event) => openProject(project, event.currentTarget)}
+      onPointerEnter={() => preloadProjectImages(project)}
+      onFocus={() => preloadProjectImages(project)}
       aria-label={`Open ${project.client}: ${project.title}`}
     >
       <span className="featured-project-media">
@@ -169,6 +216,8 @@ export default function Home() {
       className={`selected-project ${galleryTileSizes[index] ?? "tile-1x1"}`}
       type="button"
       onClick={(event) => openProject(project, event.currentTarget)}
+      onPointerEnter={() => preloadProjectImages(project)}
+      onFocus={() => preloadProjectImages(project)}
       aria-label={`Open ${project.client}: ${project.title}`}
     >
       <span className="selected-project-media">
@@ -374,13 +423,17 @@ export default function Home() {
           </button>
 
           <div className="project-dialog-shell" onClick={(event) => event.stopPropagation()}>
-            <div className="project-dialog-media">
+            <div className={`project-dialog-media${selectedImageLimit ? " is-resolution-limited" : ""}`}>
               <Image
-                src={selectedProject.images[selectedImageIndex]}
+                key={selectedImageSource}
+                src={selectedImageSource}
                 alt={`${selectedProject.alt}, image ${selectedImageIndex + 1} of ${selectedProject.images.length}`}
-                width={1800}
-                height={1400}
-                sizes="(max-width: 900px) 100vw, 68vw"
+                width={selectedImageLimit?.width ?? 1800}
+                height={selectedImageLimit?.height ?? 1400}
+                style={selectedImageStyle}
+                loading="eager"
+                fetchPriority="high"
+                unoptimized
               />
               {selectedProject.images.length > 1 && (
                 <div className="project-image-controls">
@@ -418,7 +471,14 @@ export default function Home() {
                     aria-label={`Show image ${index + 1} of ${selectedProject.images.length}`}
                     aria-pressed={selectedImageIndex === index}
                   >
-                    <Image src={image} alt="" width={320} height={220} sizes="110px" />
+                    <Image
+                      src={image}
+                      alt=""
+                      width={320}
+                      height={220}
+                      loading="eager"
+                      unoptimized
+                    />
                   </button>
                 ))}
               </div>

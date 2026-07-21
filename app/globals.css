@@ -805,6 +805,12 @@ img { max-width: 100%; }
   animation: project-image-in .5s cubic-bezier(.22, 1, .36, 1) both;
 }
 
+.project-dialog-media.is-resolution-limited > img {
+  width: min(100%, var(--modal-image-max-width));
+  height: min(100%, var(--modal-image-max-height));
+  place-self: center;
+}
+
 .project-image-controls {
   position: static;
   width: 100%;
