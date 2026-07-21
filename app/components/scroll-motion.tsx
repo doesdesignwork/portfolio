@@ -139,32 +139,20 @@ export function ScrollMotion() {
         },
       });
 
-      gsap.set(".selected-project", { autoAlpha: 0, y: 26, scale: 0.985 });
-      ScrollTrigger.batch(".selected-project", {
-        start: "top 88%",
-        onEnter: (items) => {
-          gsap.to(items, {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.58,
-            stagger: 0.055,
-            ease: "power3.out",
-            clearProps: "transform",
-            overwrite: true,
-          });
-        },
-        onLeaveBack: (items) => {
-          gsap.to(items, {
-            autoAlpha: 0,
-            y: 26,
-            scale: 0.985,
-            duration: 0.42,
-            stagger: 0.035,
-            ease: "power2.in",
-            overwrite: true,
-          });
-        },
+      gsap.utils.toArray<HTMLElement>(".selected-project").forEach((project, index) => {
+        gsap.from(project, {
+          autoAlpha: 0,
+          y: 26,
+          scale: 0.985,
+          duration: 0.58,
+          delay: (index % 4) * 0.045,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: project,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        });
       });
 
       gsap.from(".about-heading h2 span", {
