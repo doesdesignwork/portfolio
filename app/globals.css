@@ -19,6 +19,8 @@
 html {
   min-width: 320px;
   scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+  scroll-snap-type: y proximity;
   background: var(--ink);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -65,7 +67,11 @@ img { max-width: 100%; }
   background: var(--ink);
 }
 
-[data-snap-section] { scroll-margin-top: 76px; }
+[data-snap-section] {
+  scroll-margin-top: 76px;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
 
 .skip-link {
   position: fixed;
@@ -1000,6 +1006,8 @@ img { max-width: 100%; }
     --section-space: 92px;
   }
 
+  html { scroll-padding-top: 70px; }
+
   .site-header { height: 70px; }
   .wordmark { width: 32px; height: 46px; }
   .wordmark img { top: -4px; left: -7px; width: 46px; height: 46px; }
@@ -1080,7 +1088,7 @@ img { max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html { scroll-behavior: auto; scroll-snap-type: none; }
   *,
   *::before,
   *::after {

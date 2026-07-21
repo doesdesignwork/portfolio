@@ -13,8 +13,6 @@ export function ScrollMotion() {
     if (!scope) return;
 
     let isActive = true;
-    let snapTrigger: ScrollTrigger | undefined;
-    const snapSections = gsap.utils.toArray<HTMLElement>("[data-snap-section]");
     const context = gsap.context(() => {
       gsap.from(".site-header", {
         autoAlpha: 0,
@@ -250,39 +248,6 @@ export function ScrollMotion() {
 
     }, scope);
 
-    const createSnapTrigger = () => {
-      snapTrigger?.kill();
-      snapTrigger = ScrollTrigger.create({
-        id: "section-snap",
-        start: 0,
-        end: () => ScrollTrigger.maxScroll(window),
-        invalidateOnRefresh: true,
-        snap: {
-          snapTo: (progress) => {
-            const maxScroll = ScrollTrigger.maxScroll(window);
-            if (!maxScroll) return progress;
-
-            const headerOffset = scope.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
-            const snapPoints = snapSections.map((section) => {
-              const target = Math.max(0, section.offsetTop - headerOffset);
-              return gsap.utils.clamp(0, 1, target / maxScroll);
-            });
-            const nearest = snapPoints.reduce((closest, point) =>
-              Math.abs(point - progress) < Math.abs(closest - progress) ? point : closest,
-            snapPoints[0] ?? progress);
-            const distance = Math.abs(nearest - progress) * maxScroll;
-            const snapRange = Math.min(window.innerHeight * 0.3, 280);
-
-            return distance <= snapRange ? nearest : progress;
-          },
-          delay: 0.05,
-          duration: { min: 0.18, max: 0.38 },
-          ease: "power2.inOut",
-          inertia: false,
-        },
-      });
-    };
-
     const refresh = () => ScrollTrigger.refresh();
     const layoutImages = Array.from(
       scope.querySelectorAll<HTMLImageElement>(".hero img, .featured-work img"),
@@ -294,7 +259,6 @@ export function ScrollMotion() {
       if (!isActive) return;
       window.requestAnimationFrame(() => {
         if (!isActive) return;
-        context.add(createSnapTrigger);
         refresh();
       });
     });
@@ -304,7 +268,6 @@ export function ScrollMotion() {
     return () => {
       isActive = false;
       window.removeEventListener("load", refresh);
-      snapTrigger?.kill();
       context.revert();
     };
   }, []);
