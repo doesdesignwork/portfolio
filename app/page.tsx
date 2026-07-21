@@ -15,11 +15,19 @@ const capabilities = [
   "UX thinking",
 ];
 
+const featuredProjectNumbers = ["13", "08", "01"];
+const featuredProjects = featuredProjectNumbers
+  .map((number) => projects.find((project) => project.number === number))
+  .filter((project): project is (typeof projects)[number] => Boolean(project));
+const selectedProjects = projects.filter((project) => !project.featured);
+
 export default function Home() {
   const rootRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const workRef = useRef<HTMLElement>(null);
   const lightboxCloseRef = useRef<HTMLButtonElement>(null);
+  const projectPageRef = useRef<HTMLDivElement>(null);
+  const lastProjectTriggerRef = useRef<HTMLButtonElement>(null);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [activeProject, setActiveProject] = useState(0);
   const [activeProjectImage, setActiveProjectImage] = useState(0);
@@ -43,6 +51,22 @@ export default function Home() {
     const previousOverflow = document.body.style.overflow;
     const handleLightboxKeys = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsLightboxOpen(false);
+      if (event.key === "Tab") {
+        const focusable = Array.from(
+          projectPageRef.current?.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+          ) ?? [],
+        ).filter((element) => element.getClientRects().length > 0);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
       if (event.key === "ArrowLeft") {
         setActiveProjectImage((current) => (current - 1 + projects[activeProject].images.length) % projects[activeProject].images.length);
       }
@@ -56,6 +80,7 @@ export default function Home() {
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleLightboxKeys);
+      window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus());
     };
   }, [isLightboxOpen, activeProject]);
 
@@ -129,12 +154,10 @@ export default function Home() {
           const exitStart = window.innerHeight * .36 + stagger * .35;
           const exitEnd = window.innerHeight * .08 + stagger * .15;
           const exitProgress = Math.max(0, Math.min(1, (rect.bottom - exitEnd) / Math.max(exitStart - exitEnd, 1)));
-          const visibility = Math.min(enterProgress, exitProgress);
           const offset = ((1 - enterProgress) * 42) - ((1 - exitProgress) * 30);
           element.style.setProperty("--scroll-scrub-y", `${offset.toFixed(2)}px`);
-          element.style.opacity = visibility.toFixed(3);
-          // Keep the reveal readable at every intermediate scroll position.
-          // A moving clip-path can bisect glyphs on short mobile viewports.
+          // Scroll motion can add life, but essential content must remain readable.
+          element.style.opacity = "1";
           element.style.clipPath = "none";
         });
       }
@@ -227,8 +250,9 @@ export default function Home() {
   const showNextImage = () => {
     setActiveProjectImage((current) => (current + 1) % selectedProject.images.length);
   };
-  const openProject = (index: number) => {
+  const openProject = (index: number, trigger: HTMLButtonElement) => {
     const nextIndex = (index + projects.length) % projects.length;
+    lastProjectTriggerRef.current = trigger;
     setActiveProject(nextIndex);
     setActiveProjectImage(0);
     setIsLightboxOpen(true);
@@ -246,6 +270,47 @@ export default function Home() {
   const resetProjectPointer = (event: ReactPointerEvent<HTMLButtonElement>) => {
     event.currentTarget.style.setProperty("--tile-rotate-x", "0deg");
     event.currentTarget.style.setProperty("--tile-rotate-y", "0deg");
+  };
+
+  const renderProjectTile = (
+    project: (typeof projects)[number],
+    sequenceIndex: number,
+    featured = false,
+  ) => {
+    const index = projects.indexOf(project);
+    const desktopSize = featured || sequenceIndex % 5 < 2 ? "50vw" : "33vw";
+
+    return (
+      <button
+        key={project.number}
+        type="button"
+        id={`project-${project.number}`}
+        className="project-tile"
+        data-project-index={index}
+        style={{ "--tile-delay": `${(sequenceIndex % 8) * 55}ms` } as CSSProperties}
+        onPointerMove={handleProjectPointerMove}
+        onPointerLeave={resetProjectPointer}
+        onPointerCancel={resetProjectPointer}
+        onClick={(event) => openProject(index, event.currentTarget)}
+        aria-label={`Open ${project.client}: ${project.title}`}
+      >
+        <span className="project-tile-media">
+          <Image
+            src={project.images[0]}
+            alt={project.alt}
+            width={1600}
+            height={1200}
+            sizes={`(max-width: 640px) 100vw, (max-width: 1100px) 50vw, ${desktopSize}`}
+          />
+        </span>
+        <span className="project-tile-copy">
+          <span>{project.number}</span>
+          <strong>{project.client}</strong>
+          <small>{project.discipline}</small>
+          <i aria-hidden="true">Open ↗</i>
+        </span>
+      </button>
+    );
   };
 
   return (
@@ -289,7 +354,7 @@ export default function Home() {
       </header>
 
       <section id="top" className="showreel-intro-panel" aria-labelledby="showreel-title">
-        <p className="showreel-overline">Gerard Teo · Art direction and design · Singapore</p>
+        <p className="showreel-overline">Gerard Teo · Art Director &amp; Creative Lead · Singapore</p>
         <h1 id="showreel-title">
           <span className="intro-line-group">
             <b>Good</b>
@@ -304,16 +369,16 @@ export default function Home() {
           </span>
         </h1>
         <div className="showreel-intro-meta">
-          <span>26+ years turning messy briefs into clear work</span>
-          <span>Identity · Campaigns · Packaging · Experience</span>
-          <a href="#work">See the work ↓</a>
+          <span>Hands-on creative direction for brands, pitches and experiences</span>
+          <span>Brand systems · Campaigns · Experiential · 3D</span>
+          <a href="#work">See selected work ↓</a>
         </div>
       </section>
 
       <section ref={heroRef} id="intro" className="hero" aria-labelledby="hero-title">
         <div className="hero-stage">
         <div className="hero-copy">
-          <p className="eyebrow" data-scroll-text>Art Director · Creative Lead · Designer · Singapore</p>
+          <p className="eyebrow" data-scroll-text>Art Director · Creative Lead · Still hands-on · Singapore</p>
           <h2 className="hero-title" id="hero-title" data-scroll-text data-text-delay="1">
             Clear thinking.
             <span>Properly made.</span>
@@ -348,42 +413,24 @@ export default function Home() {
 
       <section ref={workRef} id="work" className="work-section" aria-labelledby="work-title">
         <div className="section-heading">
-          <p className="section-kicker" data-scroll-text data-scroll-scrub>{projects.length} projects · Selected, not padded</p>
+          <p className="section-kicker" data-scroll-text data-scroll-scrub>Strategy · Direction · Execution</p>
           <h2 id="work-title" data-parallax="0.055" data-scroll-text data-scroll-scrub data-scroll-scrub-delay="1">The work.</h2>
         </div>
 
-        <div className="project-gallery" aria-label="Selected project gallery" data-reveal>
-          {projects.map((project, index) => (
-            <button
-              key={project.number}
-              type="button"
-              id={`project-${project.number}`}
-              className="project-tile"
-              data-project-index={index}
-              style={{ "--tile-delay": `${(index % 8) * 55}ms` } as CSSProperties}
-              onPointerMove={handleProjectPointerMove}
-              onPointerLeave={resetProjectPointer}
-              onPointerCancel={resetProjectPointer}
-              onClick={() => openProject(index)}
-              aria-label={`Open ${project.client}: ${project.title}`}
-            >
-              <span className="project-tile-media">
-                <Image
-                  src={project.images[0]}
-                  alt={project.alt}
-                  width={1600}
-                  height={1200}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                />
-              </span>
-              <span className="project-tile-copy">
-                <span>{project.number}</span>
-                <strong>{project.client}</strong>
-                <small>{project.discipline}</small>
-                <i aria-hidden="true">Open ↗</i>
-              </span>
-            </button>
-          ))}
+        <div className="portfolio-group-heading">
+          <h3>Featured case studies</h3>
+          <p>Three projects that show how I turn complexity into a clear, usable system.</p>
+        </div>
+        <div className="project-gallery is-featured" aria-label="Featured case studies" data-reveal>
+          {featuredProjects.map((project, index) => renderProjectTile(project, index, true))}
+        </div>
+
+        <div className="portfolio-group-heading is-secondary">
+          <h3>More selected work</h3>
+          <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
+        </div>
+        <div className="project-gallery is-selected" aria-label="More selected projects" data-reveal>
+          {selectedProjects.map((project, index) => renderProjectTile(project, index))}
         </div>
       </section>
 
@@ -398,33 +445,32 @@ export default function Home() {
       </section>
 
       <section id="about" className="about" aria-labelledby="about-title" data-reveal data-scroll-section>
-        <div className="about-number" data-parallax="0.08" data-scroll-text>26+</div>
+        <div className="about-number" data-parallax="0.08" data-scroll-text aria-label="Grew a creative team from three to fifteen">3→15</div>
         <div className="about-copy" data-parallax="0.035">
-          <p className="section-kicker" data-scroll-text>26+ years · Still hands-on</p>
+          <p className="section-kicker" data-scroll-text>Hands-on creative leadership</p>
           <h2 id="about-title" data-scroll-text data-text-delay="1">I lead the work. I still make it.</h2>
           <p data-scroll-text data-text-delay="2">
-            I started as a hands-on designer and moved into creative leadership
-            without giving up the making. I co-founded Blacksheep Communications
-            and helped grow its design team from three to 15. Along the way, I
-            worked at Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide
-            on the Apple account.
+            I move between setting the direction and making sure the work lands.
+            I co-founded Blacksheep Communications, helped grow its design team
+            from three to 15 and stayed close to the work, clients and production.
           </p>
           <p data-scroll-text data-text-delay="3">
-            Today I work across exhibitions, conferences and experiential
-            projects at C2 Creative Communications. I also lead independent
-            brand, packaging and 3D work through The Fat Oracle.
+            Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on
+            Apple, I learned how ideas survive demanding brand systems and real
+            production. Today I work across events and experiences at C2, while
+            The Fat Oracle is my independent practice for brand, packaging and 3D.
           </p>
           <div className="about-actions" data-scroll-text data-text-delay="4">
-            <a className="text-link" href="#contact">
-              <span aria-hidden="true">→</span> Start a conversation
-            </a>
             <a
-              className="text-link is-secondary"
-              href="https://doesdesignwork.github.io/gerard-teo-cv/"
+              className="text-link"
+              href="https://doesdesignwork.github.io/gerard-teo-cv/#director"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span aria-hidden="true">↗</span> View online CV
+              <span aria-hidden="true">↗</span> Hiring? View leadership CV
+            </a>
+            <a className="text-link is-secondary" href="#contact">
+              <span aria-hidden="true">→</span> Have a project? Start a conversation
             </a>
           </div>
         </div>
@@ -455,18 +501,23 @@ export default function Home() {
       </section>
 
       <footer id="contact" className="contact" data-reveal data-scroll-section>
-        <p className="section-kicker" data-parallax="0.04" data-scroll-text>Got a brief with something to solve?</p>
+        <p className="section-kicker" data-parallax="0.04" data-scroll-text>Hiring a creative lead—or have a brief to solve?</p>
         <h2 data-parallax="0.065" data-scroll-text data-text-delay="1">Let’s make work<br />with a point.</h2>
-        <a href="mailto:g@doesdesignwork.com" data-parallax="0.085" data-scroll-text data-text-delay="2">g@doesdesignwork.com <span>↗</span></a>
+        <div className="contact-actions" data-parallax="0.085" data-scroll-text data-text-delay="2">
+          <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer">Hiring? View leadership CV <span>↗</span></a>
+          <a href="mailto:g@doesdesignwork.com">Have a project? Email Gerard <span>↗</span></a>
+          <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <span>↗</span></a>
+        </div>
         <div className="footer-line" data-scroll-text data-text-delay="3">
           <span>Gerard Teo · Singapore</span>
-          <span>Creative direction · Brand · Visual experience</span>
+          <span>Open to Art Director · Creative Lead · Selected independent projects</span>
           <a href="#top">Back to top ↑</a>
         </div>
       </footer>
 
       {isLightboxOpen && (
         <div
+          ref={projectPageRef}
           className="project-page-modal"
           role="dialog"
           aria-modal="true"
@@ -498,6 +549,15 @@ export default function Home() {
               <h2 id="project-page-title">{selectedProject.title}</h2>
               <p>{selectedProject.summary}</p>
               <small>{selectedProject.discipline}</small>
+              <dl className="project-page-facts">
+                <div><dt>Context</dt><dd>{selectedProject.context}</dd></div>
+                <div><dt>My role</dt><dd>{selectedProject.role}</dd></div>
+              </dl>
+              <div className="project-page-story">
+                <section><h3>Challenge</h3><p>{selectedProject.challenge}</p></section>
+                <section><h3>Approach</h3><p>{selectedProject.approach}</p></section>
+                <section><h3>Result</h3><p>{selectedProject.result}</p></section>
+              </div>
               <div className="project-page-thumbs" aria-label={`${selectedProject.client} image gallery`}>
                 {selectedProject.images.map((image, index) => (
                   <button
@@ -517,7 +577,10 @@ export default function Home() {
                   <button type="button" onClick={showPreviousProject} aria-label="Previous project">←</button>
                   <button type="button" onClick={showNextProject} aria-label="Next project">→</button>
                 </div>
-                <a href="#contact" onClick={() => setIsLightboxOpen(false)}>Discuss a project ↗</a>
+                <div className="project-page-links">
+                  <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer">View leadership CV ↗</a>
+                  <a href="#contact" onClick={() => setIsLightboxOpen(false)}>Discuss a project ↗</a>
+                </div>
               </div>
             </aside>
           </div>

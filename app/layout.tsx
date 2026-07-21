@@ -4,9 +4,9 @@ import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const siteTitle = "Gerard Teo | Art Director & Creative Designer Singapore";
+const siteTitle = "Gerard Teo | Art Director & Creative Lead Singapore";
 const siteDescription =
-  "Gerard Teo is a Singapore art director and creative designer working across brand identity, campaigns, packaging, 3D visualisation and experiential design.";
+  "Gerard Teo is a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   keywords: [
     "Gerard Teo",
     "art director Singapore",
-    "senior creative designer Singapore",
+    "creative lead Singapore",
     "creative direction",
     "brand identity design",
     "campaign design",
@@ -116,8 +116,11 @@ const structuredData = {
       name: "Gerard Teo",
       url: siteUrl,
       email: "mailto:g@doesdesignwork.com",
-      jobTitle: "Art Director & Senior Creative Designer",
-      sameAs: ["https://doesdesignwork.github.io/gerard-teo-cv/"],
+      jobTitle: "Art Director & Creative Lead",
+      sameAs: [
+        "https://www.linkedin.com/in/gerard-teo-0b106429/",
+        "https://doesdesignwork.github.io/gerard-teo-cv/",
+      ],
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
       subjectOf: {
         "@type": "WebPage",
@@ -153,7 +156,7 @@ const structuredData = {
       "@type": "ProfilePage",
       "@id": `${siteUrl}/#profile-page`,
       url: siteUrl,
-      name: "Gerard Teo — Art Director & Senior Creative Designer",
+      name: "Gerard Teo — Art Director & Creative Lead",
       description: siteDescription,
       inLanguage: "en-SG",
       mainEntity: { "@id": `${siteUrl}/#person` },

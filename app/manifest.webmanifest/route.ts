@@ -1,8 +1,8 @@
 const manifest = {
-  name: "Gerard Teo — Art Director & Creative Designer",
+  name: "Gerard Teo — Art Director & Creative Lead",
   short_name: "Gerard Teo",
   description:
-    "Selected brand, campaign, packaging and experiential design work by Singapore art director Gerard Teo.",
+    "Selected brand, campaign and experiential work by Singapore art director and creative lead Gerard Teo.",
   start_url: "/",
   scope: "/",
   display: "minimal-ui",

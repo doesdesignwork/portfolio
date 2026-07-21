@@ -1,8 +1,8 @@
 import { lastModified, siteUrl } from "@/lib/site";
 
-const content = `# Gerard Teo — Art Director & Senior Creative Designer
+const content = `# Gerard Teo — Art Director & Creative Lead
 
-> Singapore-based art director and designer working across brand identity, campaigns, packaging, experiential design, 3D visualisation and motion.
+> Hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.
 
 This is Gerard Teo's official portfolio. It covers selected work, professional background, capabilities, client experience and contact information.
 
