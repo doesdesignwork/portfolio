@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { ScrollMotion } from "./components/scroll-motion";
 import { projects, type Project } from "./data/projects";
@@ -46,18 +46,48 @@ const modalImageLimits: Record<string, { width: number; height: number }> = {
   "/assets/munch-menu.webp": { width: 330, height: 232 },
 };
 
-const imagePreloadCache = new Map<string, HTMLImageElement>();
+const imagePreloadCache = new Map<string, Promise<void>>();
+
+const loadProjectImage = (source: string) => {
+  if (typeof window === "undefined") return Promise.resolve();
+
+  const cached = imagePreloadCache.get(source);
+  if (cached) return cached;
+
+  const loadPromise = new Promise<void>((resolve) => {
+    const image = new window.Image();
+    image.decoding = "async";
+    image.onload = () => {
+      image.decode().catch(() => undefined).finally(resolve);
+    };
+    image.onerror = () => resolve();
+    image.src = source;
+  });
+
+  imagePreloadCache.set(source, loadPromise);
+  return loadPromise;
+};
 
 const preloadProjectImages = (project: Project) => {
   if (typeof window === "undefined") return;
 
-  project.images.forEach((source) => {
-    if (imagePreloadCache.has(source)) return;
-    const image = new window.Image();
-    image.decoding = "async";
-    image.src = source;
-    imagePreloadCache.set(source, image);
-  });
+  project.images.forEach((source) => void loadProjectImage(source));
+};
+
+const preloadAdjacentProjectImages = (project: Project, imageIndex: number) => {
+  if (project.images.length < 2) return;
+  const previous = (imageIndex - 1 + project.images.length) % project.images.length;
+  const next = (imageIndex + 1) % project.images.length;
+  void loadProjectImage(project.images[previous]);
+  void loadProjectImage(project.images[next]);
+};
+
+const projectHash = (project: Project) => `#project-${project.number}`;
+
+const projectIndexFromHash = (hash: string) => {
+  const match = /^#project-(\d{2})$/.exec(hash);
+  if (!match) return -1;
+  return projects.findIndex((project) => project.number === match[1]);
 };
 
 const capabilities = [
@@ -71,34 +101,143 @@ const capabilities = [
 
 export default function Home() {
   const projectDialogRef = useRef<HTMLDivElement>(null);
+  const projectCopyRef = useRef<HTMLElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastProjectTriggerRef = useRef<HTMLButtonElement>(null);
+  const imageRequestRef = useRef(0);
   const [activeProject, setActiveProject] = useState(0);
   const [activeProjectImage, setActiveProjectImage] = useState(0);
   const [isProjectOpen, setIsProjectOpen] = useState(false);
+  const [isProjectImageLoading, setIsProjectImageLoading] = useState(false);
+
+  const selectedProject = projects[activeProject];
+  const selectedImageIndex = Math.min(
+    activeProjectImage,
+    selectedProject.images.length - 1,
+  );
+  const selectedImageSource = selectedProject.images[selectedImageIndex];
+  const selectedImageLimit = modalImageLimits[selectedImageSource];
+  const selectedImageScale = selectedImageSource.startsWith("/assets/brewerkz-")
+    ? 1
+    : 1.35;
+  const selectedImageStyle = selectedImageLimit
+    ? ({
+        "--modal-image-max-width": `${Math.round(selectedImageLimit.width * selectedImageScale)}px`,
+        "--modal-image-max-height": `${Math.round(selectedImageLimit.height * selectedImageScale)}px`,
+      } as CSSProperties)
+    : undefined;
+
+  const closeProject = useCallback(() => {
+    imageRequestRef.current += 1;
+    setIsProjectImageLoading(false);
+    setIsProjectOpen(false);
+    if (projectIndexFromHash(window.location.hash) >= 0) {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+  }, []);
+
+  const changeProjectImage = useCallback(
+    async (nextIndex: number) => {
+      const project = projects[activeProject];
+      const safeIndex =
+        (nextIndex + project.images.length) % project.images.length;
+      if (safeIndex === activeProjectImage) return;
+
+      const requestId = imageRequestRef.current + 1;
+      imageRequestRef.current = requestId;
+      const dialogScroll = projectDialogRef.current?.scrollTop ?? 0;
+      const copyScroll = projectCopyRef.current?.scrollTop ?? 0;
+      setIsProjectImageLoading(true);
+
+      await loadProjectImage(project.images[safeIndex]);
+      if (requestId !== imageRequestRef.current) return;
+
+      setActiveProjectImage(safeIndex);
+      preloadAdjacentProjectImages(project, safeIndex);
+      window.requestAnimationFrame(() => {
+        if (projectDialogRef.current) projectDialogRef.current.scrollTop = dialogScroll;
+        if (projectCopyRef.current) projectCopyRef.current.scrollTop = copyScroll;
+        setIsProjectImageLoading(false);
+      });
+    },
+    [activeProject, activeProjectImage],
+  );
+
+  const openProject = (project: Project, trigger: HTMLButtonElement) => {
+    const projectIndex = projects.indexOf(project);
+    preloadProjectImages(project);
+    preloadAdjacentProjectImages(project, 0);
+    lastProjectTriggerRef.current = trigger;
+    window.history.pushState(null, "", projectHash(project));
+    setActiveProject(projectIndex);
+    setActiveProjectImage(0);
+    setIsProjectOpen(true);
+  };
+
+  const changeProject = (projectIndex: number) => {
+    const nextProject = projects[projectIndex];
+    imageRequestRef.current += 1;
+    preloadProjectImages(nextProject);
+    preloadAdjacentProjectImages(nextProject, 0);
+    window.history.replaceState(null, "", projectHash(nextProject));
+    setActiveProject(projectIndex);
+    setActiveProjectImage(0);
+    setIsProjectImageLoading(false);
+    if (projectCopyRef.current) projectCopyRef.current.scrollTop = 0;
+  };
+
+  const showPreviousProject = () => {
+    changeProject((activeProject - 1 + projects.length) % projects.length);
+  };
+
+  const showNextProject = () => {
+    changeProject((activeProject + 1) % projects.length);
+  };
+
+  const showPreviousImage = () => {
+    void changeProjectImage(selectedImageIndex - 1);
+  };
+
+  const showNextImage = () => {
+    void changeProjectImage(selectedImageIndex + 1);
+  };
+
+  useEffect(() => {
+    const syncProjectFromUrl = () => {
+      const projectIndex = projectIndexFromHash(window.location.hash);
+      if (projectIndex < 0) {
+        setIsProjectOpen(false);
+        return;
+      }
+
+      const project = projects[projectIndex];
+      preloadProjectImages(project);
+      preloadAdjacentProjectImages(project, 0);
+      setActiveProject(projectIndex);
+      setActiveProjectImage(0);
+      setIsProjectOpen(true);
+    };
+
+    syncProjectFromUrl();
+    window.addEventListener("hashchange", syncProjectFromUrl);
+    window.addEventListener("popstate", syncProjectFromUrl);
+    return () => {
+      window.removeEventListener("hashchange", syncProjectFromUrl);
+      window.removeEventListener("popstate", syncProjectFromUrl);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isProjectOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     window.requestAnimationFrame(() => closeButtonRef.current?.focus());
 
     const handleDialogKeys = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsProjectOpen(false);
-      if (event.key === "ArrowLeft") {
-        setActiveProjectImage(
-          (current) =>
-            (current - 1 + projects[activeProject].images.length) %
-            projects[activeProject].images.length,
-        );
-      }
-      if (event.key === "ArrowRight") {
-        setActiveProjectImage(
-          (current) =>
-            (current + 1) % projects[activeProject].images.length,
-        );
-      }
+      if (event.key === "Escape") closeProject();
       if (event.key !== "Tab") return;
 
       const focusable = Array.from(
@@ -120,62 +259,28 @@ export default function Home() {
 
     window.addEventListener("keydown", handleDialogKeys);
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleDialogKeys);
       window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus());
     };
-  }, [activeProject, isProjectOpen]);
+  }, [closeProject, isProjectOpen]);
 
-  const selectedProject = projects[activeProject];
-  const selectedImageIndex = Math.min(
-    activeProjectImage,
-    selectedProject.images.length - 1,
-  );
-  const selectedImageSource = selectedProject.images[selectedImageIndex];
-  const selectedImageLimit = modalImageLimits[selectedImageSource];
-  const selectedImageStyle = selectedImageLimit
-    ? ({
-        "--modal-image-max-width": `${Math.round(selectedImageLimit.width * 1.35)}px`,
-        "--modal-image-max-height": `${Math.round(selectedImageLimit.height * 1.35)}px`,
-      } as CSSProperties)
-    : undefined;
+  useEffect(() => {
+    if (!isProjectOpen) return;
 
-  const openProject = (project: Project, trigger: HTMLButtonElement) => {
-    const projectIndex = projects.indexOf(project);
-    preloadProjectImages(project);
-    lastProjectTriggerRef.current = trigger;
-    setActiveProject(projectIndex);
-    setActiveProjectImage(0);
-    setIsProjectOpen(true);
-  };
+    const handleGalleryKeys = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        void changeProjectImage(selectedImageIndex - 1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        void changeProjectImage(selectedImageIndex + 1);
+      }
+    };
 
-  const showPreviousProject = () => {
-    const previousProject = (activeProject - 1 + projects.length) % projects.length;
-    preloadProjectImages(projects[previousProject]);
-    setActiveProject(previousProject);
-    setActiveProjectImage(0);
-  };
-
-  const showNextProject = () => {
-    const nextProject = (activeProject + 1) % projects.length;
-    preloadProjectImages(projects[nextProject]);
-    setActiveProject(nextProject);
-    setActiveProjectImage(0);
-  };
-
-  const showPreviousImage = () => {
-    setActiveProjectImage(
-      (current) =>
-        (current - 1 + selectedProject.images.length) %
-        selectedProject.images.length,
-    );
-  };
-
-  const showNextImage = () => {
-    setActiveProjectImage(
-      (current) => (current + 1) % selectedProject.images.length,
-    );
-  };
+    window.addEventListener("keydown", handleGalleryKeys);
+    return () => window.removeEventListener("keydown", handleGalleryKeys);
+  }, [changeProjectImage, isProjectOpen, selectedImageIndex]);
 
   const renderFeaturedProject = (project: Project, index: number) => (
     <button
@@ -285,7 +390,8 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="hero-work-preview" aria-label="Selected work preview">
+        <section className="hero-work-preview" aria-labelledby="featured-preview-title">
+          <h2 id="featured-preview-title" className="sr-only">Featured work preview</h2>
           <figure className="hero-work-main">
             <div>
               <Image
@@ -311,7 +417,7 @@ export default function Home() {
             </div>
             <figcaption><span>{featuredProjects[1].client}</span><small>{featuredProjects[1].discipline}</small></figcaption>
           </figure>
-        </div>
+        </section>
       </section>
 
       <section className="manifesto" aria-labelledby="manifesto-title" data-reveal data-snap-section>
@@ -335,12 +441,12 @@ export default function Home() {
         </div>
 
         <header className="more-work-heading" data-reveal data-snap-section>
-          <h3>More work</h3>
+          <h3 id="more-work-title">More work</h3>
           <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
         </header>
-        <div className="selected-work" aria-label="More selected projects">
+        <section className="selected-work" aria-labelledby="more-work-title">
           {selectedProjects.map(renderSelectedProject)}
-        </div>
+        </section>
       </section>
 
       <section id="about" className="about-section" aria-labelledby="about-title" data-snap-section>
@@ -357,18 +463,21 @@ export default function Home() {
             <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C2, while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
             <p className="brand-line">Selected experience includes Apple, Unilever, Dow, American Express, L&apos;Oréal, Singtel, Red Bull and Tiger Beer.</p>
           </div>
-          <div className="career-ledger" aria-label="Career highlights">
-            <div><strong>26+</strong><span>Years across design, direction and production</span></div>
-            <div><strong>3 to 15</strong><span>Creative team growth at Blacksheep</span></div>
-            <div><strong>6</strong><span>Major agency networks and independent practice</span></div>
-          </div>
+          <section aria-labelledby="career-highlights-title">
+            <h3 id="career-highlights-title" className="sr-only">Career highlights</h3>
+            <dl className="career-ledger">
+              <div><dt>26+</dt><dd>Years across design, direction and production</dd></div>
+              <div><dt>3 to 15</dt><dd>Creative team growth at Blacksheep</dd></div>
+              <div><dt>6</dt><dd>Experience across six major agency networks, alongside independent practice</dd></div>
+            </dl>
+          </section>
         </div>
 
-        <div className="capability-index" aria-label="Capabilities" data-reveal>
+        <ul className="capability-index" aria-label="Capabilities" data-reveal>
           {capabilities.map((capability, index) => (
-            <span key={capability}><b>{String(index + 1).padStart(2, "0")}</b>{capability}</span>
+            <li key={capability}><b>{String(index + 1).padStart(2, "0")}</b><span>{capability}</span></li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section className="process-section" aria-labelledby="process-title" data-snap-section>
@@ -411,19 +520,23 @@ export default function Home() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-dialog-title"
-          onClick={() => setIsProjectOpen(false)}
+          aria-describedby="project-dialog-summary"
+          onClick={closeProject}
         >
           <button
             ref={closeButtonRef}
             className="project-dialog-close"
             type="button"
-            onClick={() => setIsProjectOpen(false)}
+            onClick={closeProject}
           >
             Close project
           </button>
 
           <div className="project-dialog-shell" onClick={(event) => event.stopPropagation()}>
-            <div className={`project-dialog-media${selectedImageLimit ? " is-resolution-limited" : ""}`}>
+            <div
+              className={`project-dialog-media${selectedImageLimit ? " is-resolution-limited" : ""}`}
+              aria-busy={isProjectImageLoading}
+            >
               <Image
                 key={selectedImageSource}
                 src={selectedImageSource}
@@ -438,16 +551,16 @@ export default function Home() {
               {selectedProject.images.length > 1 && (
                 <div className="project-image-controls">
                   <button type="button" onClick={showPreviousImage}>Previous image</button>
-                  <span>{String(selectedImageIndex + 1).padStart(2, "0")} / {String(selectedProject.images.length).padStart(2, "0")}</span>
+                  <span aria-live="polite">{String(selectedImageIndex + 1).padStart(2, "0")} / {String(selectedProject.images.length).padStart(2, "0")}</span>
                   <button type="button" onClick={showNextImage}>Next image</button>
                 </div>
               )}
             </div>
 
-            <aside className="project-dialog-copy">
+            <aside ref={projectCopyRef} className="project-dialog-copy">
               <div className="project-dialog-topline"><span>{selectedProject.number}</span><strong>{selectedProject.client}</strong></div>
               <h2 id="project-dialog-title">{selectedProject.title}</h2>
-              <p className="project-summary">{selectedProject.summary}</p>
+              <p id="project-dialog-summary" className="project-summary">{selectedProject.summary}</p>
               <p className="project-discipline">{selectedProject.discipline}</p>
 
               <dl className="project-facts">
@@ -461,13 +574,13 @@ export default function Home() {
                 <section><h3>Result</h3><p>{selectedProject.result}</p></section>
               </div>
 
-              <div className="project-thumbnails" aria-label={`${selectedProject.client} image gallery`}>
+              <div className="project-thumbnails" role="group" aria-label={`${selectedProject.client} image gallery`}>
                 {selectedProject.images.map((image, index) => (
                   <button
                     key={image}
                     type="button"
                     className={selectedImageIndex === index ? "is-active" : ""}
-                    onClick={() => setActiveProjectImage(index)}
+                    onClick={() => void changeProjectImage(index)}
                     aria-label={`Show image ${index + 1} of ${selectedProject.images.length}`}
                     aria-pressed={selectedImageIndex === index}
                   >
@@ -488,7 +601,7 @@ export default function Home() {
                   <button type="button" onClick={showPreviousProject}>Previous project</button>
                   <button type="button" onClick={showNextProject}>Next project</button>
                 </div>
-                <a href="#contact" onClick={() => setIsProjectOpen(false)}>Discuss a project</a>
+                <a href="#contact" onClick={closeProject}>Discuss a project</a>
               </div>
             </aside>
           </div>

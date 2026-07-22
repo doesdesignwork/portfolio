@@ -68,10 +68,10 @@ export function ScrollMotion() {
     const queueSnap = () => {
       if (!snapReady || isSnapping) return;
       window.clearTimeout(snapTimer);
-      snapTimer = window.setTimeout(snapToNearestSection, 140);
+      snapTimer = window.setTimeout(snapToNearestSection, 160);
     };
 
-    const handleSnapKey = (event: KeyboardEvent) => {
+    const handleSnapKeyDown = (event: KeyboardEvent) => {
       if (
         ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(
           event.key,
@@ -81,37 +81,52 @@ export function ScrollMotion() {
       }
     };
 
-    window.addEventListener("scroll", queueSnap, { passive: true });
-    window.addEventListener("wheel", cancelSnap, { passive: true });
+    const handleSnapKeyUp = (event: KeyboardEvent) => {
+      if (
+        ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(
+          event.key,
+        )
+      ) {
+        queueSnap();
+      }
+    };
+
+    const handleWheel = () => {
+      cancelSnap();
+      queueSnap();
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
     window.addEventListener("touchstart", cancelSnap, { passive: true });
+    window.addEventListener("touchend", queueSnap, { passive: true });
     window.addEventListener("pointerdown", cancelSnap, { passive: true });
-    window.addEventListener("keydown", handleSnapKey);
+    window.addEventListener("keydown", handleSnapKeyDown);
+    window.addEventListener("keyup", handleSnapKeyUp);
 
     const context = gsap.context(() => {
       gsap.from(".site-header", {
-        autoAlpha: 0,
-        y: -16,
-        duration: 0.5,
+        y: -10,
+        duration: 0.3,
         ease: "power3.out",
       });
 
       const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
       heroTimeline
-        .from(".hero-eyebrow", { autoAlpha: 0, y: 16, duration: 0.45 })
+        .from(".hero-eyebrow", { y: 10, duration: 0.22 })
         .from(
           ".hero h1 > *",
-          { autoAlpha: 0, yPercent: 72, duration: 0.8, stagger: 0.09 },
-          "-=0.18",
+          { yPercent: 18, duration: 0.4, stagger: 0.04 },
+          "-=0.12",
         )
         .from(
           ".hero-support > *",
-          { autoAlpha: 0, y: 22, duration: 0.5, stagger: 0.08 },
-          "-=0.38",
+          { y: 14, duration: 0.3, stagger: 0.04 },
+          "-=0.26",
         )
         .from(
           ".hero-work-preview figure",
-          { autoAlpha: 0, y: 34, duration: 0.68, stagger: 0.1 },
-          "-=0.22",
+          { y: 20, clipPath: "inset(0 0 8% 0)", duration: 0.44, stagger: 0.06 },
+          "-=0.18",
         );
 
       gsap.to(".hero h1", {
@@ -137,10 +152,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".manifesto h2 span", {
-        autoAlpha: 0,
-        yPercent: 45,
-        duration: 0.78,
-        stagger: 0.08,
+        yPercent: 16,
+        duration: 0.42,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".manifesto",
@@ -150,9 +164,8 @@ export function ScrollMotion() {
       });
 
       gsap.from(".manifesto p", {
-        autoAlpha: 0,
-        y: 24,
-        duration: 0.6,
+        y: 14,
+        duration: 0.36,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".manifesto",
@@ -162,10 +175,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".work-heading > *", {
-        autoAlpha: 0,
-        y: 28,
-        duration: 0.68,
-        stagger: 0.08,
+        y: 16,
+        duration: 0.4,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".work-heading",
@@ -187,24 +199,22 @@ export function ScrollMotion() {
 
         projectTimeline
           .from(media, {
-            autoAlpha: 0,
-            y: 34,
-            clipPath: "inset(0 0 12% 0)",
-            duration: 0.78,
+            y: 20,
+            clipPath: "inset(0 0 8% 0)",
+            duration: 0.46,
             ease: "power3.out",
           })
           .from(
             captionItems,
-            { autoAlpha: 0, y: 14, duration: 0.42, stagger: 0.045, ease: "power2.out" },
-            "-=0.38",
+            { y: 9, duration: 0.28, stagger: 0.03, ease: "power2.out" },
+            "-=0.28",
           );
       });
 
       gsap.from(".more-work-heading > *", {
-        autoAlpha: 0,
-        y: 26,
-        duration: 0.64,
-        stagger: 0.07,
+        y: 15,
+        duration: 0.38,
+        stagger: 0.045,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".more-work-heading",
@@ -215,11 +225,10 @@ export function ScrollMotion() {
 
       gsap.utils.toArray<HTMLElement>(".selected-project").forEach((project, index) => {
         gsap.from(project, {
-          autoAlpha: 0,
-          y: 26,
-          scale: 0.985,
-          duration: 0.58,
-          delay: (index % 4) * 0.045,
+          y: 14,
+          scale: 0.992,
+          duration: 0.36,
+          delay: (index % 4) * 0.025,
           ease: "power3.out",
           scrollTrigger: {
             trigger: project,
@@ -230,10 +239,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".about-heading h2 span", {
-        autoAlpha: 0,
-        yPercent: 42,
-        duration: 0.74,
-        stagger: 0.08,
+        yPercent: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".about-heading",
@@ -243,10 +251,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".about-content > *", {
-        autoAlpha: 0,
-        y: 30,
-        duration: 0.68,
-        stagger: 0.1,
+        y: 16,
+        duration: 0.4,
+        stagger: 0.06,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".about-content",
@@ -255,11 +262,10 @@ export function ScrollMotion() {
         },
       });
 
-      gsap.from(".capability-index span", {
-        autoAlpha: 0,
-        y: 18,
-        duration: 0.48,
-        stagger: 0.055,
+      gsap.from(".capability-index li", {
+        y: 10,
+        duration: 0.3,
+        stagger: 0.035,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".capability-index",
@@ -269,10 +275,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".process-heading h2 span", {
-        autoAlpha: 0,
-        yPercent: 42,
-        duration: 0.74,
-        stagger: 0.08,
+        yPercent: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".process-heading",
@@ -282,10 +287,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".process-section li", {
-        autoAlpha: 0,
-        y: 24,
-        duration: 0.56,
-        stagger: 0.08,
+        y: 13,
+        duration: 0.34,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".process-section ol",
@@ -295,10 +299,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".contact-section h2 span", {
-        autoAlpha: 0,
-        yPercent: 42,
-        duration: 0.76,
-        stagger: 0.08,
+        yPercent: 15,
+        duration: 0.4,
+        stagger: 0.05,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".contact-section",
@@ -308,10 +311,9 @@ export function ScrollMotion() {
       });
 
       gsap.from(".contact-links a", {
-        autoAlpha: 0,
-        y: 22,
-        duration: 0.52,
-        stagger: 0.07,
+        y: 12,
+        duration: 0.32,
+        stagger: 0.045,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".contact-links",
@@ -339,16 +341,20 @@ export function ScrollMotion() {
     });
     window.addEventListener("load", refresh, { once: true });
     window.requestAnimationFrame(refresh);
+    window.requestAnimationFrame(() => {
+      snapReady = true;
+    });
 
     return () => {
       isActive = false;
       window.clearTimeout(snapTimer);
       cancelSnap();
-      window.removeEventListener("scroll", queueSnap);
-      window.removeEventListener("wheel", cancelSnap);
+      window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", cancelSnap);
+      window.removeEventListener("touchend", queueSnap);
       window.removeEventListener("pointerdown", cancelSnap);
-      window.removeEventListener("keydown", handleSnapKey);
+      window.removeEventListener("keydown", handleSnapKeyDown);
+      window.removeEventListener("keyup", handleSnapKeyUp);
       window.removeEventListener("load", refresh);
       context.revert();
     };
