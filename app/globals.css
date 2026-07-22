@@ -118,9 +118,9 @@ img { max-width: 100%; }
 
 .wordmark {
   position: relative;
-  width: 38px;
+  width: 44px;
   height: 54px;
-  flex: 0 0 38px;
+  flex: 0 0 44px;
 }
 
 .wordmark img {
@@ -148,10 +148,12 @@ img { max-width: 100%; }
 
 .site-header nav a {
   position: relative;
+  min-width: 44px;
   min-height: 44px;
   padding-block: 10px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   color: var(--muted);
   font-size: 13px;
   font-weight: 550;
@@ -769,7 +771,13 @@ img { max-width: 100%; }
   line-height: 1.5;
 }
 
-.footer-line a { color: var(--paper); }
+.footer-line a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  color: var(--paper);
+}
 
 .project-dialog {
   position: fixed;
@@ -1050,7 +1058,7 @@ img { max-width: 100%; }
   html { scroll-padding-top: 70px; }
 
   .site-header { height: 70px; }
-  .wordmark { width: 32px; height: 46px; }
+  .wordmark { width: 44px; height: 46px; flex-basis: 44px; }
   .wordmark img { top: -4px; left: -7px; width: 46px; height: 46px; }
   .site-header nav { gap: 17px; }
   .site-header nav a { font-size: 11px; }
@@ -1117,6 +1125,7 @@ img { max-width: 100%; }
   .contact-section { min-height: 100dvh; }
   .contact-links { grid-template-columns: 1fr; gap: 8px; }
   .footer-line { grid-template-columns: 1fr; }
+  .footer-line a { justify-self: start; }
 
   .project-dialog-close { top: 12px; right: 16px; }
   .project-dialog-media { height: 55dvh; min-height: 360px; gap: 10px; padding: 12px; }
