@@ -19,11 +19,11 @@ ${project.summary}
 
 **Role:** ${project.role}
 
-**Challenge:** ${project.challenge}
+${project.credit ? `**Credit:** ${project.credit}\n\n` : ""}${project.year ? `**Year:** ${project.year}\n\n` : ""}**Challenge:** ${project.challenge}
 
-**Approach:** ${project.approach}
+**My contribution:** ${project.approach}
 
-**Result:** ${project.result}
+**What was delivered:** ${project.deliverables}
 
 **Portfolio images:**
 ${images}`;

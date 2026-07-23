@@ -87,18 +87,18 @@ img { max-width: 100%; }
 .skip-link {
   position: fixed;
   z-index: 1000;
-  top: 12px;
+  top: -80px;
   left: 12px;
   padding: 12px 15px;
   background: var(--signal);
   color: var(--signal-contrast);
   font-size: 14px;
   font-weight: 650;
-  transform: translateY(calc(-100% - 18px));
-  transition: transform .2s ease;
+  transition: top .16s ease;
 }
 
-.skip-link:focus { transform: translateY(0); }
+.skip-link:focus,
+.skip-link:focus-visible { top: 12px; }
 
 .site-header {
   position: fixed;
@@ -366,13 +366,13 @@ img { max-width: 100%; }
 .work-section {
   width: min(100%, var(--content-width));
   margin-inline: auto;
-  padding: var(--section-space) var(--page-gutter);
+  padding: clamp(60px, 7vw, 96px) var(--page-gutter) var(--section-space);
   border-bottom: 1px solid var(--line);
 }
 
 .work-heading {
   max-width: 1020px;
-  margin-bottom: clamp(62px, 8vw, 116px);
+  margin-bottom: clamp(50px, 6vw, 88px);
 }
 
 .work-heading > p {
@@ -570,14 +570,14 @@ img { max-width: 100%; }
 .about-section {
   width: min(100%, var(--content-width));
   margin-inline: auto;
-  padding: var(--section-space) var(--page-gutter);
+  padding: clamp(60px, 7vw, 96px) var(--page-gutter) var(--section-space);
   border-bottom: 1px solid var(--line);
 }
 
 .about-heading { max-width: 1120px; }
 
 .about-content {
-  margin-top: clamp(62px, 9vw, 126px);
+  margin-top: clamp(48px, 7vw, 96px);
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
   gap: clamp(52px, 8vw, 124px);
@@ -837,10 +837,14 @@ img { max-width: 100%; }
   display: block;
   object-fit: contain;
   background: var(--image-ground);
-  animation: project-image-in .28s cubic-bezier(.22, 1, .36, 1) both;
+  transition: opacity .22s ease, transform .22s cubic-bezier(.22, 1, .36, 1);
 }
 
-.project-dialog-media[aria-busy="true"] > img { cursor: progress; }
+.project-dialog-media[aria-busy="true"] > img {
+  cursor: progress;
+  opacity: .78;
+  transform: scale(.996);
+}
 
 .project-dialog-media.is-resolution-limited > img {
   width: min(100%, var(--modal-image-max-width));
@@ -1021,11 +1025,6 @@ img { max-width: 100%; }
 @keyframes dialog-in {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@keyframes project-image-in {
-  from { transform: scale(.992); }
-  to { transform: scale(1); }
 }
 
 @media (max-width: 1000px) {
