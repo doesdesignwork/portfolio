@@ -318,11 +318,20 @@ export default function Home() {
       );
 
       const numberLabels = Array.from(ledger.querySelectorAll("dt"));
-      const fitRatio = numberLabels.reduce((smallestRatio, label) => {
-        if (label.scrollWidth <= label.clientWidth) return smallestRatio;
-        return Math.min(smallestRatio, label.clientWidth / label.scrollWidth);
-      }, 1);
-      const fittedSize = Math.max(46, heightBasedSize * fitRatio);
+      let fittedSize = heightBasedSize;
+
+      for (let pass = 0; pass < 2; pass += 1) {
+        ledger.style.setProperty(
+          "--career-number-size",
+          `${fittedSize.toFixed(2)}px`,
+        );
+        const fitRatio = numberLabels.reduce((smallestRatio, label) => {
+          if (label.scrollWidth <= label.clientWidth) return smallestRatio;
+          return Math.min(smallestRatio, label.clientWidth / label.scrollWidth);
+        }, 1);
+        if (fitRatio === 1) break;
+        fittedSize = Math.max(46, fittedSize * fitRatio * 0.98);
+      }
 
       ledger.style.setProperty(
         "--career-number-size",
