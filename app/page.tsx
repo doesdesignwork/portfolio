@@ -306,7 +306,7 @@ export default function Home() {
 
     const updateCareerScale = () => {
       const copyHeight = copy.getBoundingClientRect().height;
-      const numberSize = Math.max(46, Math.min(92, copyHeight / 4.7));
+      const heightBasedSize = Math.max(46, Math.min(92, copyHeight / 4.7));
 
       ledger.style.setProperty(
         "--career-ledger-height",
@@ -314,7 +314,19 @@ export default function Home() {
       );
       ledger.style.setProperty(
         "--career-number-size",
-        `${numberSize.toFixed(2)}px`,
+        `${heightBasedSize.toFixed(2)}px`,
+      );
+
+      const numberLabels = Array.from(ledger.querySelectorAll("dt"));
+      const fitRatio = numberLabels.reduce((smallestRatio, label) => {
+        if (label.scrollWidth <= label.clientWidth) return smallestRatio;
+        return Math.min(smallestRatio, label.clientWidth / label.scrollWidth);
+      }, 1);
+      const fittedSize = Math.max(46, heightBasedSize * fitRatio);
+
+      ledger.style.setProperty(
+        "--career-number-size",
+        `${fittedSize.toFixed(2)}px`,
       );
     };
 
