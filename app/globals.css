@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #f3f0e8;
-  --ink-raised: #eae5db;
-  --paper: #151512;
-  --muted: #625e57;
-  --line: #ccc5ba;
-  --signal: #b6f500;
-  --signal-contrast: #151512;
-  --image-ground: #e4dfd5;
-  --panel-hero: #13170f;
-  --panel-manifesto: #b6f500;
-  --panel-work: #2437a6;
-  --panel-more-work: #512465;
-  --panel-about: #f2efe6;
-  --panel-process: #164b3b;
-  --panel-contact: #1a2341;
+  --palette-ink: #151512;
+  --palette-ivory: #f3f0e8;
+  --palette-cobalt: #2437a6;
+  --palette-lime: #b6f500;
+  --ink: var(--palette-ivory);
+  --ink-raised: var(--palette-ivory);
+  --paper: var(--palette-ink);
+  --muted: color-mix(in srgb, var(--paper) 68%, var(--ink));
+  --line: color-mix(in srgb, var(--paper) 20%, var(--ink));
+  --signal: var(--palette-lime);
+  --signal-contrast: var(--palette-ink);
+  --image-ground: var(--palette-ivory);
+  --panel-hero: var(--palette-ink);
+  --panel-manifesto: var(--palette-lime);
+  --panel-work: var(--palette-cobalt);
+  --panel-more-work: var(--palette-ink);
+  --panel-about: var(--palette-ivory);
+  --panel-process: var(--palette-cobalt);
+  --panel-contact: var(--palette-ink);
   --page-gutter: clamp(18px, 3.2vw, 52px);
   --section-space: clamp(72px, 9vw, 132px);
   --content-width: 1180px;
@@ -102,9 +106,9 @@ img { max-width: 100%; }
 .panel-more-work,
 .panel-process,
 .panel-contact {
-  --paper: #f7f4eb;
-  --muted: #c6cbbf;
-  --line: rgba(247, 244, 235, .26);
+  --paper: var(--palette-ivory);
+  --muted: color-mix(in srgb, var(--palette-ivory) 72%, transparent);
+  --line: color-mix(in srgb, var(--palette-ivory) 26%, transparent);
   color: var(--paper);
 }
 
@@ -137,6 +141,8 @@ img { max-width: 100%; }
 .skip-link:focus-visible { top: 12px; }
 
 .site-header {
+  --paper: var(--palette-ivory);
+  --muted: color-mix(in srgb, var(--palette-ivory) 68%, transparent);
   position: fixed;
   z-index: 100;
   top: 0;
@@ -147,8 +153,8 @@ img { max-width: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--palette-ivory) 14%, transparent);
+  background: color-mix(in srgb, var(--palette-ink) 88%, transparent);
   backdrop-filter: blur(18px) saturate(1.1);
 }
 
@@ -924,7 +930,7 @@ img { max-width: 100%; }
   inset: 0;
   overflow: hidden;
   overscroll-behavior: contain;
-  background: rgba(24, 23, 20, .34);
+  background: color-mix(in srgb, var(--palette-ink) 34%, transparent);
   animation: dialog-in .28s ease both;
 }
 
@@ -934,11 +940,10 @@ img { max-width: 100%; }
   top: 20px;
   right: 24px;
   min-height: 44px;
-  padding: 12px 0 8px;
-  border: 0;
-  border-bottom: 1px solid var(--signal);
-  background: transparent;
-  color: var(--paper);
+  padding: 12px 14px 10px;
+  border: 1px solid var(--signal);
+  background: var(--palette-ink);
+  color: var(--palette-ivory);
   font-size: 13px;
   font-weight: 620;
   text-transform: uppercase;
@@ -1013,8 +1018,8 @@ img { max-width: 100%; }
 }
 
 .project-image-controls button {
-  border-bottom-color: #171714;
-  color: #171714;
+  border-bottom-color: var(--signal-contrast);
+  color: var(--signal-contrast);
   font-weight: 620;
 }
 
@@ -1027,13 +1032,17 @@ img { max-width: 100%; }
 }
 
 .project-dialog-copy {
+  --paper: var(--palette-ivory);
+  --muted: color-mix(in srgb, var(--palette-ivory) 72%, transparent);
+  --line: color-mix(in srgb, var(--palette-ivory) 26%, transparent);
   height: 100dvh;
   padding: clamp(92px, 11vh, 136px) clamp(24px, 3vw, 48px) 44px;
   overflow-y: auto;
   overscroll-behavior: contain;
   overflow-anchor: none;
   border-left: 1px solid var(--line);
-  background: var(--ink);
+  background: var(--palette-ink);
+  color: var(--paper);
 }
 
 .project-dialog-topline {
