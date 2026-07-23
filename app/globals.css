@@ -371,7 +371,9 @@ img { max-width: 100%; }
   border-bottom: 1px solid var(--line);
 }
 
-.panel-manifesto h2 span:last-child { color: var(--signal-contrast); }
+.manifesto.panel-manifesto h2 span:last-child {
+  color: var(--signal-contrast);
+}
 
 .panel-manifesto p {
   color: color-mix(in srgb, var(--signal-contrast) 76%, transparent);
