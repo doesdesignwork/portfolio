@@ -940,11 +940,10 @@ img { max-width: 100%; }
   top: 20px;
   right: 24px;
   min-height: 44px;
-  padding: 12px 0 8px;
-  border: 0;
-  border-bottom: 1px solid var(--signal);
-  background: transparent;
-  color: var(--paper);
+  padding: 12px 14px 10px;
+  border: 1px solid var(--signal);
+  background: var(--palette-ink);
+  color: var(--palette-ivory);
   font-size: 13px;
   font-weight: 620;
   text-transform: uppercase;
