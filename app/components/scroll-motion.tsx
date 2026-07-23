@@ -106,26 +106,33 @@ export function ScrollMotion() {
     const context = gsap.context(() => {
       gsap.from(".site-header", {
         y: -10,
+        autoAlpha: 0,
         duration: 0.3,
         ease: "power3.out",
       });
 
       const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
       heroTimeline
-        .from(".hero-eyebrow", { y: 10, duration: 0.22 })
+        .from(".hero-eyebrow", { y: 10, autoAlpha: 0, duration: 0.22 })
         .from(
           ".hero h1 > *",
-          { yPercent: 18, duration: 0.4, stagger: 0.04 },
+          { yPercent: 18, autoAlpha: 0, duration: 0.4, stagger: 0.04 },
           "-=0.12",
         )
         .from(
           ".hero-support > *",
-          { y: 14, duration: 0.3, stagger: 0.04 },
+          { y: 14, autoAlpha: 0, duration: 0.3, stagger: 0.04 },
           "-=0.26",
         )
         .from(
           ".hero-work-preview figure",
-          { y: 20, clipPath: "inset(0 0 8% 0)", duration: 0.44, stagger: 0.06 },
+          {
+            y: 20,
+            autoAlpha: 0,
+            clipPath: "inset(0 0 8% 0)",
+            duration: 0.44,
+            stagger: 0.06,
+          },
           "-=0.18",
         );
 
@@ -153,6 +160,7 @@ export function ScrollMotion() {
 
       gsap.from(".manifesto h2 span", {
         yPercent: 16,
+        autoAlpha: 0,
         duration: 0.42,
         stagger: 0.05,
         ease: "power3.out",
@@ -165,6 +173,7 @@ export function ScrollMotion() {
 
       gsap.from(".manifesto p", {
         y: 14,
+        autoAlpha: 0,
         duration: 0.36,
         ease: "power3.out",
         scrollTrigger: {
@@ -176,6 +185,7 @@ export function ScrollMotion() {
 
       gsap.from(".work-heading > *", {
         y: 16,
+        autoAlpha: 0,
         duration: 0.4,
         stagger: 0.05,
         ease: "power3.out",
@@ -200,19 +210,27 @@ export function ScrollMotion() {
         projectTimeline
           .from(media, {
             y: 20,
+            autoAlpha: 0,
             clipPath: "inset(0 0 8% 0)",
             duration: 0.46,
             ease: "power3.out",
           })
           .from(
             captionItems,
-            { y: 9, duration: 0.28, stagger: 0.03, ease: "power2.out" },
+            {
+              y: 9,
+              autoAlpha: 0,
+              duration: 0.28,
+              stagger: 0.03,
+              ease: "power2.out",
+            },
             "-=0.28",
           );
       });
 
       gsap.from(".more-work-heading > *", {
         y: 15,
+        autoAlpha: 0,
         duration: 0.38,
         stagger: 0.045,
         ease: "power3.out",
@@ -224,22 +242,41 @@ export function ScrollMotion() {
       });
 
       gsap.utils.toArray<HTMLElement>(".selected-project").forEach((project, index) => {
-        gsap.from(project, {
-          y: 14,
-          scale: 0.992,
-          duration: 0.36,
+        const media = project.querySelector(".selected-project-media");
+        const copy = project.querySelector(".selected-project-copy");
+        const projectTimeline = gsap.timeline({
           delay: (index % 4) * 0.025,
-          ease: "power3.out",
           scrollTrigger: {
             trigger: project,
             start: "top 88%",
             toggleActions: "play none none reverse",
           },
         });
+
+        projectTimeline
+          .from(media, {
+            y: 18,
+            autoAlpha: 0,
+            scale: 0.992,
+            clipPath: "inset(0 0 7% 0)",
+            duration: 0.42,
+            ease: "power3.out",
+          })
+          .from(
+            copy,
+            {
+              y: 9,
+              autoAlpha: 0,
+              duration: 0.26,
+              ease: "power2.out",
+            },
+            "-=0.24",
+          );
       });
 
       gsap.from(".about-heading h2 span", {
         yPercent: 15,
+        autoAlpha: 0,
         duration: 0.4,
         stagger: 0.05,
         ease: "power3.out",
@@ -250,11 +287,7 @@ export function ScrollMotion() {
         },
       });
 
-      gsap.from(".about-content > *", {
-        y: 16,
-        duration: 0.4,
-        stagger: 0.06,
-        ease: "power3.out",
+      const aboutTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: ".about-content",
           start: "top 84%",
@@ -262,8 +295,29 @@ export function ScrollMotion() {
         },
       });
 
+      aboutTimeline
+        .from(".about-copy > *", {
+          y: 16,
+          autoAlpha: 0,
+          duration: 0.4,
+          stagger: 0.055,
+          ease: "power3.out",
+        })
+        .from(
+          ".career-ledger > div",
+          {
+            y: 14,
+            autoAlpha: 0,
+            duration: 0.34,
+            stagger: 0.045,
+            ease: "power2.out",
+          },
+          "-=0.24",
+        );
+
       gsap.from(".capability-index li", {
         y: 10,
+        autoAlpha: 0,
         duration: 0.3,
         stagger: 0.035,
         ease: "power2.out",
@@ -276,6 +330,7 @@ export function ScrollMotion() {
 
       gsap.from(".process-heading h2 span", {
         yPercent: 15,
+        autoAlpha: 0,
         duration: 0.4,
         stagger: 0.05,
         ease: "power3.out",
@@ -288,6 +343,7 @@ export function ScrollMotion() {
 
       gsap.from(".process-section li", {
         y: 13,
+        autoAlpha: 0,
         duration: 0.34,
         stagger: 0.05,
         ease: "power3.out",
@@ -300,6 +356,7 @@ export function ScrollMotion() {
 
       gsap.from(".contact-section h2 span", {
         yPercent: 15,
+        autoAlpha: 0,
         duration: 0.4,
         stagger: 0.05,
         ease: "power3.out",
@@ -312,12 +369,26 @@ export function ScrollMotion() {
 
       gsap.from(".contact-links a", {
         y: 12,
+        autoAlpha: 0,
         duration: 0.32,
         stagger: 0.045,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".contact-links",
           start: "top 88%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".footer-line > *", {
+        y: 8,
+        autoAlpha: 0,
+        duration: 0.28,
+        stagger: 0.04,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".footer-line",
+          start: "top 94%",
           toggleActions: "play none none reverse",
         },
       });
