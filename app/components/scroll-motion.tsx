@@ -4,6 +4,7 @@ import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// ScrollTrigger owns the entrance states; reduced-motion users bypass them entirely.
 export function ScrollMotion() {
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
