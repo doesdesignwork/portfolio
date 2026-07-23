@@ -43,7 +43,7 @@ export function ScrollMotion() {
           : nearest,
       );
       const distance = targetScroll - currentScroll;
-      const snapRange = Math.min(300, window.innerHeight * 0.34);
+      const snapRange = Math.min(440, window.innerHeight * 0.48);
 
       if (Math.abs(distance) < 2 || Math.abs(distance) > snapRange) return;
 
@@ -51,7 +51,7 @@ export function ScrollMotion() {
       isSnapping = true;
       snapTween = gsap.to(position, {
         y: targetScroll,
-        duration: 0.52,
+        duration: 0.68,
         ease: "power3.out",
         overwrite: true,
         onUpdate: () => window.scrollTo(0, position.y),
@@ -69,7 +69,7 @@ export function ScrollMotion() {
     const queueSnap = () => {
       if (!snapReady || isSnapping) return;
       window.clearTimeout(snapTimer);
-      snapTimer = window.setTimeout(snapToNearestSection, 160);
+      snapTimer = window.setTimeout(snapToNearestSection, 120);
     };
 
     const handleSnapKeyDown = (event: KeyboardEvent) => {
@@ -114,27 +114,28 @@ export function ScrollMotion() {
 
       const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
       heroTimeline
-        .from(".hero-eyebrow", { y: 10, autoAlpha: 0, duration: 0.22 })
+        .from(".hero-eyebrow", { y: 24, autoAlpha: 0, duration: 0.42 })
         .from(
           ".hero h1 > *",
-          { yPercent: 18, autoAlpha: 0, duration: 0.4, stagger: 0.04 },
-          "-=0.12",
+          { yPercent: 56, autoAlpha: 0, duration: 0.72, stagger: 0.08 },
+          "-=0.2",
         )
         .from(
           ".hero-support > *",
-          { y: 14, autoAlpha: 0, duration: 0.3, stagger: 0.04 },
-          "-=0.26",
+          { y: 36, autoAlpha: 0, duration: 0.56, stagger: 0.08 },
+          "-=0.42",
         )
         .from(
           ".hero-work-preview figure",
           {
-            y: 20,
+            y: 72,
             autoAlpha: 0,
-            clipPath: "inset(0 0 8% 0)",
-            duration: 0.44,
-            stagger: 0.06,
+            scale: 0.96,
+            clipPath: "inset(14% 0 0 0)",
+            duration: 0.82,
+            stagger: 0.12,
           },
-          "-=0.18",
+          "-=0.32",
         );
 
       gsap.to(".hero h1", {
@@ -160,35 +161,35 @@ export function ScrollMotion() {
       });
 
       gsap.from(".manifesto h2 span", {
-        yPercent: 16,
+        yPercent: 72,
         autoAlpha: 0,
-        duration: 0.42,
-        stagger: 0.05,
+        duration: 0.88,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".manifesto",
-          start: "top 76%",
+          start: "top 82%",
           toggleActions: "play none none reverse",
         },
       });
 
       gsap.from(".manifesto p", {
-        y: 14,
+        y: 52,
         autoAlpha: 0,
-        duration: 0.36,
+        duration: 0.72,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".manifesto",
-          start: "top 66%",
+          start: "top 68%",
           toggleActions: "play none none reverse",
         },
       });
 
       gsap.from(".work-heading > *", {
-        y: 16,
+        y: 56,
         autoAlpha: 0,
-        duration: 0.4,
-        stagger: 0.05,
+        duration: 0.78,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".work-heading",
@@ -210,30 +211,31 @@ export function ScrollMotion() {
 
         projectTimeline
           .from(media, {
-            y: 20,
+            y: 96,
             autoAlpha: 0,
-            clipPath: "inset(0 0 8% 0)",
-            duration: 0.46,
+            scale: 0.95,
+            clipPath: "inset(18% 0 0 0)",
+            duration: 0.94,
             ease: "power3.out",
           })
           .from(
             captionItems,
             {
-              y: 9,
+              y: 28,
               autoAlpha: 0,
-              duration: 0.28,
-              stagger: 0.03,
+              duration: 0.5,
+              stagger: 0.07,
               ease: "power2.out",
             },
-            "-=0.28",
+            "-=0.48",
           );
       });
 
       gsap.from(".more-work-heading > *", {
-        y: 15,
+        y: 54,
         autoAlpha: 0,
-        duration: 0.38,
-        stagger: 0.045,
+        duration: 0.76,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".more-work-heading",
@@ -246,40 +248,40 @@ export function ScrollMotion() {
         const media = project.querySelector(".selected-project-media");
         const copy = project.querySelector(".selected-project-copy");
         const projectTimeline = gsap.timeline({
-          delay: (index % 4) * 0.025,
+          delay: (index % 4) * 0.08,
           scrollTrigger: {
             trigger: project,
-            start: "top 88%",
+            start: "top 91%",
             toggleActions: "play none none reverse",
           },
         });
 
         projectTimeline
           .from(media, {
-            y: 18,
+            y: 76,
             autoAlpha: 0,
-            scale: 0.992,
-            clipPath: "inset(0 0 7% 0)",
-            duration: 0.42,
+            scale: 0.94,
+            clipPath: "inset(16% 0 0 0)",
+            duration: 0.86,
             ease: "power3.out",
           })
           .from(
             copy,
             {
-              y: 9,
+              y: 24,
               autoAlpha: 0,
-              duration: 0.26,
+              duration: 0.46,
               ease: "power2.out",
             },
-            "-=0.24",
+            "-=0.42",
           );
       });
 
       gsap.from(".about-heading h2 span", {
-        yPercent: 15,
+        yPercent: 68,
         autoAlpha: 0,
-        duration: 0.4,
-        stagger: 0.05,
+        duration: 0.84,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".about-heading",
@@ -298,29 +300,29 @@ export function ScrollMotion() {
 
       aboutTimeline
         .from(".about-copy > *", {
-          y: 16,
+          y: 52,
           autoAlpha: 0,
-          duration: 0.4,
-          stagger: 0.055,
+          duration: 0.74,
+          stagger: 0.1,
           ease: "power3.out",
         })
         .from(
           ".career-ledger > div",
           {
-            y: 14,
+            y: 42,
             autoAlpha: 0,
-            duration: 0.34,
-            stagger: 0.045,
+            duration: 0.62,
+            stagger: 0.09,
             ease: "power2.out",
           },
-          "-=0.24",
+          "-=0.42",
         );
 
       gsap.from(".capability-index li", {
-        y: 10,
+        y: 42,
         autoAlpha: 0,
-        duration: 0.3,
-        stagger: 0.035,
+        duration: 0.62,
+        stagger: 0.08,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".capability-index",
@@ -330,10 +332,10 @@ export function ScrollMotion() {
       });
 
       gsap.from(".process-heading h2 span", {
-        yPercent: 15,
+        yPercent: 68,
         autoAlpha: 0,
-        duration: 0.4,
-        stagger: 0.05,
+        duration: 0.84,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".process-heading",
@@ -343,10 +345,10 @@ export function ScrollMotion() {
       });
 
       gsap.from(".process-section li", {
-        y: 13,
+        y: 58,
         autoAlpha: 0,
-        duration: 0.34,
-        stagger: 0.05,
+        duration: 0.72,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".process-section ol",
@@ -356,10 +358,10 @@ export function ScrollMotion() {
       });
 
       gsap.from(".contact-section h2 span", {
-        yPercent: 15,
+        yPercent: 68,
         autoAlpha: 0,
-        duration: 0.4,
-        stagger: 0.05,
+        duration: 0.84,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".contact-section",
@@ -369,10 +371,10 @@ export function ScrollMotion() {
       });
 
       gsap.from(".contact-links a", {
-        y: 12,
+        y: 52,
         autoAlpha: 0,
-        duration: 0.32,
-        stagger: 0.045,
+        duration: 0.7,
+        stagger: 0.1,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".contact-links",
@@ -382,10 +384,10 @@ export function ScrollMotion() {
       });
 
       gsap.from(".footer-line > *", {
-        y: 8,
+        y: 28,
         autoAlpha: 0,
-        duration: 0.28,
-        stagger: 0.04,
+        duration: 0.5,
+        stagger: 0.08,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".footer-line",
@@ -393,6 +395,30 @@ export function ScrollMotion() {
           toggleActions: "play none none reverse",
         },
       });
+
+      gsap.utils
+        .toArray<HTMLImageElement>(
+          ".featured-project-media img, .selected-project-media img",
+        )
+        .forEach((image) => {
+          gsap.fromTo(
+            image,
+            { yPercent: -2.5, scale: 1.07 },
+            {
+              yPercent: 2.5,
+              scale: 1.015,
+              ease: "none",
+              scrollTrigger: {
+                trigger: image.closest(
+                  ".featured-project, .selected-project",
+                ),
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.8,
+              },
+            },
+          );
+        });
 
     }, scope);
 

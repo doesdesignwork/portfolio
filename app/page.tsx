@@ -10,27 +10,29 @@ const featuredProjectNumbers = ["13", "08", "01"];
 const featuredProjects = featuredProjectNumbers
   .map((number) => projects.find((project) => project.number === number))
   .filter((project): project is Project => Boolean(project));
-const selectedProjects = projects.filter(
-  (project) =>
-    !featuredProjectNumbers.includes(project.number) &&
-    project.selected !== false,
+const selectedProjectNumbers = ["03", "04", "06", "09", "14", "10", "11", "15"];
+const selectedProjects = selectedProjectNumbers
+  .map((number) => projects.find((project) => project.number === number))
+  .filter((project): project is Project => Boolean(project));
+const selectedProjectClusterNumbers = new Set(["14", "10", "11", "15"]);
+const selectedProjectsBeforeCluster = selectedProjects.filter(
+  (project) => !selectedProjectClusterNumbers.has(project.number),
+);
+const selectedProjectsInCluster = selectedProjects.filter((project) =>
+  selectedProjectClusterNumbers.has(project.number),
 );
 const navigableProjects = [...featuredProjects, ...selectedProjects];
 
-const galleryTileSizes = [
-  "tile-2x2",
-  "tile-1x1",
-  "tile-1x1",
-  "tile-2x1",
-  "tile-1x1",
-  "tile-1x1",
-  "tile-2x1",
-  "tile-1x1",
-  "tile-1x1",
-  "tile-2x2",
-  "tile-1x1",
-  "tile-1x1",
-];
+const galleryTileSizes: Record<string, string> = {
+  "03": "tile-2x2",
+  "04": "tile-1x1",
+  "06": "tile-1x1",
+  "09": "tile-2x1",
+  "10": "tile-1x1",
+  "11": "tile-1x1",
+  "14": "tile-2x1",
+  "15": "tile-2x2",
+};
 
 const modalImageLimits: Record<string, { width: number; height: number }> = {
   "/assets/brewerkz-packaging.webp": { width: 526, height: 466 },
@@ -327,33 +329,41 @@ export default function Home() {
     </button>
   );
 
-  const renderSelectedProject = (project: Project, index: number) => (
-    <button
-      key={project.number}
-      id={`project-${project.number}`}
-      className={`selected-project ${galleryTileSizes[index] ?? "tile-1x1"}`}
-      type="button"
-      onClick={(event) => openProject(project, event.currentTarget)}
-      onPointerEnter={() => preloadProjectImages(project)}
-      onFocus={() => preloadProjectImages(project)}
-      aria-label={`Open ${project.client}: ${project.title}`}
-    >
-      <span className="selected-project-media">
-        <Image
-          src={project.images[0]}
-          alt={project.alt}
-          width={1400}
-          height={1100}
-          sizes={galleryTileSizes[index] === "tile-1x1" ? "(max-width: 720px) 50vw, 25vw" : "(max-width: 720px) 100vw, 50vw"}
-        />
-      </span>
-      <span className="selected-project-copy">
-        <span>{project.number}</span>
-        <strong>{project.client}</strong>
-        <small>{project.discipline}</small>
-      </span>
-    </button>
-  );
+  const renderSelectedProject = (project: Project) => {
+    const tileSize = galleryTileSizes[project.number] ?? "tile-1x1";
+
+    return (
+      <button
+        key={project.number}
+        id={`project-${project.number}`}
+        className={`selected-project selected-project-${project.number} ${tileSize}`}
+        type="button"
+        onClick={(event) => openProject(project, event.currentTarget)}
+        onPointerEnter={() => preloadProjectImages(project)}
+        onFocus={() => preloadProjectImages(project)}
+        aria-label={`Open ${project.client}: ${project.title}`}
+      >
+        <span className="selected-project-media">
+          <Image
+            src={project.images[0]}
+            alt={project.alt}
+            width={1400}
+            height={1100}
+            sizes={
+              tileSize === "tile-1x1"
+                ? "(max-width: 720px) 50vw, 25vw"
+                : "(max-width: 720px) 100vw, 50vw"
+            }
+          />
+        </span>
+        <span className="selected-project-copy">
+          <span>{project.number}</span>
+          <strong>{project.client}</strong>
+          <small>{project.discipline}</small>
+        </span>
+      </button>
+    );
+  };
 
   return (
     <main className="site-shell">
@@ -458,7 +468,10 @@ export default function Home() {
           <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
         </header>
         <section className="selected-work" aria-labelledby="more-work-title">
-          {selectedProjects.map(renderSelectedProject)}
+          {selectedProjectsBeforeCluster.map(renderSelectedProject)}
+          <div className="selected-project-cluster">
+            {selectedProjectsInCluster.map(renderSelectedProject)}
+          </div>
         </section>
       </section>
 
