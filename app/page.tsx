@@ -526,25 +526,27 @@ export default function Home() {
         <div className="featured-work">
           {featuredProjects.map(renderFeaturedProject)}
         </div>
+      </section>
 
+      <section
+        className="more-work-section snap-panel panel-more-work"
+        aria-labelledby="more-work-title"
+        data-snap-section
+      >
         <header
-          className="more-work-heading snap-panel panel-more-work"
+          className="more-work-heading"
           data-reveal
-          data-snap-section
         >
-          <h3 id="more-work-title">More work</h3>
+          <span className="more-work-kicker">Selected archive / {selectedProjects.length} projects</span>
+          <h3 id="more-work-title">A wider cut of the work.</h3>
           <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
         </header>
-        <section
-          className="selected-work snap-panel panel-gallery"
-          aria-labelledby="more-work-title"
-          data-snap-section
-        >
+        <div className="selected-work">
           {selectedProjectsBeforeCluster.map(renderSelectedProject)}
           <div className="selected-project-cluster">
             {selectedProjectsInCluster.map(renderSelectedProject)}
           </div>
-        </section>
+        </div>
       </section>
 
       <section
