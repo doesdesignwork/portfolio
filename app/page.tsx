@@ -105,6 +105,8 @@ const capabilities = [
 export default function Home() {
   const projectDialogRef = useRef<HTMLDivElement>(null);
   const projectCopyRef = useRef<HTMLElement>(null);
+  const aboutCopyMeasureRef = useRef<HTMLDivElement>(null);
+  const careerLedgerRef = useRef<HTMLDListElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastProjectTriggerRef = useRef<HTMLButtonElement>(null);
   const imageRequestRef = useRef(0);
@@ -297,6 +299,53 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleGalleryKeys);
   }, [changeProjectImage, isProjectOpen, selectedImageIndex]);
 
+  useEffect(() => {
+    const copy = aboutCopyMeasureRef.current;
+    const ledger = careerLedgerRef.current;
+    if (!copy || !ledger) return;
+
+    const updateCareerScale = () => {
+      const copyHeight = copy.getBoundingClientRect().height;
+      const heightBasedSize = Math.max(46, Math.min(92, copyHeight / 4.7));
+
+      ledger.style.setProperty(
+        "--career-ledger-height",
+        `${Math.round(copyHeight)}px`,
+      );
+      ledger.style.setProperty(
+        "--career-number-size",
+        `${heightBasedSize.toFixed(2)}px`,
+      );
+
+      const numberLabels = Array.from(ledger.querySelectorAll("dt"));
+      let fittedSize = heightBasedSize;
+
+      for (let pass = 0; pass < 2; pass += 1) {
+        ledger.style.setProperty(
+          "--career-number-size",
+          `${fittedSize.toFixed(2)}px`,
+        );
+        const fitRatio = numberLabels.reduce((smallestRatio, label) => {
+          if (label.scrollWidth <= label.clientWidth) return smallestRatio;
+          return Math.min(smallestRatio, label.clientWidth / label.scrollWidth);
+        }, 1);
+        if (fitRatio === 1) break;
+        fittedSize = Math.max(46, fittedSize * fitRatio * 0.98);
+      }
+
+      ledger.style.setProperty(
+        "--career-number-size",
+        `${fittedSize.toFixed(2)}px`,
+      );
+    };
+
+    const resizeObserver = new ResizeObserver(updateCareerScale);
+    resizeObserver.observe(copy);
+    updateCareerScale();
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const renderFeaturedProject = (project: Project, index: number) => (
     <button
       key={project.number}
@@ -395,7 +444,12 @@ export default function Home() {
         </nav>
       </header>
 
-      <section id="top" className="hero" aria-labelledby="hero-title" data-snap-section>
+      <section
+        id="top"
+        className="hero snap-panel panel-hero"
+        aria-labelledby="hero-title"
+        data-snap-section
+      >
         <div className="hero-heading">
           <p className="hero-eyebrow">Gerard Teo / Art Director and Creative Lead / Singapore</p>
           <h1 id="hero-title">
@@ -443,7 +497,12 @@ export default function Home() {
         </section>
       </section>
 
-      <section className="manifesto" aria-labelledby="manifesto-title" data-reveal data-snap-section>
+      <section
+        className="manifesto snap-panel panel-manifesto"
+        aria-labelledby="manifesto-title"
+        data-reveal
+        data-snap-section
+      >
         <h2 id="manifesto-title">
           <span>The idea has to work</span>
           {" "}
@@ -452,7 +511,12 @@ export default function Home() {
         <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
       </section>
 
-      <section id="work" className="work-section" aria-labelledby="work-title" data-snap-section>
+      <section
+        id="work"
+        className="work-section snap-panel panel-work"
+        aria-labelledby="work-title"
+        data-snap-section
+      >
         <header className="work-heading" data-reveal>
           <p>Strategy / Direction / Execution</p>
           <h2 id="work-title">Selected work</h2>
@@ -463,11 +527,19 @@ export default function Home() {
           {featuredProjects.map(renderFeaturedProject)}
         </div>
 
-        <header className="more-work-heading" data-reveal data-snap-section>
+        <header
+          className="more-work-heading snap-panel panel-more-work"
+          data-reveal
+          data-snap-section
+        >
           <h3 id="more-work-title">More work</h3>
           <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
         </header>
-        <section className="selected-work" aria-labelledby="more-work-title">
+        <section
+          className="selected-work snap-panel panel-gallery"
+          aria-labelledby="more-work-title"
+          data-snap-section
+        >
           {selectedProjectsBeforeCluster.map(renderSelectedProject)}
           <div className="selected-project-cluster">
             {selectedProjectsInCluster.map(renderSelectedProject)}
@@ -475,7 +547,12 @@ export default function Home() {
         </section>
       </section>
 
-      <section id="about" className="about-section" aria-labelledby="about-title" data-snap-section>
+      <section
+        id="about"
+        className="about-section snap-panel panel-about"
+        aria-labelledby="about-title"
+        data-snap-section
+      >
         <div className="about-heading" data-reveal>
           <h2 id="about-title">
             <span>I lead the work.</span>
@@ -485,13 +562,15 @@ export default function Home() {
         </div>
         <div className="about-content" data-reveal>
           <div className="about-copy">
-            <p>I move between setting the direction and making sure the work lands. I co-founded Blacksheep Communications, helped grow its design team from three to 15 and stayed close to the work, clients and production.</p>
-            <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C2, while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
+            <div ref={aboutCopyMeasureRef} className="about-copy-main">
+              <p>I move between setting the direction and making sure the work lands. I co-founded Blacksheep Communications, helped grow its design team from three to 15 and stayed close to the work, clients and production.</p>
+              <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C2, while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
+            </div>
             <p className="brand-line">Selected experience includes Apple, Unilever, Dow, American Express, L&apos;Oréal, Singtel, Red Bull and Tiger Beer.</p>
           </div>
-          <section aria-labelledby="career-highlights-title">
+          <section className="career-highlights" aria-labelledby="career-highlights-title">
             <h3 id="career-highlights-title" className="sr-only">Career highlights</h3>
-            <dl className="career-ledger">
+            <dl ref={careerLedgerRef} className="career-ledger">
               <div><dt>26+</dt><dd>Years across design, direction and production</dd></div>
               <div><dt>3 to 15</dt><dd>Creative team growth at Blacksheep</dd></div>
               <div><dt>6</dt><dd>Experience across six major agency networks, alongside independent practice</dd></div>
@@ -506,7 +585,11 @@ export default function Home() {
         </ul>
       </section>
 
-      <section className="process-section" aria-labelledby="process-title" data-snap-section>
+      <section
+        className="process-section snap-panel panel-process"
+        aria-labelledby="process-title"
+        data-snap-section
+      >
         <div className="process-heading" data-reveal>
           <h2 id="process-title">
             <span>One idea.</span>
@@ -521,7 +604,11 @@ export default function Home() {
         </ol>
       </section>
 
-      <footer id="contact" className="contact-section" data-snap-section>
+      <footer
+        id="contact"
+        className="contact-section snap-panel panel-contact"
+        data-snap-section
+      >
         <h2 data-reveal>
           <span>Have a role?</span>
           {" "}
