@@ -6,8 +6,8 @@ const manifest = {
   start_url: "/",
   scope: "/",
   display: "minimal-ui",
-  background_color: "#f3f0e8",
-  theme_color: "#f3f0e8",
+  background_color: "#151512",
+  theme_color: "#151512",
   lang: "en-SG",
   icons: [
     {
