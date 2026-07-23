@@ -1,4 +1,9 @@
 import { lastModified, siteUrl } from "@/lib/site";
+import { projects } from "../data/projects";
+
+const visibleProjectCount = projects.filter(
+  (project) => project.featured || project.selected !== false,
+).length;
 
 const content = `# Gerard Teo - Art Director & Creative Lead
 
@@ -11,7 +16,7 @@ Last updated: ${lastModified}
 ## Primary pages and resources
 
 - [Portfolio home](${siteUrl}/): Visual portfolio, biography, process and contact details.
-- [Selected work](${siteUrl}/#work): Interactive tiled gallery of 15 selected projects.
+- [Selected work](${siteUrl}/#work): Interactive gallery of ${visibleProjectCount} selected projects.
 - [About Gerard](${siteUrl}/#about): Career background and creative leadership experience.
 - [Full project catalogue](${siteUrl}/llms-full.txt): Plain-text details for every featured project.
 - [Machine-readable portfolio index](${siteUrl}/agent-index.json): Structured JSON describing Gerard and all featured projects.

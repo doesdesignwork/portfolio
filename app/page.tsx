@@ -11,8 +11,11 @@ const featuredProjects = featuredProjectNumbers
   .map((number) => projects.find((project) => project.number === number))
   .filter((project): project is Project => Boolean(project));
 const selectedProjects = projects.filter(
-  (project) => !featuredProjectNumbers.includes(project.number),
+  (project) =>
+    !featuredProjectNumbers.includes(project.number) &&
+    project.selected !== false,
 );
+const navigableProjects = [...featuredProjects, ...selectedProjects];
 
 const galleryTileSizes = [
   "tile-2x2",
@@ -31,8 +34,6 @@ const galleryTileSizes = [
 
 const modalImageLimits: Record<string, { width: number; height: number }> = {
   "/assets/brewerkz-packaging.webp": { width: 526, height: 466 },
-  "/assets/brewerkz-campaign.webp": { width: 325, height: 469 },
-  "/assets/brewerkz-wall.webp": { width: 321, height: 469 },
   "/assets/herdsman-packaging.webp": { width: 500, height: 378 },
   "/assets/herdsman-sauces.webp": { width: 511, height: 360 },
   "/assets/herdsman-egg.webp": { width: 514, height: 362 },
@@ -178,8 +179,8 @@ export default function Home() {
     setIsProjectOpen(true);
   };
 
-  const changeProject = (projectIndex: number) => {
-    const nextProject = projects[projectIndex];
+  const changeProject = (nextProject: Project) => {
+    const projectIndex = projects.indexOf(nextProject);
     imageRequestRef.current += 1;
     preloadProjectImages(nextProject);
     preloadAdjacentProjectImages(nextProject, 0);
@@ -191,11 +192,23 @@ export default function Home() {
   };
 
   const showPreviousProject = () => {
-    changeProject((activeProject - 1 + projects.length) % projects.length);
+    const currentIndex = navigableProjects.findIndex(
+      (project) => project.number === selectedProject.number,
+    );
+    const safeIndex = currentIndex < 0 ? 0 : currentIndex;
+    changeProject(
+      navigableProjects[
+        (safeIndex - 1 + navigableProjects.length) % navigableProjects.length
+      ],
+    );
   };
 
   const showNextProject = () => {
-    changeProject((activeProject + 1) % projects.length);
+    const currentIndex = navigableProjects.findIndex(
+      (project) => project.number === selectedProject.number,
+    );
+    const safeIndex = currentIndex < 0 ? 0 : currentIndex;
+    changeProject(navigableProjects[(safeIndex + 1) % navigableProjects.length]);
   };
 
   const showPreviousImage = () => {
@@ -538,7 +551,6 @@ export default function Home() {
               aria-busy={isProjectImageLoading}
             >
               <Image
-                key={selectedImageSource}
                 src={selectedImageSource}
                 alt={`${selectedProject.alt}, image ${selectedImageIndex + 1} of ${selectedProject.images.length}`}
                 width={selectedImageLimit?.width ?? 1800}
@@ -565,13 +577,15 @@ export default function Home() {
 
               <dl className="project-facts">
                 <div><dt>Context</dt><dd>{selectedProject.context}</dd></div>
-                <div><dt>My role</dt><dd>{selectedProject.role}</dd></div>
+                <div><dt>My contribution</dt><dd>{selectedProject.role}</dd></div>
+                {selectedProject.year && <div><dt>Year</dt><dd>{selectedProject.year}</dd></div>}
+                {selectedProject.credit && <div><dt>Credit</dt><dd>{selectedProject.credit}</dd></div>}
               </dl>
 
               <div className="project-story">
                 <section><h3>Challenge</h3><p>{selectedProject.challenge}</p></section>
-                <section><h3>Approach</h3><p>{selectedProject.approach}</p></section>
-                <section><h3>Result</h3><p>{selectedProject.result}</p></section>
+                <section><h3>My contribution</h3><p>{selectedProject.approach}</p></section>
+                <section><h3>What was delivered</h3><p>{selectedProject.deliverables}</p></section>
               </div>
 
               <div className="project-thumbnails" role="group" aria-label={`${selectedProject.client} image gallery`}>
