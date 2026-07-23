@@ -14,95 +14,6 @@ export function ScrollMotion() {
     if (!scope) return;
 
     let isActive = true;
-    let snapReady = false;
-    let isSnapping = false;
-    let snapTimer: number | undefined;
-    let snapTween: gsap.core.Tween | undefined;
-    const snapSections = Array.from(
-      scope.querySelectorAll<HTMLElement>("[data-snap-section]"),
-    );
-
-    const cancelSnap = () => {
-      if (snapTween) snapTween.kill();
-      snapTween = undefined;
-      isSnapping = false;
-    };
-
-    const snapToNearestSection = () => {
-      if (!snapReady || isSnapping || snapSections.length === 0) return;
-
-      const headerHeight =
-        document.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
-      const currentScroll = window.scrollY;
-      const sectionPositions = snapSections.map((section) =>
-        Math.max(0, currentScroll + section.getBoundingClientRect().top - headerHeight),
-      );
-      const targetScroll = sectionPositions.reduce((nearest, position) =>
-        Math.abs(position - currentScroll) < Math.abs(nearest - currentScroll)
-          ? position
-          : nearest,
-      );
-      const distance = targetScroll - currentScroll;
-      const snapRange = Math.min(440, window.innerHeight * 0.48);
-
-      if (Math.abs(distance) < 2 || Math.abs(distance) > snapRange) return;
-
-      const position = { y: currentScroll };
-      isSnapping = true;
-      snapTween = gsap.to(position, {
-        y: targetScroll,
-        duration: 0.68,
-        ease: "power3.out",
-        overwrite: true,
-        onUpdate: () => window.scrollTo(0, position.y),
-        onComplete: () => {
-          snapTween = undefined;
-          isSnapping = false;
-        },
-        onInterrupt: () => {
-          snapTween = undefined;
-          isSnapping = false;
-        },
-      });
-    };
-
-    const queueSnap = () => {
-      if (!snapReady || isSnapping) return;
-      window.clearTimeout(snapTimer);
-      snapTimer = window.setTimeout(snapToNearestSection, 120);
-    };
-
-    const handleSnapKeyDown = (event: KeyboardEvent) => {
-      if (
-        ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(
-          event.key,
-        )
-      ) {
-        cancelSnap();
-      }
-    };
-
-    const handleSnapKeyUp = (event: KeyboardEvent) => {
-      if (
-        ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(
-          event.key,
-        )
-      ) {
-        queueSnap();
-      }
-    };
-
-    const handleWheel = () => {
-      cancelSnap();
-      queueSnap();
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    window.addEventListener("touchstart", cancelSnap, { passive: true });
-    window.addEventListener("touchend", queueSnap, { passive: true });
-    window.addEventListener("pointerdown", cancelSnap, { passive: true });
-    window.addEventListener("keydown", handleSnapKeyDown);
-    window.addEventListener("keyup", handleSnapKeyUp);
 
     const context = gsap.context(() => {
       gsap.from(".site-header", {
@@ -434,25 +345,13 @@ export function ScrollMotion() {
       window.requestAnimationFrame(() => {
         if (!isActive) return;
         refresh();
-        snapReady = true;
       });
     });
     window.addEventListener("load", refresh, { once: true });
     window.requestAnimationFrame(refresh);
-    window.requestAnimationFrame(() => {
-      snapReady = true;
-    });
 
     return () => {
       isActive = false;
-      window.clearTimeout(snapTimer);
-      cancelSnap();
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", cancelSnap);
-      window.removeEventListener("touchend", queueSnap);
-      window.removeEventListener("pointerdown", cancelSnap);
-      window.removeEventListener("keydown", handleSnapKeyDown);
-      window.removeEventListener("keyup", handleSnapKeyUp);
       window.removeEventListener("load", refresh);
       context.revert();
     };
