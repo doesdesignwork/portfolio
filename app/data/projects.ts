@@ -21,16 +21,16 @@ export type Project = {
 export const projects: Project[] = [
   {
     number: "01",
-    title: "A fashion concept designed to hold its own.",
+    title: "A fashion identity designed to hold its own.",
     client: "Modajar",
-    context: "Independent fashion-brand concept",
+    context: "Fashion-brand identity work through The Fat Oracle (TFO)",
     role: "Naming, identity and digital-brand design",
-    credit: "Independent concept and design work",
+    credit: "Completed while working at The Fat Oracle (TFO)",
     discipline: "Naming · Brand Identity · Digital Retail",
-    summary: "I developed the name and identity direction for an independent fashion concept, then explored how the system could extend into digital retail, packaging and stationery.",
-    challenge: "Give a new fashion proposition enough confidence and distinction to sit credibly beside established retailers.",
+    summary: "While working at TFO, I developed the Modajar name and identity direction, then extended the system into digital retail, packaging and stationery.",
+    challenge: "Give a new fashion brand enough confidence and distinction to sit credibly beside established retailers.",
     approach: "The work centred on a bird mark and a restrained monochrome visual language, carried across digital and physical applications.",
-    deliverables: "A developed concept covering naming, identity, brand character, digital retail, packaging and stationery applications.",
+    deliverables: "Naming, identity, brand character, digital retail, packaging and stationery applications for the Modajar brand.",
     featured: true,
     images: [
       "/assets/modajar-identity-final.webp",
