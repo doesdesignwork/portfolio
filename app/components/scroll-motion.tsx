@@ -10,9 +10,9 @@ const revealLines = (
   start = "top 82%",
 ) =>
   gsap.from(targets, {
-    yPercent: 108,
-    autoAlpha: 0,
-    clipPath: "inset(0 0 100% 0)",
+    yPercent: 72,
+    autoAlpha: 0.18,
+    clipPath: "inset(0 0 75% 0)",
     duration: 0.88,
     stagger: 0.1,
     ease: "power4.out",
@@ -129,7 +129,7 @@ export function ScrollMotion() {
 
       gsap.from(".manifesto p", {
         x: compact ? 34 : 92,
-        autoAlpha: 0,
+        autoAlpha: 0.35,
         duration: 0.78,
         ease: "power4.out",
         scrollTrigger: {
@@ -149,16 +149,16 @@ export function ScrollMotion() {
       workHeading
         .from(".work-heading > p", {
           x: compact ? -24 : -54,
-          autoAlpha: 0,
+          autoAlpha: 0.4,
           duration: 0.48,
           ease: "power4.out",
         })
         .from(
           ".work-heading h2",
           {
-            yPercent: 72,
-            autoAlpha: 0,
-            clipPath: "inset(0 0 100% 0)",
+            yPercent: 58,
+            autoAlpha: 0.25,
+            clipPath: "inset(0 0 70% 0)",
             duration: 0.78,
             ease: "power4.out",
           },
@@ -168,7 +168,7 @@ export function ScrollMotion() {
           ".work-heading > span",
           {
             x: compact ? 30 : 76,
-            autoAlpha: 0,
+            autoAlpha: 0.35,
             duration: 0.66,
             ease: "power4.out",
           },
@@ -191,8 +191,8 @@ export function ScrollMotion() {
         projectTimeline
           .fromTo(media, {
             clipPath: fromLeft
-              ? "inset(0 100% 0 0)"
-              : "inset(0 0 0 100%)",
+              ? "inset(0 85% 0 0)"
+              : "inset(0 0 0 85%)",
           }, {
             clipPath: "inset(0 0% 0 0%)",
             duration: 1.02,
@@ -209,7 +209,7 @@ export function ScrollMotion() {
           }, 0)
           .from(captionItems, {
             x: fromLeft ? -28 : 28,
-            autoAlpha: 0,
+            autoAlpha: 0.35,
             duration: 0.48,
             stagger: 0.055,
             ease: "power3.out",
@@ -239,20 +239,20 @@ export function ScrollMotion() {
       moreWorkHeading
         .from(".more-work-kicker", {
           x: compact ? -22 : -48,
-          autoAlpha: 0,
+          autoAlpha: 0.4,
           duration: 0.42,
           ease: "power4.out",
         })
         .from(".more-work-heading h3", {
-          yPercent: 82,
-          autoAlpha: 0,
-          clipPath: "inset(0 0 100% 0)",
+          yPercent: 64,
+          autoAlpha: 0.25,
+          clipPath: "inset(0 0 70% 0)",
           duration: 0.82,
           ease: "power4.out",
         }, "-=0.22")
         .from(".more-work-heading p", {
           x: compact ? 28 : 72,
-          autoAlpha: 0,
+          autoAlpha: 0.35,
           duration: 0.66,
           ease: "power4.out",
         }, "-=0.46");
@@ -274,8 +274,8 @@ export function ScrollMotion() {
         projectTimeline
           .fromTo(media, {
             clipPath: fromLeft
-              ? "inset(0 100% 0 0)"
-              : "inset(0 0 0 100%)",
+              ? "inset(0 86% 0 0)"
+              : "inset(0 0 0 86%)",
           }, {
             clipPath: "inset(0 0% 0 0%)",
             duration: 0.82,
@@ -292,7 +292,7 @@ export function ScrollMotion() {
           }, 0)
           .from(copy, {
             x: fromLeft ? -20 : 20,
-            autoAlpha: 0,
+            autoAlpha: 0.4,
             duration: 0.42,
             ease: "power3.out",
           }, "-=0.34");
@@ -324,20 +324,20 @@ export function ScrollMotion() {
       aboutTimeline
         .from(".about-copy > *", {
           x: compact ? -28 : -72,
-          autoAlpha: 0,
+          autoAlpha: 0.35,
           duration: 0.72,
           stagger: 0.09,
           ease: "power4.out",
         })
         .from(".career-ledger > div", {
-          clipPath: "inset(0 100% 0 0)",
+          clipPath: "inset(0 38% 0 0)",
           duration: 0.72,
           stagger: 0.09,
           ease: "power4.inOut",
         }, "-=0.48")
         .from(".career-ledger dt, .career-ledger dd", {
           x: compact ? 20 : 40,
-          autoAlpha: 0,
+          autoAlpha: 0.5,
           duration: 0.46,
           stagger: 0.045,
           ease: "power3.out",
@@ -345,7 +345,7 @@ export function ScrollMotion() {
 
       gsap.from(".capability-index li", {
         x: (index: number) => (index % 2 === 0 ? -34 : 34),
-        autoAlpha: 0,
+        autoAlpha: 0.35,
         duration: 0.62,
         stagger: 0.07,
         ease: "power4.out",
@@ -360,8 +360,8 @@ export function ScrollMotion() {
 
       gsap.from(".process-section li", {
         x: compact ? 34 : 84,
-        autoAlpha: 0,
-        clipPath: "inset(0 0 0 100%)",
+        autoAlpha: 0.35,
+        clipPath: "inset(0 0 0 80%)",
         duration: 0.76,
         stagger: 0.11,
         ease: "power4.out",
@@ -376,7 +376,7 @@ export function ScrollMotion() {
 
       gsap.from(".contact-links a", {
         x: (index: number) => (index % 2 === 0 ? -48 : 48),
-        autoAlpha: 0,
+        autoAlpha: 0.4,
         duration: 0.68,
         stagger: 0.09,
         ease: "power4.out",
@@ -389,7 +389,7 @@ export function ScrollMotion() {
 
       gsap.from(".footer-line > *", {
         y: 24,
-        autoAlpha: 0,
+        autoAlpha: 0.5,
         duration: 0.46,
         stagger: 0.07,
         ease: "power3.out",
