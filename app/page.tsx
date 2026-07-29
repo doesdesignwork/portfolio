@@ -249,6 +249,34 @@ export default function Home() {
       `${window.location.pathname}${window.location.search}${href}`,
     );
 
+    if (targetId === "top") {
+      const scrollingElement = document.scrollingElement;
+      root.style.scrollBehavior = "auto";
+      root.style.scrollSnapType = "none";
+      void root.offsetHeight;
+
+      if (scrollingElement) {
+        scrollingElement.scrollTop = 0;
+      } else {
+        window.scrollTo(0, 0);
+      }
+
+      window.requestAnimationFrame(() => {
+        if (scrollingElement) {
+          scrollingElement.scrollTop = 0;
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        window.requestAnimationFrame(() => {
+          root.style.removeProperty("scroll-behavior");
+          root.style.removeProperty("scroll-snap-type");
+          root.classList.remove("is-programmatic-scroll");
+        });
+      });
+      return;
+    }
+
     let hasSettled = false;
     let fallbackTimer = 0;
     const finishNavigation = () => {
@@ -256,26 +284,8 @@ export default function Home() {
       hasSettled = true;
       window.clearTimeout(fallbackTimer);
       window.removeEventListener("scrollend", finishNavigation);
-
-      if (targetId === "top") {
-        if (document.scrollingElement) {
-          document.scrollingElement.scrollTop = 0;
-        } else {
-          window.scrollTo(0, 0);
-        }
-      }
       root.classList.remove("is-programmatic-scroll");
     };
-
-    if (targetId === "top") {
-      if (document.scrollingElement) {
-        document.scrollingElement.scrollTop = 0;
-      } else {
-        window.scrollTo(0, 0);
-      }
-      window.requestAnimationFrame(finishNavigation);
-      return;
-    }
 
     window.addEventListener("scrollend", finishNavigation, { once: true });
     window.scrollTo({
