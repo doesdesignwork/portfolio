@@ -264,12 +264,13 @@ export default function Home() {
     };
 
     window.addEventListener("scrollend", finishNavigation, { once: true });
+    const shouldScrollInstantly = targetId === "top" || reducedMotion;
     window.scrollTo({
       top: destination,
-      behavior: reducedMotion ? "auto" : "smooth",
+      behavior: shouldScrollInstantly ? "auto" : "smooth",
     });
 
-    if (reducedMotion) {
+    if (shouldScrollInstantly) {
       window.requestAnimationFrame(finishNavigation);
     } else {
       fallbackTimer = window.setTimeout(finishNavigation, 1600);
