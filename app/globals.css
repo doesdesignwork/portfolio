@@ -38,9 +38,13 @@ html {
   text-size-adjust: 100%;
 }
 
+html.is-programmatic-scroll {
+  scroll-snap-type: none;
+}
+
 body {
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--ink);
   color: var(--paper);
   font-family: var(--font-body), "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -104,7 +108,18 @@ img { max-width: 100%; }
 [data-snap-section] {
   min-height: calc(100dvh - 76px);
   scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+.hero,
+.manifesto,
+.contact-section {
   scroll-snap-stop: always;
+}
+
+@media (pointer: coarse) {
+  html { scroll-snap-type: y proximity; }
+  html.is-programmatic-scroll { scroll-snap-type: none; }
 }
 
 .snap-panel {
@@ -1275,7 +1290,11 @@ img { max-width: 100%; }
     --section-space: 72px;
   }
 
-  html { scroll-padding-top: 70px; }
+  html {
+    scroll-padding-top: 70px;
+    scroll-snap-type: y proximity;
+  }
+  html.is-programmatic-scroll { scroll-snap-type: none; }
   [data-snap-section] {
     min-height: calc(100dvh - 70px);
   }

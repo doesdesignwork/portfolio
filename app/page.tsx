@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { ScrollMotion } from "./components/scroll-motion";
 import { projects, type Project } from "./data/projects";
 
@@ -223,6 +223,79 @@ export default function Home() {
     void changeProjectImage(selectedImageIndex + 1);
   };
 
+  const navigateToSection = useCallback((href: string) => {
+    const targetId = decodeURIComponent(href.slice(1));
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    const root = document.documentElement;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const scrollPaddingTop =
+      Number.parseFloat(window.getComputedStyle(root).scrollPaddingTop) || 0;
+    const destination =
+      targetId === "top"
+        ? 0
+        : Math.max(
+            0,
+            window.scrollY + target.getBoundingClientRect().top - scrollPaddingTop,
+          );
+
+    root.classList.add("is-programmatic-scroll");
+    window.history.pushState(
+      null,
+      "",
+      `${window.location.pathname}${window.location.search}${href}`,
+    );
+
+    let hasSettled = false;
+    let fallbackTimer = 0;
+    const finishNavigation = () => {
+      if (hasSettled) return;
+      hasSettled = true;
+      window.clearTimeout(fallbackTimer);
+      window.removeEventListener("scrollend", finishNavigation);
+
+      if (targetId === "top") {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+      root.classList.remove("is-programmatic-scroll");
+    };
+
+    window.addEventListener("scrollend", finishNavigation, { once: true });
+    window.scrollTo({
+      top: destination,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+
+    if (reducedMotion) {
+      window.requestAnimationFrame(finishNavigation);
+    } else {
+      fallbackTimer = window.setTimeout(finishNavigation, 1600);
+    }
+  }, []);
+
+  const handleSectionNavigation = useCallback(
+    (event: ReactMouseEvent<HTMLAnchorElement>) => {
+      const href = event.currentTarget.getAttribute("href");
+      if (
+        !href?.startsWith("#") ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      navigateToSection(href);
+    },
+    [navigateToSection],
+  );
+
   useEffect(() => {
     const syncProjectFromUrl = () => {
       const projectIndex = projectIndexFromHash(window.location.hash);
@@ -420,10 +493,10 @@ export default function Home() {
       <div className="scroll-progress" aria-hidden="true">
         <span />
       </div>
-      <a className="skip-link" href="#work">Skip to selected work</a>
+      <a className="skip-link" href="#work" onClick={handleSectionNavigation}>Skip to selected work</a>
 
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Gerard Teo, home">
+        <a className="wordmark" href="#top" aria-label="Gerard Teo, home" onClick={handleSectionNavigation}>
           <Image
             src="/assets/g-image.webp"
             alt=""
@@ -434,9 +507,9 @@ export default function Home() {
           />
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#work" onClick={handleSectionNavigation}>Work</a>
+          <a href="#about" onClick={handleSectionNavigation}>About</a>
+          <a href="#contact" onClick={handleSectionNavigation}>Contact</a>
           <a
             href="https://doesdesignwork.github.io/gerard-teo-cv/"
             target="_blank"
@@ -465,7 +538,7 @@ export default function Home() {
         <div className="hero-support">
           <p>I turn complex briefs into brand systems, campaigns and experiences people can understand and use.</p>
           <div className="hero-actions">
-            <a href="#work">View selected work</a>
+            <a href="#work" onClick={handleSectionNavigation}>View selected work</a>
             <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer">Leadership CV</a>
           </div>
         </div>
@@ -627,7 +700,7 @@ export default function Home() {
         <div className="footer-line">
           <span>Gerard Teo / Singapore</span>
           <span>Art Director / Creative Lead / Hands-on maker</span>
-          <a href="#top">Back to top</a>
+          <a href="#top" onClick={handleSectionNavigation}>Back to top</a>
         </div>
       </footer>
 
@@ -720,7 +793,16 @@ export default function Home() {
                   <button type="button" onClick={showPreviousProject}>Previous project</button>
                   <button type="button" onClick={showNextProject}>Next project</button>
                 </div>
-                <a href="#contact" onClick={closeProject}>Discuss a project</a>
+                <a
+                  href="#contact"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    closeProject();
+                    window.requestAnimationFrame(() => navigateToSection("#contact"));
+                  }}
+                >
+                  Discuss a project
+                </a>
               </div>
             </aside>
           </div>
