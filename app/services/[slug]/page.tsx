@@ -84,7 +84,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       "@type": "Person",
       "@id": `${siteUrl}/#person`,
       name: "Gerard Teo",
-      jobTitle: "Art Director & Creative Lead",
+      jobTitle: "Art Director and Senior Brand Designer",
     },
   };
 

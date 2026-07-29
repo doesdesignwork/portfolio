@@ -18,7 +18,7 @@ export function InteriorHeader() {
         <Link href="/#work">Work</Link>
         <Link href="/#about">About</Link>
         <Link href="/#contact">Contact</Link>
-        <a href="https://doesdesignwork.github.io/gerard-teo-cv/" target="_blank" rel="noopener noreferrer">CV</a>
+        <Link href="/cv/">CV</Link>
       </nav>
     </header>
   );

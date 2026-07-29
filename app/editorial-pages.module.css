@@ -218,6 +218,46 @@
   line-height: 1.25;
 }
 
+.relatedServices {
+  margin-top: clamp(64px, 8vw, 104px);
+  padding: clamp(30px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: minmax(150px, .45fr) minmax(0, 1.55fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: start;
+  background: var(--palette-cobalt);
+  color: var(--palette-ivory);
+}
+
+.relatedServices h2 {
+  margin: 0;
+  color: var(--palette-lime);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.relatedServices div {
+  display: grid;
+}
+
+.relatedServices a {
+  padding: 15px 0;
+  border-top: 1px solid color-mix(in srgb, var(--palette-ivory) 25%, transparent);
+  font-size: clamp(18px, 2vw, 27px);
+  line-height: 1.3;
+}
+
+.relatedServices a:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--palette-ivory) 25%, transparent);
+}
+
+.relatedServices a:hover,
+.relatedServices a:focus-visible {
+  color: var(--palette-lime);
+}
+
 .serviceIntro {
   padding: clamp(66px, 8vw, 110px) 0;
   display: grid;
@@ -356,6 +396,171 @@
   font-weight: 650;
 }
 
+.cvMain {
+  max-width: var(--content-width);
+}
+
+.cvTitle {
+  max-width: 900px;
+  margin: clamp(28px, 4vw, 48px) 0 0;
+  color: var(--palette-cobalt);
+  font-family: var(--font-heading), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(27px, 4vw, 54px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+}
+
+.cvTitle span {
+  margin-top: 10px;
+  display: block;
+  color: color-mix(in srgb, var(--palette-ink) 58%, transparent);
+  font-family: var(--font-body), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(13px, 1.3vw, 17px);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.cvActions {
+  margin-top: clamp(34px, 5vw, 56px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cvActions a,
+.cvActions button {
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--palette-ink) 22%, transparent);
+  background: transparent;
+  color: var(--palette-ink);
+  cursor: pointer;
+}
+
+.cvActions a:first-child {
+  border-color: var(--palette-ink);
+  background: var(--palette-ink);
+  color: var(--palette-lime);
+}
+
+.cvActions a:hover,
+.cvActions a:focus-visible,
+.cvActions button:hover,
+.cvActions button:focus-visible {
+  border-color: var(--palette-cobalt);
+  background: var(--palette-cobalt);
+  color: var(--palette-ivory);
+}
+
+.cvLayout {
+  padding-top: clamp(70px, 9vw, 120px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(270px, .75fr);
+  gap: clamp(52px, 8vw, 112px);
+}
+
+.cvSection + .cvSection {
+  margin-top: clamp(66px, 8vw, 100px);
+}
+
+.cvSection > h2,
+.cvSidebar h2 {
+  margin: 0;
+  padding-bottom: 13px;
+  border-bottom: 1px solid color-mix(in srgb, var(--palette-ink) 30%, transparent);
+  color: var(--palette-cobalt);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.cvRole {
+  padding: 24px 0 30px;
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 24px;
+  border-bottom: 1px solid color-mix(in srgb, var(--palette-ink) 15%, transparent);
+}
+
+.cvRole > p {
+  margin: 0;
+  color: var(--palette-cobalt);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.cvRole h3 {
+  margin: 0;
+  font-size: clamp(19px, 2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+
+.cvRole div > p {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.cvRole div > p:first-of-type {
+  color: color-mix(in srgb, var(--palette-ink) 58%, transparent);
+  font-size: 14px;
+}
+
+.cvSidebar {
+  padding-left: clamp(24px, 3vw, 42px);
+  border-left: 1px solid color-mix(in srgb, var(--palette-ink) 28%, transparent);
+}
+
+.cvSidebar section + section {
+  margin-top: 52px;
+}
+
+.cvSidebar h2 {
+  margin-bottom: 17px;
+}
+
+.cvSidebar a {
+  padding: 10px 0;
+  display: block;
+  border-top: 1px solid color-mix(in srgb, var(--palette-ink) 15%, transparent);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.cvSidebar a:hover,
+.cvSidebar a:focus-visible {
+  color: var(--palette-cobalt);
+}
+
+.cvSidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cvSidebar li,
+.cvSidebar p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cvSidebar li {
+  padding: 10px 0;
+  border-top: 1px solid color-mix(in srgb, var(--palette-ink) 15%, transparent);
+}
+
+.cvSidebar p + p {
+  margin-top: 18px;
+}
+
 @media (max-width: 760px) {
   .main { padding-top: 30px; }
   .hero h1 { font-size: clamp(44px, 14vw, 72px); }
@@ -378,4 +583,68 @@
   .serviceIntro { grid-template-columns: 1fr; }
   .proofCard { min-height: 170px; }
   .projectNav a:last-child { text-align: left; }
+  .relatedServices,
+  .cvLayout {
+    grid-template-columns: 1fr;
+  }
+  .cvRole {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .cvSidebar {
+    padding: 34px 0 0;
+    border-top: 1px solid color-mix(in srgb, var(--palette-ink) 28%, transparent);
+    border-left: 0;
+  }
+}
+
+@media print {
+  .cvMain {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .cvMain > nav,
+  .cvActions,
+  .cvMain > .cta {
+    display: none;
+  }
+
+  .cvMain .hero {
+    margin-top: 0;
+    padding-bottom: 30px;
+  }
+
+  .cvMain .hero h1 {
+    font-size: 54px;
+  }
+
+  .cvMain .deck {
+    font-size: 17px;
+  }
+
+  .cvLayout {
+    padding-top: 36px;
+    grid-template-columns: 1.85fr .75fr;
+    gap: 32px;
+  }
+
+  .cvRole {
+    padding: 14px 0 17px;
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 16px;
+    break-inside: avoid;
+  }
+
+  .cvRole h3 {
+    font-size: 16px;
+  }
+
+  .cvRole div > p,
+  .cvSidebar li,
+  .cvSidebar p,
+  .cvSidebar a {
+    font-size: 10px;
+  }
 }

@@ -20,6 +20,24 @@ export function generateStaticParams() {
 const getProject = (slug: string) =>
   projects.find((project) => project.slug === slug);
 
+const serviceLinks = [
+  {
+    href: "/services/brand-identity-design-singapore/",
+    label: "Brand identity design in Singapore",
+    signals: ["Brand", "Identity", "Naming", "Campaign"],
+  },
+  {
+    href: "/services/experiential-exhibition-design-singapore/",
+    label: "Experiential and exhibition design in Singapore",
+    signals: ["Experiential", "Exhibition", "Environmental"],
+  },
+  {
+    href: "/services/packaging-product-design-singapore/",
+    label: "Packaging and product visualisation in Singapore",
+    signals: ["Packaging", "Product", "3D Visualisation", "Label", "FMCG"],
+  },
+];
+
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
@@ -66,6 +84,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const previous = projects[(index - 1 + projects.length) % projects.length];
   const next = projects[(index + 1) % projects.length];
   const canonicalUrl = `${siteUrl}/work/${project.slug}/`;
+  const relatedServices = serviceLinks.filter((service) =>
+    service.signals.some((signal) => project.discipline.includes(signal)),
+  );
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -75,7 +96,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     name: project.seoTitle,
     headline: project.title,
     description: project.summary,
-    image: project.images.map((image) => `${siteUrl}${image}`),
+    image: project.images.map((image, imageIndex) => ({
+      "@type": "ImageObject",
+      contentUrl: `${siteUrl}${image}`,
+      url: `${siteUrl}${image}`,
+      caption: `${project.alt}, view ${imageIndex + 1} of ${project.images.length}`,
+      creator: {
+        "@type": "Person",
+        "@id": `${siteUrl}/#person`,
+        name: "Gerard Teo",
+      },
+      creditText: project.credit ?? "Gerard Teo portfolio",
+      copyrightNotice: "Copyright Gerard Teo and respective project owners",
+    })),
     keywords: [project.primaryKeyword, ...project.discipline.split(" · ")],
     contributor: {
       "@type": "Person",
@@ -131,13 +164,27 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     width={1800}
                     height={1400}
                     sizes="(max-width: 760px) 100vw, 50vw"
-                    unoptimized
                   />
-                  <figcaption>{project.client} / {String(imageIndex + 1).padStart(2, "0")}</figcaption>
+                  <figcaption>
+                    {project.alt}, view {imageIndex + 1} of {project.images.length}
+                  </figcaption>
                 </figure>
               ))}
             </div>
           </section>
+
+          {relatedServices.length > 0 && (
+            <nav className={styles.relatedServices} aria-label="Related expertise">
+              <h2>Related expertise</h2>
+              <div>
+                {relatedServices.map((service) => (
+                  <Link key={service.href} href={service.href}>
+                    {service.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          )}
 
           <nav className={styles.projectNav} aria-label="Other case studies">
             <Link href={`/work/${previous.slug}/`}><small>Previous case study</small><strong>{previous.client}</strong></Link>
