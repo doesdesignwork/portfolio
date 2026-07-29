@@ -1,5 +1,8 @@
 export type Project = {
   number: string;
+  slug: string;
+  seoTitle: string;
+  primaryKeyword: string;
   title: string;
   client: string;
   context: string;
@@ -22,6 +25,9 @@ export type Project = {
 export const projects: Project[] = [
   {
     number: "01",
+    slug: "modajar-fashion-brand-identity",
+    seoTitle: "Modajar Fashion Brand Identity Design",
+    primaryKeyword: "fashion brand identity design",
     title: "A fashion identity designed to hold its own.",
     client: "Modajar",
     context: "Fashion-brand identity work through The Fat Oracle (TFO)",
@@ -45,6 +51,9 @@ export const projects: Project[] = [
   },
   {
     number: "02",
+    slug: "brewerkz-beer-packaging",
+    seoTitle: "Brewerkz Beer Packaging and Label Design",
+    primaryKeyword: "beer packaging design",
     title: "Beer labels with actual personality.",
     client: "Brewerkz",
     context: "Craft-beer label series",
@@ -62,6 +71,9 @@ export const projects: Project[] = [
   },
   {
     number: "03",
+    slug: "american-express-dbs-card-concepts",
+    seoTitle: "American Express and DBS Card Design Concepts",
+    primaryKeyword: "American Express card design concepts",
     title: "Premium card concepts with a clear brand hierarchy.",
     client: "American Express · DBS card concepts",
     context: "Premium and co-branded card-design concepts through The Fat Oracle (TFO)",
@@ -79,6 +91,9 @@ export const projects: Project[] = [
   },
   {
     number: "04",
+    slug: "sunsilk-unilever-packaging-design",
+    seoTitle: "Sunsilk Packaging and FMCG Brand Refresh",
+    primaryKeyword: "Sunsilk packaging design",
     title: "A global haircare brand, sharpened.",
     client: "Sunsilk · Unilever",
     context: "Consumer-brand refresh work through Crepuscule",
@@ -101,6 +116,9 @@ export const projects: Project[] = [
   },
   {
     number: "05",
+    slug: "herdsman-retail-branding-perth",
+    seoTitle: "The Herdsman Retail Branding and Experience Design",
+    primaryKeyword: "retail brand identity design",
     title: "One food brand. Every touchpoint.",
     client: "The Herdsman · Perth",
     context: "Premium food retail expansion",
@@ -123,6 +141,9 @@ export const projects: Project[] = [
   },
   {
     number: "06",
+    slug: "100-pasir-panjang-property-branding",
+    seoTitle: "100 Pasir Panjang Property Brand Identity",
+    primaryKeyword: "property brand identity Singapore",
     title: "An industrial address people could remember.",
     client: "100 Pasir Panjang",
     context: "Property naming and identity for CEL Development",
@@ -139,6 +160,9 @@ export const projects: Project[] = [
   },
   {
     number: "07",
+    slug: "beneo-palatinit-product-visualisation",
+    seoTitle: "BENEO Product and Packaging Visualisation",
+    primaryKeyword: "food product visualisation",
     title: "Healthier ingredients, turned into real products.",
     client: "BENEO Palatinit",
     context: "Ingredient-led product visualisation",
@@ -163,6 +187,9 @@ export const projects: Project[] = [
   },
   {
     number: "08",
+    slug: "dow-chinaplas-exhibition-design",
+    seoTitle: "Dow ChinaPlas Exhibition Design",
+    primaryKeyword: "Dow ChinaPlas exhibition design",
     title: "Making industrial innovation easy to get.",
     client: "Dow Chemical · ChinaPlas",
     context: "ChinaPlas exhibition concepts",
@@ -186,6 +213,9 @@ export const projects: Project[] = [
   },
   {
     number: "09",
+    slug: "raffles-institution-identity-design",
+    seoTitle: "Raffles Institution Identity Design",
+    primaryKeyword: "institutional identity design",
     title: "A cleaner system for a school with history.",
     client: "Raffles Institution",
     context: "Institutional identity and application work",
@@ -206,6 +236,9 @@ export const projects: Project[] = [
   },
   {
     number: "10",
+    slug: "beneo-functional-food-product-concepts",
+    seoTitle: "BENEO Functional Food Product Concepts",
+    primaryKeyword: "food ingredient product concepts",
     title: "Health products that look worth wanting.",
     client: "BENEO Product Concepts",
     context: "Functional-food concept studies",
@@ -228,6 +261,9 @@ export const projects: Project[] = [
   },
   {
     number: "11",
+    slug: "passion-group-hospitality-brand-architecture",
+    seoTitle: "Passion Group Hospitality Brand Architecture",
+    primaryKeyword: "hospitality brand identity",
     title: "Six restaurant identities, one group logic.",
     client: "Passion Group",
     context: "Brand architecture across six restaurant concepts",
@@ -248,6 +284,9 @@ export const projects: Project[] = [
   },
   {
     number: "12",
+    slug: "munch-food-retail-brand-identity",
+    seoTitle: "MUNCH Food Retail Brand Identity",
+    primaryKeyword: "food retail brand identity",
     title: "A food brand built around a bite.",
     client: "MUNCH",
     context: "Fast-casual food retail",
@@ -270,6 +309,9 @@ export const projects: Project[] = [
   },
   {
     number: "13",
+    slug: "sginnovate-brand-identity",
+    seoTitle: "SGInnovate Brand Identity System",
+    primaryKeyword: "SGInnovate brand identity",
     title: "One clear system for a complex innovation brand.",
     client: "SGInnovate",
     context: "Brand-system work through The Fat Oracle (TFO)",
@@ -299,6 +341,9 @@ export const projects: Project[] = [
   },
   {
     number: "14",
+    slug: "skechers-collaboration-footwear-concepts",
+    seoTitle: "Skechers Licensed Footwear Collaboration Concepts",
+    primaryKeyword: "Skechers collaboration footwear concepts",
     title: "Big characters, explored through the product.",
     client: "Skechers collaboration concepts",
     context: "Licensed-footwear concept study",
@@ -321,6 +366,9 @@ export const projects: Project[] = [
   },
   {
     number: "15",
+    slug: "unilever-beauty-packaging",
+    seoTitle: "Unilever Beauty Packaging Concepts",
+    primaryKeyword: "Unilever beauty packaging concepts",
     title: "Beauty packaging with a clearer shelf story.",
     client: "Unilever beauty packaging concepts",
     context: "Multi-brand packaging concept studies through Crepuscule",
