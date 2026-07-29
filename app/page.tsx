@@ -258,19 +258,32 @@ export default function Home() {
       window.removeEventListener("scrollend", finishNavigation);
 
       if (targetId === "top") {
-        window.scrollTo({ top: 0, behavior: "auto" });
+        if (document.scrollingElement) {
+          document.scrollingElement.scrollTop = 0;
+        } else {
+          window.scrollTo(0, 0);
+        }
       }
       root.classList.remove("is-programmatic-scroll");
     };
 
+    if (targetId === "top") {
+      if (document.scrollingElement) {
+        document.scrollingElement.scrollTop = 0;
+      } else {
+        window.scrollTo(0, 0);
+      }
+      window.requestAnimationFrame(finishNavigation);
+      return;
+    }
+
     window.addEventListener("scrollend", finishNavigation, { once: true });
-    const shouldScrollInstantly = targetId === "top" || reducedMotion;
     window.scrollTo({
       top: destination,
-      behavior: shouldScrollInstantly ? "auto" : "smooth",
+      behavior: reducedMotion ? "auto" : "smooth",
     });
 
-    if (shouldScrollInstantly) {
+    if (reducedMotion) {
       window.requestAnimationFrame(finishNavigation);
     } else {
       fallbackTimer = window.setTimeout(finishNavigation, 1600);
