@@ -4,9 +4,10 @@ import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const siteTitle = "Gerard Teo | Art Director & Creative Lead Singapore";
+const siteTitle =
+  "Gerard Teo | Art Director & Senior Brand Designer Singapore";
 const siteDescription =
-  "Gerard Teo is a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.";
+  "Singapore art director and senior brand designer with 26+ years across brand identity, campaigns, packaging, exhibitions and creative production.";
 
 const bodyFont = Krub({
   variable: "--font-body",
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
   keywords: [
     "Gerard Teo",
     "art director Singapore",
+    "senior brand designer Singapore",
     "creative lead Singapore",
     "creative direction",
     "brand identity design",
@@ -114,16 +116,14 @@ const structuredData = {
       name: "Gerard Teo",
       url: siteUrl,
       email: "mailto:g@doesdesignwork.com",
-      jobTitle: "Art Director & Creative Lead",
-      sameAs: [
-        "https://www.linkedin.com/in/gerard-teo-0b106429/",
-        "https://doesdesignwork.github.io/gerard-teo-cv/",
-      ],
+      jobTitle: "Art Director and Senior Brand Designer",
+      alternateName: "Creative Lead",
+      sameAs: ["https://www.linkedin.com/in/gerard-teo-0b106429/"],
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
       subjectOf: {
         "@type": "WebPage",
         name: "Gerard Teo - Online CV",
-        url: "https://doesdesignwork.github.io/gerard-teo-cv/",
+        url: `${siteUrl}/cv/`,
       },
       address: {
         "@type": "PostalAddress",
@@ -154,7 +154,7 @@ const structuredData = {
       "@type": "ProfilePage",
       "@id": `${siteUrl}/#profile-page`,
       url: siteUrl,
-      name: "Gerard Teo - Art Director & Creative Lead",
+      name: "Gerard Teo - Art Director and Senior Brand Designer",
       description: siteDescription,
       inLanguage: "en-SG",
       mainEntity: { "@id": `${siteUrl}/#person` },

@@ -6,9 +6,9 @@ const visibleProjectCount = projects.filter(
   (project) => project.featured || project.selected !== false,
 ).length;
 
-const content = `# Gerard Teo - Art Director & Creative Lead
+const content = `# Gerard Teo - Art Director & Senior Brand Designer
 
-> Hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences from pitch through production.
+> Hands-on Singapore art director, senior brand designer and creative lead shaping brand systems, campaigns and experiences from pitch through production.
 
 This is Gerard Teo's official portfolio. It covers selected work, professional background, capabilities, client experience and contact information.
 
@@ -24,7 +24,7 @@ Last updated: ${lastModified}
 - [Full project catalogue](${siteUrl}/llms-full.txt): Plain-text details for every featured project.
 - [Machine-readable portfolio index](${siteUrl}/agent-index.json): Structured JSON describing Gerard and all featured projects.
 - [Robots policy](${siteUrl}/robots.txt): Crawl permissions for search and user-directed agents.
-- [Online CV](https://doesdesignwork.github.io/gerard-teo-cv/): Gerard Teo's detailed curriculum vitae.
+- [Online CV](${siteUrl}/cv/): Gerard Teo's detailed curriculum vitae on the canonical portfolio domain.
 - [XML sitemap](${siteUrl}/sitemap.xml): Canonical crawl entry point.
 
 ## Contact

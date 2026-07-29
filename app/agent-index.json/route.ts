@@ -3,20 +3,21 @@ import { services } from "../data/services";
 import { lastModified, siteUrl } from "@/lib/site";
 
 const index = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   canonicalUrl: `${siteUrl}/`,
-  title: "Gerard Teo | Art Director & Creative Lead Singapore",
+  title: "Gerard Teo | Art Director & Senior Brand Designer Singapore",
   description:
-    "Official portfolio of Gerard Teo, a hands-on Singapore art director and creative lead shaping brand systems, campaigns and experiences.",
+    "Official portfolio of Gerard Teo, a hands-on Singapore art director, senior brand designer and creative lead shaping brand systems, campaigns and experiences.",
   language: "en-SG",
   lastModified,
   contentType: "professional-portfolio",
   person: {
     name: "Gerard Teo",
-    role: "Art Director & Creative Lead",
+    role: "Art Director & Senior Brand Designer",
+    secondaryRole: "Creative Lead",
     location: "Singapore",
     email: "g@doesdesignwork.com",
-    cv: "https://doesdesignwork.github.io/gerard-teo-cv/",
+    cv: `${siteUrl}/cv/`,
     capabilities: [
       "Creative direction",
       "Brand identity",
@@ -33,6 +34,7 @@ const index = {
     work: `${siteUrl}/#work`,
     about: `${siteUrl}/#about`,
     contact: `${siteUrl}/#contact`,
+    cv: `${siteUrl}/cv/`,
     llms: `${siteUrl}/llms.txt`,
     fullCatalogue: `${siteUrl}/llms-full.txt`,
   },
@@ -41,7 +43,7 @@ const index = {
     robots: `${siteUrl}/robots.txt`,
     llms: `${siteUrl}/llms.txt`,
     fullCatalogue: `${siteUrl}/llms-full.txt`,
-    onlineCv: "https://doesdesignwork.github.io/gerard-teo-cv/",
+    onlineCv: `${siteUrl}/cv/`,
   },
   services: services.map((service) => ({
     name: service.title,

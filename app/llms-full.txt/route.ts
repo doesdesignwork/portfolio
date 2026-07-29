@@ -42,7 +42,7 @@ Canonical portfolio: ${siteUrl}/
 
 Last updated: ${lastModified}
 
-Gerard Teo is a Singapore-based Art Director and Creative Lead who stays close to the work from pitch through production. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation, motion and UX thinking.
+Gerard Teo is a Singapore-based Art Director, Senior Brand Designer and Creative Lead who stays close to the work from pitch through production. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation, motion and UX thinking.
 
 ${projectCatalogue}
 
@@ -60,7 +60,7 @@ Apple, L'Oréal, Unilever, Dow, Singtel, StarHub, BlackBerry, MTV Asia, EMI Musi
 
 - Email: g@doesdesignwork.com
 - Location: Singapore
-- Online CV: https://doesdesignwork.github.io/gerard-teo-cv/
+- Online CV: ${siteUrl}/cv/
 
 ## Source guidance
 

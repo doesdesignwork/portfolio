@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { ScrollMotion } from "./components/scroll-motion";
@@ -108,7 +109,7 @@ export default function Home() {
   const aboutCopyMeasureRef = useRef<HTMLDivElement>(null);
   const careerLedgerRef = useRef<HTMLDListElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const lastProjectTriggerRef = useRef<HTMLButtonElement>(null);
+  const lastProjectTriggerRef = useRef<HTMLAnchorElement>(null);
   const imageRequestRef = useRef(0);
   const [activeProject, setActiveProject] = useState(0);
   const [activeProjectImage, setActiveProjectImage] = useState(0);
@@ -172,7 +173,7 @@ export default function Home() {
     [activeProject, activeProjectImage],
   );
 
-  const openProject = (project: Project, trigger: HTMLButtonElement) => {
+  const openProject = (project: Project, trigger: HTMLAnchorElement) => {
     const projectIndex = projects.indexOf(project);
     preloadProjectImages(project);
     preloadAdjacentProjectImages(project, 0);
@@ -181,6 +182,24 @@ export default function Home() {
     setActiveProject(projectIndex);
     setActiveProjectImage(0);
     setIsProjectOpen(true);
+  };
+
+  const handleProjectNavigation = (
+    event: ReactMouseEvent<HTMLAnchorElement>,
+    project: Project,
+  ) => {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    openProject(project, event.currentTarget);
   };
 
   const changeProject = (nextProject: Project) => {
@@ -444,15 +463,16 @@ export default function Home() {
   }, []);
 
   const renderFeaturedProject = (project: Project, index: number) => (
-    <button
+    <Link
       key={project.number}
       id={`project-${project.number}`}
       className={`featured-project featured-project-${index + 1}`}
-      type="button"
-      onClick={(event) => openProject(project, event.currentTarget)}
+      href={`/work/${project.slug}/`}
+      prefetch={false}
+      onClick={(event) => handleProjectNavigation(event, project)}
       onPointerEnter={() => preloadProjectImages(project)}
       onFocus={() => preloadProjectImages(project)}
-      aria-label={`Open ${project.client}: ${project.title}`}
+      aria-label={`View ${project.client} case study: ${project.title}`}
     >
       <span className="featured-project-media">
         <Image
@@ -472,22 +492,23 @@ export default function Home() {
         <span className="project-title">{project.title}</span>
         <span className="project-open">View project</span>
       </span>
-    </button>
+    </Link>
   );
 
   const renderSelectedProject = (project: Project) => {
     const tileSize = galleryTileSizes[project.number] ?? "tile-1x1";
 
     return (
-      <button
+      <Link
         key={project.number}
         id={`project-${project.number}`}
         className={`selected-project selected-project-${project.number} ${tileSize}`}
-        type="button"
-        onClick={(event) => openProject(project, event.currentTarget)}
+        href={`/work/${project.slug}/`}
+        prefetch={false}
+        onClick={(event) => handleProjectNavigation(event, project)}
         onPointerEnter={() => preloadProjectImages(project)}
         onFocus={() => preloadProjectImages(project)}
-        aria-label={`Open ${project.client}: ${project.title}`}
+        aria-label={`View ${project.client} case study: ${project.title}`}
       >
         <span className="selected-project-media">
           <Image
@@ -507,7 +528,7 @@ export default function Home() {
           <strong>{project.client}</strong>
           <small>{project.discipline}</small>
         </span>
-      </button>
+      </Link>
     );
   };
 
@@ -534,13 +555,7 @@ export default function Home() {
           <a href="#work" onClick={handleSectionNavigation}>Work</a>
           <a href="#about" onClick={handleSectionNavigation}>About</a>
           <a href="#contact" onClick={handleSectionNavigation}>Contact</a>
-          <a
-            href="https://doesdesignwork.github.io/gerard-teo-cv/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CV
-          </a>
+          <Link href="/cv/">CV</Link>
         </nav>
       </header>
 
@@ -552,7 +567,7 @@ export default function Home() {
       >
         <div className="hero-heading">
           <p className="hero-eyebrow">Gerard Teo</p>
-          <h1 id="hero-title" className="hero-role">Art Director and Creative Lead in Singapore</h1>
+          <h1 id="hero-title" className="hero-role">Art Director and Senior Brand Designer in Singapore</h1>
           <p className="hero-statement">
             <span>Clear thinking.</span>
             {" "}
@@ -564,7 +579,7 @@ export default function Home() {
           <p>I turn complex briefs into brand systems, campaigns and experiences people can understand and use.</p>
           <div className="hero-actions">
             <a href="#work" onClick={handleSectionNavigation}>View selected work</a>
-            <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer">Leadership CV</a>
+            <Link href="/cv/">Leadership CV</Link>
           </div>
         </div>
 
@@ -621,7 +636,7 @@ export default function Home() {
         <header className="work-heading" data-reveal>
           <p>Strategy / Direction / Execution</p>
           <h2 id="work-title">Selected work</h2>
-          <span>Three case studies that show how I turn complexity into a clear, usable system.</span>
+          <span>Selected brand identity, campaign, exhibition and digital-retail work, each with a full case study.</span>
         </header>
 
         <div className="featured-work">
@@ -724,12 +739,12 @@ export default function Home() {
         </h2>
         <div className="contact-links" data-reveal>
           <a href="mailto:g@doesdesignwork.com"><span>Email Gerard</span><small>g@doesdesignwork.com</small></a>
-          <a href="https://doesdesignwork.github.io/gerard-teo-cv/#director" target="_blank" rel="noopener noreferrer"><span>Leadership CV</span><small>Experience and role fit</small></a>
+          <Link href="/cv/"><span>Leadership CV</span><small>Experience and role fit</small></Link>
           <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><small>Connect professionally</small></a>
         </div>
         <div className="footer-line">
           <span>Gerard Teo / Singapore</span>
-          <span>Art Director / Creative Lead / Hands-on maker</span>
+          <span>Art Director / Senior Brand Designer / Creative Lead</span>
           <a href="#top" onClick={handleSectionNavigation}>Back to top</a>
         </div>
       </footer>
@@ -766,7 +781,7 @@ export default function Home() {
                 style={selectedImageStyle}
                 loading="eager"
                 fetchPriority="high"
-                unoptimized
+                sizes="(max-width: 900px) 100vw, 68vw"
               />
               {selectedProject.images.length > 1 && (
                 <div className="project-image-controls">
@@ -813,7 +828,7 @@ export default function Home() {
                       width={320}
                       height={220}
                       loading="eager"
-                      unoptimized
+                      sizes="96px"
                     />
                   </button>
                 ))}
