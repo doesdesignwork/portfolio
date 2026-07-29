@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InteriorHeader } from "@/app/components/interior-header";
 import { projects } from "@/app/data/projects";
@@ -92,7 +93,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <InteriorHeader />
       <main className={styles.main}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="/">Home</a><span>/</span><a href="/#work">Work</a><span>/</span><span>{project.client}</span>
+          <Link href="/">Home</Link><span>/</span><Link href="/#work">Work</Link><span>/</span><span>{project.client}</span>
         </nav>
 
         <article>
@@ -139,8 +140,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </section>
 
           <nav className={styles.projectNav} aria-label="Other case studies">
-            <a href={`/work/${previous.slug}/`}><small>Previous case study</small><strong>{previous.client}</strong></a>
-            <a href={`/work/${next.slug}/`}><small>Next case study</small><strong>{next.client}</strong></a>
+            <Link href={`/work/${previous.slug}/`}><small>Previous case study</small><strong>{previous.client}</strong></Link>
+            <Link href={`/work/${next.slug}/`}><small>Next case study</small><strong>{next.client}</strong></Link>
           </nav>
         </article>
 
