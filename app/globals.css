@@ -31,7 +31,7 @@
 html {
   min-width: 320px;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   scroll-padding-top: 76px;
   background: var(--ink);
   -webkit-text-size-adjust: 100%;
@@ -108,19 +108,27 @@ img { max-width: 100%; }
 
 [data-snap-section] {
   min-height: calc(100dvh - 76px);
-  scroll-snap-align: start;
+  scroll-snap-align: none;
   scroll-snap-stop: normal;
 }
 
 .hero,
 .manifesto,
+.process-section,
 .contact-section {
+  scroll-snap-align: start;
   scroll-snap-stop: always;
 }
 
-@media (pointer: coarse) {
-  html { scroll-snap-type: y proximity; }
-  html.is-programmatic-scroll { scroll-snap-type: none; }
+@media (hover: none), (pointer: coarse) {
+  html,
+  html.is-programmatic-scroll {
+    scroll-snap-type: none;
+  }
+
+  [data-snap-section] {
+    scroll-snap-align: none;
+  }
 }
 
 .snap-panel {
@@ -1293,7 +1301,7 @@ img { max-width: 100%; }
 
   html {
     scroll-padding-top: 70px;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: none;
   }
   html.is-programmatic-scroll { scroll-snap-type: none; }
   [data-snap-section] {
@@ -1406,7 +1414,7 @@ img { max-width: 100%; }
   .scroll-progress { display: none; }
   html {
     scroll-behavior: auto;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: none;
   }
   *,
   *::before,
