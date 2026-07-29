@@ -94,12 +94,12 @@ const projectIndexFromHash = (hash: string) => {
 };
 
 const capabilities = [
-  "Creative direction",
-  "Brand systems",
-  "Campaigns",
-  "Experiential",
-  "Packaging",
-  "3D visualisation",
+  { label: "Creative direction" },
+  { label: "Brand systems", href: "/services/brand-identity-design-singapore/" },
+  { label: "Campaigns" },
+  { label: "Experiential", href: "/services/experiential-exhibition-design-singapore/" },
+  { label: "Packaging", href: "/services/packaging-product-design-singapore/" },
+  { label: "3D visualisation", href: "/services/packaging-product-design-singapore/" },
 ];
 
 export default function Home() {
@@ -551,12 +551,13 @@ export default function Home() {
         data-snap-section
       >
         <div className="hero-heading">
-          <p className="hero-eyebrow">Gerard Teo / Art Director and Creative Lead / Singapore</p>
-          <h1 id="hero-title">
+          <p className="hero-eyebrow">Gerard Teo</p>
+          <h1 id="hero-title" className="hero-role">Art Director and Creative Lead in Singapore</h1>
+          <p className="hero-statement">
             <span>Clear thinking.</span>
             {" "}
             <em>Properly made.</em>
-          </h1>
+          </p>
         </div>
 
         <div className="hero-support">
@@ -682,7 +683,12 @@ export default function Home() {
 
         <ul className="capability-index" aria-label="Capabilities" data-reveal>
           {capabilities.map((capability, index) => (
-            <li key={capability}><b>{String(index + 1).padStart(2, "0")}</b><span>{capability}</span></li>
+            <li key={capability.label}>
+              <b>{String(index + 1).padStart(2, "0")}</b>
+              {capability.href
+                ? <a href={capability.href}>{capability.label}<small>View service</small></a>
+                : <span>{capability.label}</span>}
+            </li>
           ))}
         </ul>
       </section>
@@ -818,6 +824,7 @@ export default function Home() {
                   <button type="button" onClick={showPreviousProject}>Previous project</button>
                   <button type="button" onClick={showNextProject}>Next project</button>
                 </div>
+                <a href={`/work/${selectedProject.slug}/`}>Full case study</a>
                 <a
                   href="#contact"
                   onClick={(event) => {
