@@ -62,14 +62,23 @@ export function ScrollMotion() {
           duration: 0.28,
         }, 0)
         .from(
-          ".hero h1 > *",
+          ".hero-role",
+          {
+            x: compact ? -18 : -34,
+            autoAlpha: 0.55,
+            duration: 0.34,
+          },
+          0.05,
+        )
+        .from(
+          ".hero-statement > *",
           {
             yPercent: 24,
             autoAlpha: 0.62,
             duration: 0.46,
             stagger: 0.05,
           },
-          0.06,
+          0.1,
         )
         .from(
           ".hero-support > *",

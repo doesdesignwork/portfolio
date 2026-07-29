@@ -11,19 +11,23 @@ const projectCatalogue = projects
 
 **Project:** ${project.title}
 
+**Canonical case study:** ${siteUrl}/work/${project.slug}/
+
 **Disciplines:** ${project.discipline}
 
 ${project.summary}
 
 **Context:** ${project.context}
 
-**Role:** ${project.role}
+${project.credit ? `**Credit:** ${project.credit}\n\n` : ""}${project.year ? `**Year:** ${project.year}\n\n` : ""}**Business problem:** ${project.challenge}
 
-${project.credit ? `**Credit:** ${project.credit}\n\n` : ""}${project.year ? `**Year:** ${project.year}\n\n` : ""}**Challenge:** ${project.challenge}
+**My responsibility:** ${project.role}
 
-**My contribution:** ${project.approach}
+**Strategic decision:** ${project.approach}
 
-**What was delivered:** ${project.deliverables}
+**What was produced:** ${project.deliverables}
+
+**What changed:** ${project.outcome}
 
 **Portfolio images:**
 ${images}`;

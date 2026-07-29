@@ -1,8 +1,9 @@
 import { projects } from "../data/projects";
+import { services } from "../data/services";
 import { lastModified, siteUrl } from "@/lib/site";
 
 const index = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   canonicalUrl: `${siteUrl}/`,
   title: "Gerard Teo | Art Director & Creative Lead Singapore",
   description:
@@ -42,6 +43,11 @@ const index = {
     fullCatalogue: `${siteUrl}/llms-full.txt`,
     onlineCv: "https://doesdesignwork.github.io/gerard-teo-cv/",
   },
+  services: services.map((service) => ({
+    name: service.title,
+    primaryKeyword: service.primaryKeyword,
+    url: `${siteUrl}/services/${service.slug}/`,
+  })),
   sections: [
     { id: "work", name: "Selected projects", url: `${siteUrl}/#work` },
     { id: "about", name: "About Gerard Teo", url: `${siteUrl}/#about` },
@@ -68,19 +74,21 @@ const index = {
   ],
   projects: projects.map((project) => ({
     id: project.number,
-    schemaId: `${siteUrl}/#project-${project.number}`,
+    schemaId: `${siteUrl}/work/${project.slug}/#creative-work`,
     client: project.client,
     title: project.title,
     disciplines: project.discipline.split(" · "),
+    primaryKeyword: project.primaryKeyword,
     summary: project.summary,
     context: project.context,
-    role: project.role,
     credit: project.credit ?? null,
     year: project.year ?? null,
-    challenge: project.challenge,
-    contribution: project.approach,
-    deliverables: project.deliverables,
-    url: `${siteUrl}/#project-${project.number}`,
+    businessProblem: project.challenge,
+    responsibility: project.role,
+    strategicDecision: project.approach,
+    produced: project.deliverables,
+    outcome: project.outcome,
+    url: `${siteUrl}/work/${project.slug}/`,
     primaryImage: `${siteUrl}${project.images[0]}`,
     images: project.images.map((image) => `${siteUrl}${image}`),
     imageAlt: project.alt,
