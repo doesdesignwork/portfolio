@@ -11,6 +11,7 @@ export type Project = {
   challenge: string;
   approach: string;
   deliverables: string;
+  outcome: string;
   featured?: boolean;
   selected?: boolean;
   images: string[];
@@ -29,8 +30,9 @@ export const projects: Project[] = [
     discipline: "Naming · Brand Identity · Digital Retail",
     summary: "While working at TFO, I developed the Modajar name and identity direction, then extended the system into digital retail, packaging and stationery.",
     challenge: "Give a new fashion brand enough confidence and distinction to sit credibly beside established retailers.",
-    approach: "The work centred on a bird mark and a restrained monochrome visual language, carried across digital and physical applications.",
+    approach: "Use a compact bird mark and a restrained monochrome palette as the fixed brand anchors, then let layout and imagery flex across retail touchpoints.",
     deliverables: "Naming, identity, brand character, digital retail, packaging and stationery applications for the Modajar brand.",
+    outcome: "The work established one recognisable identity across the brand's digital and physical applications.",
     featured: true,
     images: [
       "/assets/modajar-identity-final.webp",
@@ -50,8 +52,9 @@ export const projects: Project[] = [
     discipline: "Packaging · Illustration · Product Range",
     summary: "My contribution focused on an illustrated label system that gave each beer a distinct character while keeping the range visibly related.",
     challenge: "Give individual beers distinct personalities without losing recognition across the wider product range.",
-    approach: "I paired expressive illustrations with a repeatable label architecture that could flex across flavours and formats.",
+    approach: "Keep one label architecture consistent across the range, while changing the illustration and character work for each beer.",
     deliverables: "A family of illustrated label directions organised around one repeatable packaging structure.",
+    outcome: "Each beer gained a distinct visual character, while the shared structure kept the labels recognisable as one range.",
     selected: false,
     images: ["/assets/brewerkz-packaging.webp"],
     presentation: "contain",
@@ -67,8 +70,9 @@ export const projects: Project[] = [
     discipline: "Product Design · Card Concepts · Visual Systems",
     summary: "While working at TFO, I developed four American Express card-face concepts, including two DBS-American Express co-branded directions.",
     challenge: "Explore premium card expressions while retaining clear American Express recognition and a considered hierarchy for the co-branded directions.",
-    approach: "I explored finish, pattern, colour and brand hierarchy across four distinct card-face directions.",
+    approach: "Keep American Express recognition and the co-brand hierarchy stable, while using finish, pattern and colour to create four distinct premium directions.",
     deliverables: "Four card-design concepts, including two DBS-American Express co-branded directions.",
+    outcome: "The study produced four clearly differentiated options for review, with the two co-branded concepts maintaining a readable DBS-American Express hierarchy.",
     images: ["/assets/american-express-cards.webp"],
     presentation: "contain",
     alt: "Four American Express card-face concepts, including two DBS co-branded directions",
@@ -83,8 +87,9 @@ export const projects: Project[] = [
     discipline: "FMCG Branding · Label Design · Product Shaping",
     summary: "While working at Crepuscule, my contribution covered consumer-brand expression, label design and product-form exploration within a Sunsilk and Unilever refresh.",
     challenge: "Strengthen shelf clarity and modernise the consumer experience without losing a familiar global brand.",
-    approach: "I worked across identity, label hierarchy and pack form so the proposed consumer experience read as one connected system.",
+    approach: "Treat identity, label hierarchy, pack form and campaign expression as one connected system rather than separate design tasks.",
     deliverables: "Brand, label, pack-form and campaign directions shown across multiple Sunsilk applications.",
+    outcome: "The proposed directions brought identity, label hierarchy, pack form and campaign expression into one coherent consumer-brand system.",
     images: [
       "/assets/sunsilk-damage.webp",
       "/assets/sunsilk-seda.webp",
@@ -103,8 +108,9 @@ export const projects: Project[] = [
     discipline: "Retail Identity · Packaging · Environmental Design",
     summary: "My contribution spanned the retail expression of an established fresh-food brand, including packaging, interiors, uniforms, advertising and in-store communication.",
     challenge: "Extend an established fresh-food brand into a new location while keeping every physical and customer-facing element connected.",
-    approach: "I developed a connected visual system across packaging, interiors, uniforms, advertising and in-store communication.",
+    approach: "Build one retail visual language that could move from packaging and uniforms to interiors, advertising and in-store communication.",
     deliverables: "A coordinated set of retail, packaging and environmental applications for the Perth store expansion.",
+    outcome: "The expansion work gained one visual language across packaging, place, staff and customer communications.",
     selected: false,
     images: [
       "/assets/herdsman-packaging.webp",
@@ -124,8 +130,9 @@ export const projects: Project[] = [
     discipline: "Brand Strategy · Identity · Launch Campaign",
     summary: "I contributed to the naming, positioning and visual identity for CEL Development's industrial building, using its slatted architecture as the central design device.",
     challenge: "Turn a functional industrial development into a distinctive address that potential tenants could recognise and remember.",
-    approach: "The proposed system used the building's architecture to organise the identity, launch campaign and brochure design.",
+    approach: "Use the building's slatted facade as the organising device for the name, identity, campaign and sales material.",
     deliverables: "A property name and identity system applied to launch communications and the sales brochure.",
+    outcome: "The building's architecture became a repeatable identity cue across the name, launch campaign and sales material.",
     images: ["/assets/100-brochure-01.webp", "/assets/100-brochure-02.webp"],
     presentation: "contain",
     alt: "100 Pasir Panjang identity and launch brochure",
@@ -141,8 +148,9 @@ export const projects: Project[] = [
     discipline: "3D Visualisation · Packaging · Product Concepts",
     summary: "For BENEO, I translated sugar-replacement and health-focused ingredient benefits into consumer product concepts, packaging and 3D visualisations.",
     challenge: "Help technical ingredient benefits feel tangible and commercially relevant to product and marketing teams.",
-    approach: "I translated ingredient stories into believable consumer products, packaging propositions and presentation-ready 3D visuals.",
+    approach: "Lead with a believable consumer use case, then use the technical ingredient benefit to support the product and packaging proposition.",
     deliverables: "A set of product scenarios, packaging propositions and presentation-ready visualisations for ingredient-led discussions.",
+    outcome: "The ingredient benefits became concrete consumer-product scenarios that could be reviewed and discussed without relying on technical explanation alone.",
     selected: false,
     images: [
       "/assets/beneo-noodles.webp",
@@ -163,8 +171,9 @@ export const projects: Project[] = [
     discipline: "Experiential Design · 3D Visualisation · Exhibition",
     summary: "For Dow's ChinaPlas presence, I developed exhibition concepts and 3D visualisations that translated technical product stories into a navigable physical environment.",
     challenge: "Make complex industrial innovations understandable within a busy exhibition environment and a short visitor-attention window.",
-    approach: "I organised the content into spatial zones and used rendered views to align visitor flow, communication hierarchy and the proposed build.",
+    approach: "Organise the booth as a sequence of spatial zones following the visitor journey, then use rendered views to align content hierarchy and flow.",
     deliverables: "Spatial concepts, visitor-flow thinking and rendered booth views for the ChinaPlas exhibition work shown.",
+    outcome: "Technical messages were reorganised into a spatial visitor story, with rendered views providing a clear basis for reviewing the booth direction.",
     featured: true,
     images: [
       "/assets/dow-exhibition.webp",
@@ -184,8 +193,9 @@ export const projects: Project[] = [
     discipline: "Institutional Identity · Editorial · Environmental",
     summary: "My contribution refined the institution's visual system across publications, stationery and campus signage while retaining its established identity cues.",
     challenge: "Create greater consistency across a historic institution without replacing the visual equity people already recognised.",
-    approach: "I refined the system and applied it across editorial, stationery and campus signage with a restrained, continuity-first approach.",
+    approach: "Evolve rather than replace the institution's established identity cues, using consistent typography, layout and application rules.",
     deliverables: "A refined identity system demonstrated across editorial, stationery and environmental applications.",
+    outcome: "The applications became more consistent while the institution's established identity cues remained intact.",
     images: [
       "/assets/raffles-institution.webp",
       "/assets/raffles-card.webp",
@@ -204,8 +214,9 @@ export const projects: Project[] = [
     discipline: "Product Concepts · Packaging · 3D Visualisation",
     summary: "I developed consumer product concepts around functional ingredients, then used naming, packaging and 3D visualisation to make each proposition concrete.",
     challenge: "Move functional-ingredient thinking beyond technical benefits into products consumers could understand and want.",
-    approach: "I created product propositions, names, packaging and visualisations that connected each ingredient benefit to a credible use case.",
+    approach: "Start with a clear consumer need and use case, then develop the name, packaging and visualisation around the relevant ingredient benefit.",
     deliverables: "A portfolio of named product concepts, packaging directions and 3D visualisations for evaluation and presentation.",
+    outcome: "The functional ingredients were expressed as named, packaged product propositions ready for evaluation and presentation.",
     images: [
       "/assets/beneo-fruity-sensations.webp",
       "/assets/beneo-sound-candy.webp",
@@ -224,8 +235,9 @@ export const projects: Project[] = [
     discipline: "Brand Architecture · Hospitality Identity · Environmental",
     summary: "I developed a brand architecture across six restaurant concepts; the work shown here focuses on Passion by Fu Lin Men and its identity, editorial and environmental applications.",
     challenge: "Give six restaurant concepts distinct personalities while making their relationship to the wider hospitality group easier to understand.",
-    approach: "I structured the group and restaurant identities, then carried the Passion expression through editorial material, signage and the physical setting.",
+    approach: "Separate the group-level architecture from the individual restaurant identities, giving each concept its own expression within a shared structure.",
     deliverables: "A group-level brand structure and six restaurant identity directions, with Passion applications across print, signage and place.",
+    outcome: "The work created a clearer relationship between the group and its six restaurant concepts while preserving a distinct identity for each.",
     images: [
       "/assets/passion-editorial.webp",
       "/assets/passion-entrance.webp",
@@ -243,8 +255,9 @@ export const projects: Project[] = [
     discipline: "Naming · Brand Identity · Retail Experience",
     summary: "I developed the MUNCH name and bite-mark identity, then extended the orange-led system across menus, packaging, counters and takeaway touchpoints.",
     challenge: "Build a recognisable food brand that remained energetic and legible across a busy retail environment.",
-    approach: "The bite device, direct typography and orange palette created a simple system that could repeat at every scale.",
+    approach: "Use the bite mark as the core mnemonic, repeated with direct typography and orange across every customer touchpoint.",
     deliverables: "Naming, identity, menus, packaging and outlet graphics organised around the bite-mark idea.",
+    outcome: "The name and bite-mark device created a repeatable identity across menus, packaging and the outlet environment.",
     selected: false,
     images: [
       "/assets/munch-packaging.webp",
@@ -266,8 +279,9 @@ export const projects: Project[] = [
     discipline: "Brand Identity · Campaign Design · Motion",
     summary: "While working at TFO, I contributed to SGInnovate's brand system and its rollout across stationery, events, campaigns and motion.",
     challenge: "Give a complex innovation organisation one recognisable system flexible enough for programmes, events and fast-changing campaign needs.",
-    approach: "My contribution helped apply a modular visual language across brand materials, passes, event graphics, seasonal campaigns and motion.",
+    approach: "Use a modular visual language that could remain recognisable while adapting to corporate materials, events, seasonal campaigns and motion.",
     deliverables: "A coordinated set of brand and campaign applications, including stationery, passes, event graphics, seasonal communications and motion pieces.",
+    outcome: "The work resulted in a consistent set of brand, campaign, event and motion applications built from the same modular visual language.",
     featured: true,
     images: [
       "/assets/sginnovate-identity.webp",
@@ -293,8 +307,9 @@ export const projects: Project[] = [
     discipline: "Product Design · Licensed Collaborations · Footwear Graphics",
     summary: "I developed footwear graphic concepts using the visual worlds of Keith Haring, Minions and One Piece while retaining recognisable Skechers product cues.",
     challenge: "Explore how very different licensed properties could live on footwear without becoming simple surface decoration.",
-    approach: "I translated each property's character, pattern and storytelling into graphics shaped around the construction of the shoe.",
+    approach: "Design the graphics around the construction of the shoe, so each licensed property shaped the product rather than sitting on it as surface decoration.",
     deliverables: "A set of footwear concept directions demonstrating how each licensed visual world could translate onto the product.",
+    outcome: "The study translated three licensed visual worlds into footwear-specific directions for concept review; it is not presented as launched work.",
     images: [
       "/assets/skechers-haring-collab.webp",
       "/assets/skechers-haring-shoe.webp",
@@ -314,8 +329,9 @@ export const projects: Project[] = [
     discipline: "Packaging Design · Product Visualisation · Range Systems",
     summary: "While working at Crepuscule, I developed packaging concept studies across Pond's, Vaseline and Pears, using range structure and visualisation to clarify each proposition while retaining parent-brand cues.",
     challenge: "Clarify different beauty propositions at shelf while protecting the recognition and equity of established parent brands.",
-    approach: "I developed range structures, packaging expressions and product visualisations around the distinct promise of each line.",
+    approach: "Give each product line its own range hierarchy and visual cues while retaining the recognisable anchors of the parent brand.",
     deliverables: "Packaging directions and product visualisations across the three beauty brands shown.",
+    outcome: "The study created distinct packaging directions for Pond's, Vaseline and Pears while retaining recognisable parent-brand cues; it is not presented as launched work.",
     images: [
       "/assets/unilever-ponds-range.webp",
       "/assets/unilever-ponds-concept.webp",
