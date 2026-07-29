@@ -59,23 +59,23 @@ export function ScrollMotion() {
         .from(".hero-eyebrow", {
           x: compact ? -18 : -34,
           autoAlpha: 0,
-          duration: 0.36,
-        })
+          duration: 0.28,
+        }, 0)
         .from(
           ".hero h1 > *",
           {
             yPercent: 92,
             autoAlpha: 0,
             clipPath: "inset(0 0 100% 0)",
-            duration: 0.62,
-            stagger: 0.07,
+            duration: 0.46,
+            stagger: 0.05,
           },
-          "-=0.18",
+          0.06,
         )
         .from(
           ".hero-support > *",
-          { y: compact ? 20 : 30, autoAlpha: 0, duration: 0.42, stagger: 0.06 },
-          "-=0.38",
+          { y: compact ? 16 : 24, autoAlpha: 0, duration: 0.32, stagger: 0.04 },
+          0.22,
         )
         .from(
           ".hero-work-preview figure > div",
@@ -84,30 +84,30 @@ export function ScrollMotion() {
               index % 2 === 0
                 ? "inset(0 100% 0 0)"
                 : "inset(0 0 0 100%)",
-            duration: 0.74,
-            stagger: 0.08,
+            duration: 0.42,
+            stagger: 0.05,
           },
-          "-=0.3",
+          0.28,
         )
         .from(
           ".hero-work-preview img",
           {
             xPercent: (index: number) => (index % 2 === 0 ? -7 : 7),
-            scale: 1.1,
-            duration: 0.86,
-            stagger: 0.08,
+            scale: 1.08,
+            duration: 0.5,
+            stagger: 0.05,
           },
-          "<",
+          0.28,
         )
         .from(
           ".hero-work-preview figcaption",
           {
-            y: 18,
+            y: 14,
             autoAlpha: 0,
-            duration: 0.34,
-            stagger: 0.08,
+            duration: 0.28,
+            stagger: 0.05,
           },
-          "-=0.24",
+          0.5,
         );
 
       const heroScroll = gsap.timeline({
