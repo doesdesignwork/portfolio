@@ -417,6 +417,9 @@ export default function Home() {
   return (
     <main className="site-shell">
       <ScrollMotion />
+      <div className="scroll-progress" aria-hidden="true">
+        <span />
+      </div>
       <a className="skip-link" href="#work">Skip to selected work</a>
 
       <header className="site-header">
