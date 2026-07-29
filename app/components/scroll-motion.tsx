@@ -64,9 +64,8 @@ export function ScrollMotion() {
         .from(
           ".hero h1 > *",
           {
-            yPercent: 92,
-            autoAlpha: 0,
-            clipPath: "inset(0 0 100% 0)",
+            yPercent: 24,
+            autoAlpha: 0.62,
             duration: 0.46,
             stagger: 0.05,
           },
@@ -74,7 +73,7 @@ export function ScrollMotion() {
         )
         .from(
           ".hero-support > *",
-          { y: compact ? 16 : 24, autoAlpha: 0, duration: 0.32, stagger: 0.04 },
+          { y: compact ? 12 : 18, autoAlpha: 0.58, duration: 0.32, stagger: 0.04 },
           0.22,
         )
         .from(
@@ -82,8 +81,8 @@ export function ScrollMotion() {
           {
             clipPath: (index: number) =>
               index % 2 === 0
-                ? "inset(0 100% 0 0)"
-                : "inset(0 0 0 100%)",
+                ? "inset(0 28% 0 0)"
+                : "inset(0 0 0 28%)",
             duration: 0.42,
             stagger: 0.05,
           },
@@ -92,8 +91,8 @@ export function ScrollMotion() {
         .from(
           ".hero-work-preview img",
           {
-            xPercent: (index: number) => (index % 2 === 0 ? -7 : 7),
-            scale: 1.08,
+            xPercent: (index: number) => (index % 2 === 0 ? -4 : 4),
+            scale: 1.05,
             duration: 0.5,
             stagger: 0.05,
           },
@@ -103,7 +102,7 @@ export function ScrollMotion() {
           ".hero-work-preview figcaption",
           {
             y: 14,
-            autoAlpha: 0,
+            autoAlpha: 0.5,
             duration: 0.28,
             stagger: 0.05,
           },
