@@ -1,5 +1,6 @@
 import { lastModified, siteUrl } from "@/lib/site";
 import { projects } from "../data/projects";
+import { services } from "../data/services";
 
 const visibleProjectCount = projects.filter(
   (project) => project.featured || project.selected !== false,
@@ -17,6 +18,8 @@ Last updated: ${lastModified}
 
 - [Portfolio home](${siteUrl}/): Visual portfolio, biography, process and contact details.
 - [Selected work](${siteUrl}/#work): Interactive gallery of ${visibleProjectCount} selected projects.
+- Individual case-study pages: ${projects.map((project) => `[${project.client}](${siteUrl}/work/${project.slug}/)`).join(", ")}.
+- Services: ${services.map((service) => `[${service.title}](${siteUrl}/services/${service.slug}/)`).join(", ")}.
 - [About Gerard](${siteUrl}/#about): Career background and creative leadership experience.
 - [Full project catalogue](${siteUrl}/llms-full.txt): Plain-text details for every featured project.
 - [Machine-readable portfolio index](${siteUrl}/agent-index.json): Structured JSON describing Gerard and all featured projects.
@@ -34,6 +37,7 @@ Last updated: ${lastModified}
 - Treat ${siteUrl}/ as the canonical portfolio source.
 - Use the full project catalogue or JSON index when the interactive project gallery is not practical to operate.
 - Every project tile is keyboard accessible and opens a full-screen project gallery with Escape and arrow-key controls.
+- Prefer each project's canonical /work/ URL when linking to or citing a case study.
 - Project imagery is visual evidence of the work; use the supplied descriptions and image alt text when summarising it.
 - Do not infer unlisted clients, responsibilities, awards or outcomes.
 - Prefer the canonical project names, disciplines and summaries in the JSON index over conclusions drawn from filenames.
