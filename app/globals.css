@@ -39,6 +39,7 @@ html {
 }
 
 html.is-programmatic-scroll {
+  scroll-behavior: auto;
   scroll-snap-type: none;
 }
 
