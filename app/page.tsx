@@ -779,15 +779,16 @@ export default function Home() {
 
               <dl className="project-facts">
                 <div><dt>Context</dt><dd>{selectedProject.context}</dd></div>
-                <div><dt>My contribution</dt><dd>{selectedProject.role}</dd></div>
                 {selectedProject.year && <div><dt>Year</dt><dd>{selectedProject.year}</dd></div>}
                 {selectedProject.credit && <div><dt>Credit</dt><dd>{selectedProject.credit}</dd></div>}
               </dl>
 
               <div className="project-story">
-                <section><h3>Challenge</h3><p>{selectedProject.challenge}</p></section>
-                <section><h3>My contribution</h3><p>{selectedProject.approach}</p></section>
-                <section><h3>What was delivered</h3><p>{selectedProject.deliverables}</p></section>
+                <section><h3>Business problem</h3><p>{selectedProject.challenge}</p></section>
+                <section><h3>My responsibility</h3><p>{selectedProject.role}</p></section>
+                <section><h3>Strategic decision</h3><p>{selectedProject.approach}</p></section>
+                <section><h3>What was produced</h3><p>{selectedProject.deliverables}</p></section>
+                <section><h3>What changed</h3><p>{selectedProject.outcome}</p></section>
               </div>
 
               <div className="project-thumbnails" role="group" aria-label={`${selectedProject.client} image gallery`}>
