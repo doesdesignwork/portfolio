@@ -11,6 +11,8 @@ const projectCatalogue = projects
 
 **Project:** ${project.title}
 
+**Canonical case study:** ${siteUrl}/work/${project.slug}/
+
 **Disciplines:** ${project.discipline}
 
 ${project.summary}
