@@ -4,6 +4,25 @@ import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const revealLines = (
+  targets: gsap.TweenTarget,
+  trigger: gsap.DOMTarget,
+  start = "top 82%",
+) =>
+  gsap.from(targets, {
+    yPercent: 108,
+    autoAlpha: 0,
+    clipPath: "inset(0 0 100% 0)",
+    duration: 0.88,
+    stagger: 0.1,
+    ease: "power4.out",
+    scrollTrigger: {
+      trigger,
+      start,
+      toggleActions: "play none none reverse",
+    },
+  });
+
 // ScrollTrigger owns the entrance states; reduced-motion users bypass them entirely.
 export function ScrollMotion() {
   useLayoutEffect(() => {
@@ -14,192 +33,286 @@ export function ScrollMotion() {
     if (!scope) return;
 
     let isActive = true;
+    const compact = window.matchMedia("(max-width: 720px)").matches;
 
     const context = gsap.context(() => {
-      gsap.from(".site-header", {
-        y: -10,
-        autoAlpha: 0,
-        duration: 0.3,
-        ease: "power3.out",
+      gsap.to(".scroll-progress span", {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: scope,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.25,
+        },
       });
 
-      const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+      gsap.from(".site-header", {
+        y: -18,
+        autoAlpha: 0,
+        duration: 0.38,
+        ease: "power4.out",
+      });
+
+      const heroTimeline = gsap.timeline({ defaults: { ease: "power4.out" } });
       heroTimeline
-        .from(".hero-eyebrow", { y: 24, autoAlpha: 0, duration: 0.42 })
+        .from(".hero-eyebrow", {
+          x: compact ? -18 : -34,
+          autoAlpha: 0,
+          duration: 0.36,
+        })
         .from(
           ".hero h1 > *",
-          { yPercent: 56, autoAlpha: 0, duration: 0.72, stagger: 0.08 },
-          "-=0.2",
+          {
+            yPercent: 92,
+            autoAlpha: 0,
+            clipPath: "inset(0 0 100% 0)",
+            duration: 0.62,
+            stagger: 0.07,
+          },
+          "-=0.18",
         )
         .from(
           ".hero-support > *",
-          { y: 36, autoAlpha: 0, duration: 0.56, stagger: 0.08 },
-          "-=0.42",
+          { y: compact ? 20 : 30, autoAlpha: 0, duration: 0.42, stagger: 0.06 },
+          "-=0.38",
         )
         .from(
-          ".hero-work-preview figure",
+          ".hero-work-preview figure > div",
           {
-            y: 72,
-            autoAlpha: 0,
-            scale: 0.96,
-            clipPath: "inset(14% 0 0 0)",
-            duration: 0.82,
-            stagger: 0.12,
+            clipPath: (index: number) =>
+              index % 2 === 0
+                ? "inset(0 100% 0 0)"
+                : "inset(0 0 0 100%)",
+            duration: 0.74,
+            stagger: 0.08,
           },
-          "-=0.32",
+          "-=0.3",
+        )
+        .from(
+          ".hero-work-preview img",
+          {
+            xPercent: (index: number) => (index % 2 === 0 ? -7 : 7),
+            scale: 1.1,
+            duration: 0.86,
+            stagger: 0.08,
+          },
+          "<",
+        )
+        .from(
+          ".hero-work-preview figcaption",
+          {
+            y: 18,
+            autoAlpha: 0,
+            duration: 0.34,
+            stagger: 0.08,
+          },
+          "-=0.24",
         );
 
-      gsap.to(".hero h1", {
-        yPercent: -4,
+      const heroScroll = gsap.timeline({
         ease: "none",
         scrollTrigger: {
           trigger: ".hero",
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.8,
         },
       });
 
-      gsap.to(".hero-work-main img", {
-        scale: 1.04,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".hero-work-preview",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
+      heroScroll
+        .to(".hero-heading", { yPercent: -10, autoAlpha: 0.35 }, 0)
+        .to(".hero-support", { yPercent: -18, autoAlpha: 0 }, 0)
+        .to(".hero-work-main", { yPercent: -8 }, 0)
+        .to(".hero-work-secondary", { yPercent: 8 }, 0);
 
-      gsap.from(".manifesto h2 span", {
-        yPercent: 72,
-        autoAlpha: 0,
-        duration: 0.88,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".manifesto",
-          start: "top 82%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      revealLines(".manifesto h2 span", ".manifesto");
 
       gsap.from(".manifesto p", {
-        y: 52,
+        x: compact ? 34 : 92,
         autoAlpha: 0,
-        duration: 0.72,
-        ease: "power3.out",
+        duration: 0.78,
+        ease: "power4.out",
         scrollTrigger: {
           trigger: ".manifesto",
-          start: "top 68%",
+          start: "top 64%",
           toggleActions: "play none none reverse",
         },
       });
 
-      gsap.from(".work-heading > *", {
-        y: 56,
-        autoAlpha: 0,
-        duration: 0.78,
-        stagger: 0.1,
-        ease: "power3.out",
+      const workHeading = gsap.timeline({
         scrollTrigger: {
           trigger: ".work-heading",
           start: "top 82%",
           toggleActions: "play none none reverse",
         },
       });
+      workHeading
+        .from(".work-heading > p", {
+          x: compact ? -24 : -54,
+          autoAlpha: 0,
+          duration: 0.48,
+          ease: "power4.out",
+        })
+        .from(
+          ".work-heading h2",
+          {
+            yPercent: 72,
+            autoAlpha: 0,
+            clipPath: "inset(0 0 100% 0)",
+            duration: 0.78,
+            ease: "power4.out",
+          },
+          "-=0.28",
+        )
+        .from(
+          ".work-heading > span",
+          {
+            x: compact ? 30 : 76,
+            autoAlpha: 0,
+            duration: 0.66,
+            ease: "power4.out",
+          },
+          "-=0.44",
+        );
 
-      gsap.utils.toArray<HTMLElement>(".featured-project").forEach((project) => {
+      gsap.utils.toArray<HTMLElement>(".featured-project").forEach((project, index) => {
         const media = project.querySelector(".featured-project-media");
+        const image = project.querySelector("img");
         const captionItems = project.querySelectorAll(".project-caption > *");
+        const fromLeft = index % 2 === 0;
         const projectTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: project,
-            start: "top 84%",
+            start: "top 86%",
             toggleActions: "play none none reverse",
           },
         });
 
         projectTimeline
-          .from(media, {
-            y: 96,
-            autoAlpha: 0,
-            scale: 0.95,
-            clipPath: "inset(18% 0 0 0)",
-            duration: 0.94,
-            ease: "power3.out",
+          .fromTo(media, {
+            clipPath: fromLeft
+              ? "inset(0 100% 0 0)"
+              : "inset(0 0 0 100%)",
+          }, {
+            clipPath: "inset(0 0% 0 0%)",
+            duration: 1.02,
+            ease: "power4.inOut",
           })
-          .from(
-            captionItems,
-            {
-              y: 28,
-              autoAlpha: 0,
-              duration: 0.5,
-              stagger: 0.07,
-              ease: "power2.out",
-            },
-            "-=0.48",
-          );
+          .fromTo(image, {
+            xPercent: fromLeft ? -9 : 9,
+            scale: 1.1,
+          }, {
+            xPercent: 0,
+            scale: 1,
+            duration: 1.08,
+            ease: "power4.out",
+          }, 0)
+          .from(captionItems, {
+            x: fromLeft ? -28 : 28,
+            autoAlpha: 0,
+            duration: 0.48,
+            stagger: 0.055,
+            ease: "power3.out",
+          }, "-=0.42");
+
+        gsap.fromTo(image, {
+          yPercent: -4,
+        }, {
+          yPercent: 4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: project,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.7,
+          },
+        });
       });
 
-      gsap.from(".more-work-heading > *", {
-        y: 54,
-        autoAlpha: 0,
-        duration: 0.76,
-        stagger: 0.1,
-        ease: "power3.out",
+      const moreWorkHeading = gsap.timeline({
         scrollTrigger: {
           trigger: ".more-work-heading",
           start: "top 82%",
           toggleActions: "play none none reverse",
         },
       });
+      moreWorkHeading
+        .from(".more-work-kicker", {
+          x: compact ? -22 : -48,
+          autoAlpha: 0,
+          duration: 0.42,
+          ease: "power4.out",
+        })
+        .from(".more-work-heading h3", {
+          yPercent: 82,
+          autoAlpha: 0,
+          clipPath: "inset(0 0 100% 0)",
+          duration: 0.82,
+          ease: "power4.out",
+        }, "-=0.22")
+        .from(".more-work-heading p", {
+          x: compact ? 28 : 72,
+          autoAlpha: 0,
+          duration: 0.66,
+          ease: "power4.out",
+        }, "-=0.46");
 
       gsap.utils.toArray<HTMLElement>(".selected-project").forEach((project, index) => {
         const media = project.querySelector(".selected-project-media");
+        const image = project.querySelector("img");
         const copy = project.querySelector(".selected-project-copy");
+        const fromLeft = index % 2 === 0;
         const projectTimeline = gsap.timeline({
-          delay: (index % 4) * 0.08,
+          delay: (index % 2) * 0.08,
           scrollTrigger: {
             trigger: project,
-            start: "top 91%",
+            start: "top 92%",
             toggleActions: "play none none reverse",
           },
         });
 
         projectTimeline
-          .from(media, {
-            y: 76,
-            autoAlpha: 0,
-            scale: 0.94,
-            clipPath: "inset(16% 0 0 0)",
-            duration: 0.86,
-            ease: "power3.out",
+          .fromTo(media, {
+            clipPath: fromLeft
+              ? "inset(0 100% 0 0)"
+              : "inset(0 0 0 100%)",
+          }, {
+            clipPath: "inset(0 0% 0 0%)",
+            duration: 0.82,
+            ease: "power4.inOut",
           })
-          .from(
-            copy,
-            {
-              y: 24,
-              autoAlpha: 0,
-              duration: 0.46,
-              ease: "power2.out",
-            },
-            "-=0.42",
-          );
+          .fromTo(image, {
+            xPercent: fromLeft ? -8 : 8,
+            scale: 1.09,
+          }, {
+            xPercent: 0,
+            scale: 1,
+            duration: 0.9,
+            ease: "power4.out",
+          }, 0)
+          .from(copy, {
+            x: fromLeft ? -20 : 20,
+            autoAlpha: 0,
+            duration: 0.42,
+            ease: "power3.out",
+          }, "-=0.34");
+
+        gsap.fromTo(image, {
+          yPercent: -4.5,
+        }, {
+          yPercent: 4.5,
+          ease: "none",
+          scrollTrigger: {
+            trigger: project,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.65,
+          },
+        });
       });
 
-      gsap.from(".about-heading h2 span", {
-        yPercent: 68,
-        autoAlpha: 0,
-        duration: 0.84,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".about-heading",
-          start: "top 82%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      revealLines(".about-heading h2 span", ".about-heading");
 
       const aboutTimeline = gsap.timeline({
         scrollTrigger: {
@@ -211,82 +324,63 @@ export function ScrollMotion() {
 
       aboutTimeline
         .from(".about-copy > *", {
-          y: 52,
+          x: compact ? -28 : -72,
           autoAlpha: 0,
-          duration: 0.74,
-          stagger: 0.1,
-          ease: "power3.out",
+          duration: 0.72,
+          stagger: 0.09,
+          ease: "power4.out",
         })
-        .from(
-          ".career-ledger > div",
-          {
-            y: 42,
-            autoAlpha: 0,
-            duration: 0.62,
-            stagger: 0.09,
-            ease: "power2.out",
-          },
-          "-=0.42",
-        );
+        .from(".career-ledger > div", {
+          clipPath: "inset(0 100% 0 0)",
+          duration: 0.72,
+          stagger: 0.09,
+          ease: "power4.inOut",
+        }, "-=0.48")
+        .from(".career-ledger dt, .career-ledger dd", {
+          x: compact ? 20 : 40,
+          autoAlpha: 0,
+          duration: 0.46,
+          stagger: 0.045,
+          ease: "power3.out",
+        }, "-=0.56");
 
       gsap.from(".capability-index li", {
-        y: 42,
+        x: (index: number) => (index % 2 === 0 ? -34 : 34),
         autoAlpha: 0,
         duration: 0.62,
-        stagger: 0.08,
-        ease: "power2.out",
+        stagger: 0.07,
+        ease: "power4.out",
         scrollTrigger: {
           trigger: ".capability-index",
+          start: "top 88%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      revealLines(".process-heading h2 span", ".process-heading");
+
+      gsap.from(".process-section li", {
+        x: compact ? 34 : 84,
+        autoAlpha: 0,
+        clipPath: "inset(0 0 0 100%)",
+        duration: 0.76,
+        stagger: 0.11,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".process-section ol",
           start: "top 86%",
           toggleActions: "play none none reverse",
         },
       });
 
-      gsap.from(".process-heading h2 span", {
-        yPercent: 68,
-        autoAlpha: 0,
-        duration: 0.84,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".process-heading",
-          start: "top 82%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".process-section li", {
-        y: 58,
-        autoAlpha: 0,
-        duration: 0.72,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".process-section ol",
-          start: "top 84%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".contact-section h2 span", {
-        yPercent: 68,
-        autoAlpha: 0,
-        duration: 0.84,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".contact-section",
-          start: "top 78%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      revealLines(".contact-section h2 span", ".contact-section", "top 78%");
 
       gsap.from(".contact-links a", {
-        y: 52,
+        x: (index: number) => (index % 2 === 0 ? -48 : 48),
         autoAlpha: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power2.out",
+        duration: 0.68,
+        stagger: 0.09,
+        ease: "power4.out",
         scrollTrigger: {
           trigger: ".contact-links",
           start: "top 88%",
@@ -295,41 +389,17 @@ export function ScrollMotion() {
       });
 
       gsap.from(".footer-line > *", {
-        y: 28,
+        y: 24,
         autoAlpha: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: "power2.out",
+        duration: 0.46,
+        stagger: 0.07,
+        ease: "power3.out",
         scrollTrigger: {
           trigger: ".footer-line",
           start: "top 94%",
           toggleActions: "play none none reverse",
         },
       });
-
-      gsap.utils
-        .toArray<HTMLImageElement>(
-          ".featured-project-media img, .selected-project-media img",
-        )
-        .forEach((image) => {
-          gsap.fromTo(
-            image,
-            { yPercent: -2.5, scale: 1.07 },
-            {
-              yPercent: 2.5,
-              scale: 1.015,
-              ease: "none",
-              scrollTrigger: {
-                trigger: image.closest(
-                  ".featured-project, .selected-project",
-                ),
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.8,
-              },
-            },
-          );
-        });
 
     }, scope);
 
