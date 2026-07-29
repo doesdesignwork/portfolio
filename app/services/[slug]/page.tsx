@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InteriorHeader } from "@/app/components/interior-header";
 import { projects } from "@/app/data/projects";
@@ -92,7 +93,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       <InteriorHeader />
       <main className={styles.main}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="/">Home</a><span>/</span><span>Services</span>
+          <Link href="/">Home</Link><span>/</span><span>Services</span>
         </nav>
 
         <header className={styles.hero}>
@@ -129,11 +130,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
           <div className={styles.proofGrid}>
             {proofProjects.map((project) => (
-              <a key={project.number} className={styles.proofCard} href={`/work/${project.slug}/`}>
+              <Link key={project.number} className={styles.proofCard} href={`/work/${project.slug}/`}>
                 <small>{project.number} / {project.primaryKeyword}</small>
                 <strong>{project.client}</strong>
                 <span>{project.role}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
