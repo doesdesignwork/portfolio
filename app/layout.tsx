@@ -166,15 +166,15 @@ const structuredData = {
         itemListElement: projects.map((project, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          item: { "@id": `${siteUrl}/#project-${project.number}` },
+          item: { "@id": `${siteUrl}/work/${project.slug}/#creative-work` },
         })),
       },
     },
     ...projects.map((project) => ({
       "@type": "CreativeWork",
-      "@id": `${siteUrl}/#project-${project.number}`,
+      "@id": `${siteUrl}/work/${project.slug}/#creative-work`,
       identifier: `gerard-teo-project-${project.number}`,
-      url: `${siteUrl}/#project-${project.number}`,
+      url: `${siteUrl}/work/${project.slug}/`,
       name: `${project.client} - ${project.title}`,
       headline: project.title,
       description: project.summary,
