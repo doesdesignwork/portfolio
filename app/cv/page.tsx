@@ -196,7 +196,7 @@ export default function CvPage() {
           <div>
             <ExperienceSection title="Current work" roles={currentRoles} />
             <ExperienceSection
-              title="Selected experience"
+              title="EXPERIENCE"
               roles={selectedExperience}
             />
           </div>

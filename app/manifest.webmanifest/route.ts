@@ -11,9 +11,15 @@ const manifest = {
   lang: "en-SG",
   icons: [
     {
-      src: "/favicon.svg",
-      sizes: "any",
-      type: "image/svg+xml",
+      src: "/g-favicon-192.png",
+      sizes: "192x192",
+      type: "image/png",
+      purpose: "any",
+    },
+    {
+      src: "/g-favicon-512.png",
+      sizes: "512x512",
+      type: "image/png",
       purpose: "any",
     },
   ],
