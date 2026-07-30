@@ -31,7 +31,7 @@ const currentRoles = [
   {
     dates: "Jan 2026 — Present",
     title: "Graphic Designer",
-    company: "C2 Creative Communications & C2 Global Exhibitions, Singapore",
+    company: "C Square Creative Communications (C2) / C2 Global Exhibitions, Singapore",
     description:
       "Design key visuals and campaign materials for exhibitions, conferences, corporate events and experiential projects.",
   },
