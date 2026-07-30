@@ -5,7 +5,7 @@ import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const siteTitle =
-  "Gerard Teo | Art Director & Senior Brand Designer Singapore";
+  "Gerard Teo | Art Director and Senior Brand Designer in Singapore";
 const siteDescription =
   "Singapore art director and senior brand designer with 26+ years across brand identity, campaigns, packaging, exhibitions and creative production.";
 
@@ -138,6 +138,16 @@ const structuredData = {
       alternateName: "Creative Lead",
       sameAs: ["https://www.linkedin.com/in/gerard-teo-0b106429/"],
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
+      worksFor: [
+        {
+          "@type": "Organization",
+          name: "C Square Creative Communications (C2)",
+        },
+        {
+          "@type": "Organization",
+          name: "C2 Global Exhibitions",
+        },
+      ],
       subjectOf: {
         "@type": "WebPage",
         name: "Gerard Teo - Online CV",
@@ -197,7 +207,14 @@ const structuredData = {
       headline: project.title,
       description: project.summary,
       genre: project.discipline.split(" · "),
-      image: project.images.map((image) => `${siteUrl}${image}`),
+      image: project.images.map((image, imageIndex) => ({
+        "@type": "ImageObject",
+        contentUrl: `${siteUrl}${image}`,
+        url: `${siteUrl}${image}`,
+        name: project.imageAlts[imageIndex] ?? project.alt,
+        caption: project.imageAlts[imageIndex] ?? project.alt,
+        representativeOfPage: imageIndex === 0,
+      })),
       thumbnailUrl: `${siteUrl}${project.images[0]}`,
       contributor: { "@id": `${siteUrl}/#person` },
       ...(project.credit ? { creditText: project.credit } : {}),
