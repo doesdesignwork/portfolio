@@ -534,6 +534,10 @@
   overflow-wrap: anywhere;
 }
 
+.cvSidebar section > a:first-of-type {
+  border-top: 0;
+}
+
 .cvSidebar a:hover,
 .cvSidebar a:focus-visible {
   color: var(--palette-cobalt);
@@ -555,6 +559,10 @@
 .cvSidebar li {
   padding: 10px 0;
   border-top: 1px solid color-mix(in srgb, var(--palette-ink) 15%, transparent);
+}
+
+.cvSidebar li:first-child {
+  border-top: 0;
 }
 
 .cvSidebar p + p {
