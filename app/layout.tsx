@@ -96,20 +96,20 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/g-favicon-32.png",
+        url: "/g-favicon-circle-32.png",
         sizes: "32x32",
         type: "image/png",
       },
       {
-        url: "/g-favicon-192.png",
+        url: "/g-favicon-circle-192.png",
         sizes: "192x192",
         type: "image/png",
       },
     ],
-    shortcut: "/g-favicon-32.png",
+    shortcut: "/g-favicon-circle-32.png",
     apple: [
       {
-        url: "/apple-touch-icon.png",
+        url: "/apple-touch-icon-circle.png",
         sizes: "180x180",
         type: "image/png",
       },
