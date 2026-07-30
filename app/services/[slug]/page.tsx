@@ -44,7 +44,7 @@ export async function generateMetadata({
       title: service.title,
       description: service.description,
       images: leadProject
-        ? [{ url: leadProject.images[0], alt: leadProject.alt }]
+        ? [{ url: leadProject.images[0], alt: leadProject.imageAlts[0] ?? leadProject.alt }]
         : undefined,
     },
     twitter: leadProject
@@ -80,6 +80,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
       "@type": "Country",
       name: "Singapore",
     },
+    mainEntityOfPage: canonicalUrl,
+    keywords: [service.primaryKeyword, ...service.supportingKeywords],
+    isRelatedTo: proofProjects.map((project) => ({
+      "@id": `${siteUrl}/work/${project.slug}/#creative-work`,
+    })),
     provider: {
       "@type": "Person",
       "@id": `${siteUrl}/#person`,
@@ -126,7 +131,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <section className={styles.proof} aria-labelledby="proof-title">
           <div className={styles.sectionHead}>
             <h2 id="proof-title">Relevant proof</h2>
-            <p>{proofProjects.length} selected case studies</p>
+            <p>{proofProjects.length} case studies with responsibilities, decisions, outputs and evidence-supported outcomes</p>
           </div>
           <div className={styles.proofGrid}>
             {proofProjects.map((project) => (
@@ -134,6 +139,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 <small>{project.number} / {project.primaryKeyword}</small>
                 <strong>{project.client}</strong>
                 <span>{project.role}</span>
+                <span>{project.outcome}</span>
               </Link>
             ))}
           </div>
