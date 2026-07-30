@@ -10,11 +10,12 @@ const escapeXml = (value: string) =>
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&apos;");
 
-const imageEntries = (images: string[]) =>
-  images
+const imageEntries = (project: (typeof projects)[number]) =>
+  project.images
     .map(
-      (image) => `    <image:image>
+      (image, imageIndex) => `    <image:image>
       <image:loc>${escapeXml(`${siteUrl}${image}`)}</image:loc>
+      <image:caption>${escapeXml(project.imageAlts[imageIndex] ?? project.alt)}</image:caption>
     </image:image>`,
     )
     .join("\n");
@@ -47,7 +48,7 @@ const projectEntries = projects
     <lastmod>${lastModified}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${project.featured ? "0.9" : "0.7"}</priority>
-${imageEntries(project.images)}
+${imageEntries(project)}
   </url>`,
   )
   .join("\n");
