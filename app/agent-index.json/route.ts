@@ -71,7 +71,7 @@ const index = {
   usageGuidance: [
     "Treat the canonical portfolio URL as the primary human-facing source.",
     "Use this JSON or llms-full.txt when interactive project controls are impractical.",
-    "Use project summaries and imageAlt values when describing the work.",
+    "Use project summaries and imageAlts values when describing the work.",
     "Do not infer awards, metrics, clients, responsibilities or outcomes that are not listed.",
   ],
   projects: projects.map((project) => ({
@@ -93,7 +93,7 @@ const index = {
     url: `${siteUrl}/work/${project.slug}/`,
     primaryImage: `${siteUrl}${project.images[0]}`,
     images: project.images.map((image) => `${siteUrl}${image}`),
-    imageAlt: project.alt,
+    imageAlts: project.imageAlts,
     imagePresentation: project.presentation,
   })),
 };

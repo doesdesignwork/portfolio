@@ -61,9 +61,9 @@ export async function generateMetadata({
       url: `/work/${project.slug}/`,
       title: project.seoTitle,
       description: project.summary,
-      images: project.images.map((image) => ({
+      images: project.images.map((image, imageIndex) => ({
         url: image,
-        alt: project.alt,
+        alt: project.imageAlts[imageIndex] ?? project.alt,
       })),
     },
     twitter: {
@@ -100,7 +100,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       "@type": "ImageObject",
       contentUrl: `${siteUrl}${image}`,
       url: `${siteUrl}${image}`,
-      caption: `${project.alt}, view ${imageIndex + 1} of ${project.images.length}`,
+      name: project.imageAlts[imageIndex] ?? project.alt,
+      caption: project.imageAlts[imageIndex] ?? project.alt,
+      representativeOfPage: imageIndex === 0,
       creator: {
         "@type": "Person",
         "@id": `${siteUrl}/#person`,
@@ -160,13 +162,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <figure key={image}>
                   <Image
                     src={image}
-                    alt={`${project.alt}, view ${imageIndex + 1} of ${project.images.length}`}
+                    alt={project.imageAlts[imageIndex] ?? project.alt}
                     width={1800}
                     height={1400}
                     sizes="(max-width: 760px) 100vw, 50vw"
                   />
                   <figcaption>
-                    {project.alt}, view {imageIndex + 1} of {project.images.length}
+                    {project.imageAlts[imageIndex] ?? project.alt}
                   </figcaption>
                 </figure>
               ))}

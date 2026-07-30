@@ -477,7 +477,7 @@ export default function Home() {
       <span className="featured-project-media">
         <Image
           src={project.images[0]}
-          alt={project.alt}
+          alt={project.imageAlts[0] ?? project.alt}
           width={1800}
           height={1300}
           sizes={index === 0 ? "(max-width: 900px) 100vw, 72vw" : "(max-width: 900px) 100vw, 48vw"}
@@ -513,7 +513,7 @@ export default function Home() {
         <span className="selected-project-media">
           <Image
             src={project.images[0]}
-            alt={project.alt}
+            alt={project.imageAlts[0] ?? project.alt}
             width={1400}
             height={1100}
             sizes={
@@ -589,7 +589,7 @@ export default function Home() {
             <div>
               <Image
                 src={featuredProjects[0].images[0]}
-                alt={featuredProjects[0].alt}
+                alt={featuredProjects[0].imageAlts[0] ?? featuredProjects[0].alt}
                 width={1800}
                 height={1300}
                 sizes="(max-width: 900px) 100vw, 66vw"
@@ -602,7 +602,7 @@ export default function Home() {
             <div>
               <Image
                 src={featuredProjects[1].images[0]}
-                alt={featuredProjects[1].alt}
+                alt={featuredProjects[1].imageAlts[0] ?? featuredProjects[1].alt}
                 width={1200}
                 height={900}
                 sizes="(max-width: 900px) 50vw, 32vw"
@@ -682,7 +682,7 @@ export default function Home() {
           <div className="about-copy">
             <div ref={aboutCopyMeasureRef} className="about-copy-main">
               <p>I move between setting the direction and making sure the work lands. I co-founded Blacksheep Communications, helped grow its design team from three to 15 and stayed close to the work, clients and production.</p>
-              <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C2, while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
+              <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C Square Creative Communications (C2), while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
             </div>
             <p className="brand-line">Selected experience includes Apple, Unilever, Dow, American Express, L&apos;Oréal, Singtel, Red Bull and Tiger Beer.</p>
           </div>
@@ -775,7 +775,7 @@ export default function Home() {
             >
               <Image
                 src={selectedImageSource}
-                alt={`${selectedProject.alt}, image ${selectedImageIndex + 1} of ${selectedProject.images.length}`}
+                alt={selectedProject.imageAlts[selectedImageIndex] ?? selectedProject.alt}
                 width={selectedImageLimit?.width ?? 1800}
                 height={selectedImageLimit?.height ?? 1400}
                 style={selectedImageStyle}

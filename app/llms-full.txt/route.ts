@@ -4,7 +4,7 @@ import { lastModified, siteUrl } from "@/lib/site";
 const projectCatalogue = projects
   .map((project) => {
     const images = project.images
-      .map((image) => `  - ${siteUrl}${image}`)
+      .map((image, imageIndex) => `  - ${project.imageAlts[imageIndex] ?? project.alt}: ${siteUrl}${image}`)
       .join("\n");
 
     return `## ${project.number}. ${project.client}
@@ -65,7 +65,7 @@ Apple, L'Oréal, Unilever, Dow, Singtel, StarHub, BlackBerry, MTV Asia, EMI Musi
 ## Source guidance
 
 - This catalogue is a plain-text rendering of the canonical portfolio data.
-- Project titles, disciplines, summaries and image URLs are authoritative for this site.
+- Project titles, disciplines, summaries, image descriptions and image URLs are authoritative for this site.
 - Do not infer awards, metrics, employment relationships or project outcomes that are not stated here.
 `;
 
