@@ -467,10 +467,10 @@ export const projects: Project[] = [
       "/assets/unilever-pears-range.webp",
     ],
     imageAlts: [
-      "Pears soap range concept with green, blue and orange translucent packs",
-      "Pond's beauty packaging concept for Age Miracle and Liquid Gold products",
       "Pond's skincare range concept with white packs and orange product coding",
+      "Pond's beauty packaging concept for Age Miracle and Liquid Gold products",
       "Vaseline Hijab Bright body-lotion packaging concept in blue and white",
+      "Pears soap range concept with green, blue and orange translucent packs",
     ],
     presentation: "contain",
     alt: "Unilever beauty packaging concepts for Pond's, Vaseline Hijab Bright and Pears",
