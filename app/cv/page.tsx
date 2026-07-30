@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InteriorHeader } from "@/app/components/interior-header";
-import { PrintButton } from "@/app/components/print-button";
 import { lastModified, siteUrl } from "@/lib/site";
 import styles from "@/app/editorial-pages.module.css";
 
@@ -180,6 +179,13 @@ export default function CvPage() {
           </p>
           <div className={styles.cvActions}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
+            <a
+              href="/gerard-teo-creative-lead-senior-designer-cv.pdf"
+              download="Gerard_Teo_Creative_Lead_Senior_Designer_CV.pdf"
+              type="application/pdf"
+            >
+              Download CV (PDF)
+            </a>
             <Link href="/#work">View selected work</Link>
             <a
               href="https://www.linkedin.com/in/gerard-teo-0b106429/"
@@ -188,7 +194,6 @@ export default function CvPage() {
             >
               LinkedIn
             </a>
-            <PrintButton />
           </div>
         </header>
 
