@@ -3,4 +3,4 @@ export const siteUrl = (
   "https://www.doesdesignwork.com"
 ).replace(/\/$/, "");
 
-export const lastModified = "2026-08-03T22:58:00+08:00";
+export const lastModified = "2026-08-04T00:00:00+08:00";

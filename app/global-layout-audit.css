@@ -112,10 +112,86 @@ main :where(article, section, nav, dl, ul, ol, div) {
   min-width: 0;
 }
 
-/* Homepage display statements use signal orange as the consistent editorial accent. */
+/*
+ * Signal-orange heading cadence.
+ * Use it for decisive editorial statements, not every title, so the archive,
+ * project hero and orange contact field retain contrast and hierarchy.
+ */
+.site-page--home .brand-home-manifesto h2#manifesto-title,
+.site-page--home #work h2#work-title,
 .site-page--home #about h2#about-title,
-.site-page--home .brand-home-process h2#process-title {
+.site-page--home .brand-home-process h2#process-title,
+.site-page--project .brand-project-story > header h2,
+.site-page--project .brand-project-gallery > header h2 {
   color: var(--brand-signal) !important;
+}
+
+.site-page--project .brand-related-services > p {
+  color: var(--brand-signal) !important;
+}
+
+/*
+ * Case-study navigation follows the same two-font system as the rest of the site.
+ * The previous serif stack was a leftover from the earlier editorial direction.
+ */
+.site-page--project .brand-project-nav {
+  border-color: rgba(250, 249, 246, 0.24) !important;
+}
+
+.site-page--project .brand-project-nav a {
+  gap: 18px;
+  border-color: rgba(250, 249, 246, 0.24) !important;
+  background: var(--brand-ink) !important;
+  color: var(--brand-paper-bright) !important;
+  transition:
+    background var(--brand-motion-fast),
+    color var(--brand-motion-fast);
+}
+
+.site-page--project .brand-project-nav small {
+  color: var(--brand-signal) !important;
+  font-family: var(--brand-font-text) !important;
+  font-size: var(--brand-label) !important;
+  font-weight: 750 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase;
+}
+
+.site-page--project .brand-project-nav strong {
+  color: var(--brand-paper-bright) !important;
+  font-family: var(--brand-font-display) !important;
+  font-size: clamp(38px, 4vw, 68px) !important;
+  font-weight: 650 !important;
+  line-height: 0.96 !important;
+  letter-spacing: -0.045em !important;
+  transition: color var(--brand-motion-fast);
+}
+
+.site-page--project .brand-project-nav span {
+  color: var(--brand-muted-inverse) !important;
+  font-family: var(--brand-font-text) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.48 !important;
+  letter-spacing: 0 !important;
+  transition: color var(--brand-motion-fast);
+}
+
+.site-page--project .brand-project-nav a:hover,
+.site-page--project .brand-project-nav a:focus-visible {
+  background: var(--brand-graphite) !important;
+  color: var(--brand-paper-bright) !important;
+}
+
+.site-page--project .brand-project-nav a:hover strong,
+.site-page--project .brand-project-nav a:focus-visible strong {
+  color: var(--brand-signal) !important;
+}
+
+.site-page--project .brand-project-nav a:hover span,
+.site-page--project .brand-project-nav a:focus-visible span {
+  color: var(--brand-paper-bright) !important;
 }
 
 /* Archive previews must sit above row copy rather than allowing labels through the image. */
@@ -196,6 +272,10 @@ main :where(article, section, nav, dl, ul, ol, div) {
 
   .site-page--home #about dt {
     font-size: clamp(38px, 12vw, 58px) !important;
+  }
+
+  .site-page--project .brand-project-nav strong {
+    font-size: clamp(34px, 10.5vw, 48px) !important;
   }
 }
 
