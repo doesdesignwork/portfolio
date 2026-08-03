@@ -94,48 +94,52 @@ export default async function ServicePage({ params }: ServicePageProps) {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} site-page site-page--interior site-page--service`}>
       <InteriorHeader />
-      <main className={styles.main}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+      <main className={`${styles.main} brand-main`}>
+        <nav className={`${styles.breadcrumb} brand-breadcrumb`} aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>/</span><span>Services</span>
         </nav>
 
-        <header className={styles.hero}>
-          <p className={styles.kicker}>Gerard Teo / Senior creative direction and hands-on design</p>
+        <header className={`${styles.hero} brand-interior-hero`}>
+          <p>Gerard Teo / {service.primaryKeyword}</p>
           <h1>{service.title}</h1>
-          <p className={styles.deck}>{service.description}</p>
+          <p className={`${styles.deck} brand-deck`}>{service.description}</p>
         </header>
 
-        <section className={styles.serviceIntro}>
-          <h2>How I help</h2>
+        <section className={`${styles.serviceIntro} brand-service-intro`}>
+          <h2>Where I add value</h2>
           <p>{service.intro}</p>
         </section>
 
-        <div className={styles.serviceGrid}>
-          <section className={styles.serviceBlock}>
+        <div className={`${styles.serviceGrid} brand-service-grid`}>
+          <section className={`${styles.serviceBlock} brand-service-block`}>
             <h2>Problems I help solve</h2>
             <ul>{service.problems.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
-          <section className={styles.serviceBlock}>
+          <section className={`${styles.serviceBlock} brand-service-block`}>
             <h2>What I can produce</h2>
             <ul>{service.scope.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
         </div>
 
-        <section className={styles.approach}>
-          <h2>Working approach</h2>
+        <section className={`${styles.approach} brand-service-approach`}>
+          <h2>Working method</h2>
           <p>{service.approach}</p>
         </section>
 
-        <section className={styles.proof} aria-labelledby="proof-title">
-          <div className={styles.sectionHead}>
+        <section className={`${styles.proof} brand-proof`} aria-labelledby="proof-title">
+          <div className={`${styles.sectionHead} brand-section-head`}>
             <h2 id="proof-title">Relevant proof</h2>
-            <p>{proofProjects.length} case studies with responsibilities, decisions, outputs and evidence-supported outcomes</p>
+            <p>Selected case studies connected to this capability.</p>
           </div>
-          <div className={styles.proofGrid}>
+          <div className={`${styles.proofGrid} brand-proof-grid`}>
             {proofProjects.map((project) => (
-              <Link key={project.number} className={styles.proofCard} href={`/work/${project.slug}/`}>
+              <Link
+                key={project.number}
+                className={`${styles.proofCard} brand-proof-card`}
+                href={`/work/${project.slug}/`}
+              >
                 <small>{project.number} / {project.primaryKeyword}</small>
                 <strong>{project.client}</strong>
                 <span>{project.role}</span>
@@ -145,9 +149,10 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </section>
 
-        <section className={styles.cta}>
-          <h2>Need senior thinking without losing hands-on craft?</h2>
-          <a href="mailto:g@doesdesignwork.com">Discuss a project with Gerard</a>
+        <section className={`${styles.cta} brand-cta`}>
+          <p>Have a project in this area?</p>
+          <h2>Let’s turn the requirement into a usable system.</h2>
+          <a href="mailto:g@doesdesignwork.com">Discuss the project</a>
         </section>
       </main>
       <script
