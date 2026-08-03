@@ -1,0 +1,108 @@
+/* Focused post-launch corrections for the editorial homepage. */
+
+@media (min-width: 961px) {
+  aside[aria-label="Page index"] {
+    width: 128px !important;
+    padding-inline: 14px !important;
+    overflow: hidden;
+  }
+
+  aside[aria-label="Page index"] nav {
+    width: 100%;
+    min-height: 0;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+    gap: 0 !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+  }
+
+  aside[aria-label="Page index"] nav a {
+    min-width: 0;
+    padding-block: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  main:has(> #top),
+  footer#contact {
+    margin-left: 128px !important;
+  }
+
+  main > section,
+  footer#contact {
+    padding-left: clamp(64px, 6.5vw, 120px) !important;
+    padding-right: clamp(64px, 6.5vw, 120px) !important;
+  }
+}
+
+@media (min-width: 961px) and (max-width: 1180px) {
+  aside[aria-label="Page index"] {
+    width: 112px !important;
+    padding-inline: 10px !important;
+  }
+
+  aside[aria-label="Page index"] nav a {
+    font-size: 10px !important;
+    letter-spacing: 0.055em !important;
+  }
+
+  main:has(> #top),
+  footer#contact {
+    margin-left: 112px !important;
+  }
+
+  main > section,
+  footer#contact {
+    padding-left: clamp(40px, 5vw, 64px) !important;
+    padding-right: clamp(40px, 5vw, 64px) !important;
+  }
+}
+
+@media (max-width: 960px) {
+  aside[aria-label="Page index"] {
+    display: none !important;
+  }
+
+  main:has(> #top),
+  footer#contact {
+    margin-left: 0 !important;
+  }
+}
+
+/* Do not stretch portfolio artwork beyond its natural aspect ratio. */
+[data-sharp-image="true"] {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: 100%;
+  object-fit: contain !important;
+  image-rendering: auto;
+  transform: none !important;
+  filter: none !important;
+}
+
+#top a[href^="/work/"],
+#work a[href^="/work/"] {
+  max-width: 1800px;
+}
+
+#top a[href^="/work/"] > div:first-child,
+#work a[href^="/work/"] > span:first-child {
+  min-height: 0 !important;
+}
+
+#top a[href^="/work/"]:hover [data-sharp-image="true"],
+#top a[href^="/work/"]:focus-visible [data-sharp-image="true"],
+#work a[href^="/work/"]:hover [data-sharp-image="true"],
+#work a[href^="/work/"]:focus-visible [data-sharp-image="true"] {
+  transform: none !important;
+  filter: none !important;
+}
