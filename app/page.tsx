@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
+import "./home-fixes.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -46,6 +47,8 @@ function ProjectLink({
           height={1400}
           sizes="(max-width: 760px) 100vw, 70vw"
           priority={priority}
+          unoptimized
+          data-sharp-image="true"
         />
       </span>
       <span className={styles.projectCaption}>
@@ -141,6 +144,8 @@ export default function Home() {
                 height={1400}
                 sizes="(max-width: 760px) 100vw, 82vw"
                 priority
+                unoptimized
+                data-sharp-image="true"
               />
             </div>
             <div className={styles.heroProjectCaption}>
@@ -204,6 +209,8 @@ export default function Home() {
                     width={900}
                     height={650}
                     sizes="(max-width: 760px) 100vw, 32vw"
+                    unoptimized
+                    data-sharp-image="true"
                   />
                 </span>
                 <span className={styles.archiveArrow} aria-hidden="true">↗</span>
