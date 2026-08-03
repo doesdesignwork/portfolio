@@ -36,10 +36,11 @@
     margin-left: 128px !important;
   }
 
+  /* Keep the page editorial rather than billboard-wide on large displays. */
   main > section,
   footer#contact {
-    padding-left: clamp(64px, 6.5vw, 120px) !important;
-    padding-right: clamp(64px, 6.5vw, 120px) !important;
+    padding-left: max(64px, calc((100vw - 128px - 1320px) / 2)) !important;
+    padding-right: max(64px, calc((100vw - 128px - 1320px) / 2)) !important;
   }
 }
 
@@ -77,6 +78,59 @@
   }
 }
 
+/*
+ * Type direction: use Inter for quiet reading and Krub for display.
+ * This removes the oversized old-style-serif/italic combination that made
+ * the page feel like a familiar generated portfolio template.
+ */
+header:has(+ aside[aria-label="Page index"]),
+aside[aria-label="Page index"],
+main:has(> #top),
+footer#contact {
+  font-family: var(--font-heading), "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+#top h1,
+main:has(> #top) h2,
+footer#contact h2,
+#work a[href^="/work/"] > span:last-child > span:nth-child(3) {
+  font-family: var(--font-body), "Avenir Next", Avenir, sans-serif !important;
+  font-style: normal;
+}
+
+#top h1 {
+  max-width: 1040px;
+  font-size: clamp(58px, 7.1vw, 112px) !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.047em !important;
+}
+
+#top h1 em {
+  font-style: normal !important;
+  letter-spacing: inherit;
+}
+
+main:has(> #top) h2,
+footer#contact h2 {
+  letter-spacing: -0.035em !important;
+  line-height: 0.98 !important;
+  text-wrap: balance;
+}
+
+#work a[href^="/work/"] > span:last-child > span:nth-child(3) {
+  font-size: clamp(24px, 1.9vw, 34px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.025em !important;
+}
+
+main:has(> #top) p,
+main:has(> #top) span,
+footer#contact p,
+footer#contact span,
+footer#contact small {
+  text-wrap: pretty;
+}
+
 /* Do not stretch portfolio artwork beyond its natural aspect ratio. */
 [data-sharp-image="true"] {
   width: 100% !important;
@@ -91,7 +145,7 @@
 
 #top a[href^="/work/"],
 #work a[href^="/work/"] {
-  max-width: 1800px;
+  max-width: 1320px;
 }
 
 #top a[href^="/work/"] > div:first-child,
