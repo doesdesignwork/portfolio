@@ -1,6 +1,9 @@
-/* Stability and visual corrections after live review. Imported last on the homepage. */
+/* Final homepage layout corrections. Imported after the base and motion styles. */
 
-/* SIDE INDEX: remove the moving locator and the bracket geometry that was widening the rail. */
+/* --------------------------------------------------------------------------
+   SIDE INDEX
+   Keep every link in its lane. The active state is colour and weight only.
+   -------------------------------------------------------------------------- */
 aside[data-side-index] nav::after {
   display: none !important;
 }
@@ -12,8 +15,17 @@ aside[data-side-index] nav {
 aside[data-side-index] nav a {
   width: 100%;
   min-width: 0;
-  overflow: hidden;
   padding: 8px 0 !important;
+  overflow: hidden;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--muted, #77756f) !important;
+  opacity: 0.48;
+  font-weight: 650 !important;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    letter-spacing 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 aside[data-side-index] nav a > span {
@@ -24,7 +36,9 @@ aside[data-side-index] nav a > span {
   gap: 0 !important;
   transform: none !important;
   animation: none !important;
-  letter-spacing: 0.075em !important;
+  letter-spacing: 0.065em !important;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 aside[data-side-index] nav a > span::before,
@@ -34,34 +48,95 @@ aside[data-side-index] nav a > span::after {
 }
 
 aside[data-side-index] nav a[aria-current="location"] {
-  color: var(--ink, #151515) !important;
-  font-weight: 850 !important;
+  color: var(--signal, #e34832) !important;
   opacity: 1 !important;
-  background: color-mix(in srgb, var(--signal, #e34832) 9%, transparent);
-  box-shadow: inset 0 0 0 1px var(--signal, #e34832);
+  font-weight: 850 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-aside[data-side-index] nav a:not([aria-current="location"]) {
-  opacity: 0.52;
+aside[data-side-index] nav a[aria-current="location"] > span {
+  letter-spacing: 0.09em !important;
+  animation: ddw-active-index-colour 340ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
 aside[data-side-index] nav a:not([aria-current="location"]):hover,
 aside[data-side-index] nav a:not([aria-current="location"]):focus-visible {
-  opacity: 0.9;
-  background: rgba(21, 21, 21, 0.035);
+  color: var(--signal, #e34832) !important;
+  opacity: 0.82;
+  background: transparent !important;
 }
 
-/* INTRODUCTION: let the biography be the dominant column. */
+@keyframes ddw-active-index-colour {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   HERO READING ORDER
+   1. Identity line
+   2. Headline, read as one left-aligned statement
+   3. Supporting copy and actions
+   4. Personal introduction and evidence
+   -------------------------------------------------------------------------- */
+#top > div:has(> h1) {
+  grid-template-columns: minmax(0, 1.75fr) minmax(290px, 0.55fr) !important;
+  align-items: start !important;
+  gap: clamp(48px, 6vw, 92px) !important;
+}
+
+#top > div:has(> h1) > h1 {
+  max-width: 920px !important;
+  font-size: clamp(64px, 7vw, 108px) !important;
+  line-height: 0.91 !important;
+  letter-spacing: -0.05em !important;
+}
+
+[data-hero-line],
+[data-hero-line]:nth-child(2) {
+  justify-self: start !important;
+  width: 100%;
+}
+
+[data-hero-line]:nth-child(2) {
+  margin-top: 0.02em;
+}
+
+#top > div:has(> h1) > div {
+  align-self: start !important;
+  max-width: 390px !important;
+  padding-top: clamp(12px, 2vw, 28px) !important;
+  padding-bottom: 0 !important;
+}
+
+#top > div:has(> h1) > div > p {
+  font-size: clamp(20px, 1.55vw, 25px) !important;
+  line-height: 1.48 !important;
+}
+
+/* The introduction is one story with evidence beside it, not three competing starts. */
 [data-intro-panel] {
-  grid-template-columns:
-    minmax(150px, 0.24fr)
-    minmax(520px, 1.35fr)
-    minmax(220px, 0.42fr) !important;
-  gap: clamp(28px, 3.4vw, 54px) !important;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 285px) !important;
+  gap: clamp(34px, 5vw, 76px) !important;
+  align-items: start;
+}
+
+[data-intro-kicker] {
+  grid-column: 1 / -1;
+  max-width: 760px !important;
+  color: var(--ink, #151515) !important;
+  font-size: clamp(13px, 1.05vw, 16px) !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0.075em !important;
 }
 
 [data-intro-copy] {
-  max-width: 800px !important;
+  grid-column: 1;
+  max-width: 780px !important;
 }
 
 [data-intro-copy] p {
@@ -69,41 +144,25 @@ aside[data-side-index] nav a:not([aria-current="location"]):focus-visible {
 }
 
 [data-intro-facts] {
+  grid-column: 2;
   min-width: 0;
 }
 
-@media (max-width: 1260px) and (min-width: 961px) {
-  [data-intro-panel] {
-    grid-template-columns: minmax(140px, 0.28fr) minmax(0, 1fr) !important;
-  }
-
-  [data-intro-copy] {
-    max-width: 760px !important;
-  }
-
-  [data-intro-facts] {
-    grid-column: 2;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-  }
+[data-intro-facts] dt {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
-@media (max-width: 800px) {
-  [data-intro-panel] {
-    grid-template-columns: 1fr !important;
-  }
-
-  [data-intro-facts] {
-    grid-column: auto;
-  }
-}
-
-/* CONTACT: use the paper tone throughout and give the kicker proper presence. */
+/* --------------------------------------------------------------------------
+   CONTACT
+   All copy on the solid signal-orange field is reversed to paper white.
+   -------------------------------------------------------------------------- */
 footer#contact,
 footer#contact h2,
 footer#contact a,
+footer#contact p,
 footer#contact span,
+footer#contact strong,
 footer#contact small,
 footer#contact > div:first-child > p {
   color: var(--paper, #f2f0eb) !important;
@@ -117,12 +176,119 @@ footer#contact > div:first-child > p {
 }
 
 footer#contact small {
-  opacity: 0.72;
+  opacity: 0.76;
 }
 
-footer#contact .home-module__txgM7a__contactLinks,
-footer#contact .home-module__txgM7a__footerLine {
-  border-color: color-mix(in srgb, var(--paper, #f2f0eb) 45%, transparent) !important;
+footer#contact > div,
+footer#contact [data-contact-link] {
+  border-color: color-mix(in srgb, var(--paper, #f2f0eb) 44%, transparent) !important;
+}
+
+footer#contact [data-contact-link]::before {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   HOMEPAGE COLLISION GUARDS
+   -------------------------------------------------------------------------- */
+#top *,
+#work *,
+#archive *,
+#about *,
+footer#contact * {
+  min-width: 0;
+}
+
+#top h1,
+#work h2,
+#archive h2,
+#about h2,
+footer#contact h2,
+#work a strong,
+#work a small,
+#archive a strong,
+#archive a small {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+#work a[href^="/work/"] > span:last-child,
+#archive a[href^="/work/"] {
+  min-width: 0;
+}
+
+@media (max-width: 1180px) and (min-width: 961px) {
+  aside[data-side-index] nav a {
+    font-size: 9.5px !important;
+  }
+
+  aside[data-side-index] nav a > span {
+    letter-spacing: 0.045em !important;
+  }
+
+  #top > div:has(> h1) {
+    grid-template-columns: minmax(0, 1.35fr) minmax(270px, 0.65fr) !important;
+    gap: 40px !important;
+  }
+
+  #top > div:has(> h1) > h1 {
+    font-size: clamp(58px, 6.8vw, 88px) !important;
+  }
+
+  [data-intro-panel] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [data-intro-kicker],
+  [data-intro-copy],
+  [data-intro-facts] {
+    grid-column: 1;
+  }
+
+  [data-intro-facts] {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 960px) {
+  #top > div:has(> h1) {
+    grid-template-columns: 1fr !important;
+    gap: 34px !important;
+  }
+
+  #top > div:has(> h1) > div {
+    max-width: 640px !important;
+    padding-top: 0 !important;
+  }
+
+  [data-intro-panel] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [data-intro-kicker],
+  [data-intro-copy],
+  [data-intro-facts] {
+    grid-column: 1;
+  }
+
+  [data-intro-facts] {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (max-width: 620px) {
+  #top > div:has(> h1) > h1 {
+    font-size: clamp(52px, 16vw, 78px) !important;
+  }
+
+  [data-intro-facts] {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
