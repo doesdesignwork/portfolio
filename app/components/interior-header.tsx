@@ -3,14 +3,18 @@ import Link from "next/link";
 
 export function InteriorHeader() {
   return (
-    <header className="interior-header">
-      <Link className="interior-wordmark" href="/" aria-label="Gerard Teo, portfolio home">
+    <header className="interior-header brand-header">
+      <Link
+        className="interior-wordmark brand-wordmark"
+        href="/"
+        aria-label="Gerard Teo, portfolio home"
+      >
         <Image
           src="/assets/g-image.webp"
           alt=""
           width={640}
           height={640}
-          sizes="54px"
+          sizes="48px"
           priority
         />
       </Link>
