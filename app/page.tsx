@@ -3,9 +3,6 @@ import Link from "next/link";
 import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
-import "./home-fixes.css";
-import "./side-index.css";
-import "./stability-fixes.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -90,15 +87,19 @@ export default function Home() {
   const [sgInnovate, dow, modajar] = featuredProjects;
 
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} site-page site-page--home`}>
       <PortfolioMotion />
 
       <a className={styles.skipLink} href="#work">
         Skip to selected work
       </a>
 
-      <header className={styles.header}>
-        <Link className={styles.wordmark} href="#top" aria-label="Gerard Teo, portfolio home">
+      <header className={`${styles.header} brand-header`}>
+        <Link
+          className={`${styles.wordmark} brand-wordmark`}
+          href="#top"
+          aria-label="Gerard Teo, portfolio home"
+        >
           <Image
             src="/assets/g-image.webp"
             alt=""
@@ -116,7 +117,12 @@ export default function Home() {
         </nav>
       </header>
 
-      <aside className={styles.marginRail} aria-label="Page index" data-side-index data-active-section="top">
+      <aside
+        className={styles.marginRail}
+        aria-label="Page index"
+        data-side-index
+        data-active-section="top"
+      >
         <div>
           <span>GT</span>
           <span data-section-counter aria-live="polite">
@@ -173,52 +179,53 @@ export default function Home() {
           </div>
 
           <div data-intro-panel data-reveal="intro">
-            <p data-intro-kicker>Senior enough to set the direction. Still close enough to make the work.</p>
+            <p data-intro-kicker>
+              Direction, design and delivery belong in the same conversation.
+            </p>
             <div data-intro-copy>
               <p>
-                I have spent 26+ years across brand identity, campaigns, packaging,
-                exhibitions and production, working inside major agency networks,
-                building an independent practice and leading creative teams.
+                I work where strategy becomes something visible: clarifying the brief,
+                setting the creative direction and building the system through to final
+                production.
               </p>
               <p>
-                My useful zone is the stretch between strategy and craft: untangling
-                the brief, finding the visual point and carrying it through until the
-                final thing survives screens, spaces, budgets and deadlines.
+                That means fewer handovers, fewer diluted ideas and a clearer line from
+                the first decision to the finished experience.
               </p>
             </div>
             <dl data-intro-facts>
               <div>
-                <dt>26+</dt>
-                <dd>Years of design and direction</dd>
+                <dt>Direction</dt>
+                <dd>A clear visual point before production starts</dd>
               </div>
               <div>
-                <dt>3 → 15</dt>
-                <dd>Creative-team growth</dd>
+                <dt>System</dt>
+                <dd>One idea across screens, spaces and formats</dd>
               </div>
               <div>
-                <dt>Idea → delivery</dt>
-                <dd>No disappearing after the concept deck</dd>
+                <dt>Delivery</dt>
+                <dd>Hands-on through artwork and production</dd>
               </div>
             </dl>
           </div>
         </section>
 
-        <section className={styles.manifesto} aria-labelledby="manifesto-title">
-          <p>Strategy / Direction / Execution</p>
-          <h2 id="manifesto-title">The idea has to work before the design can.</h2>
+        <section className={`${styles.manifesto} brand-home-manifesto`} aria-labelledby="manifesto-title">
+          <p>Working principle</p>
+          <h2 id="manifesto-title">Clarity before decoration.</h2>
           <p>
-            Get the brief straight. Find the point. Build one visual world that
-            survives every screen, space and deadline.
+            A strong system makes decisions easier, keeps teams aligned and gives the
+            final work a recognisable point of view.
           </p>
         </section>
 
         <section id="work" className={styles.selectedWork} aria-labelledby="work-title">
-          <header className={styles.sectionHeader}>
+          <header className={`${styles.sectionHeader} brand-section-head`}>
             <p>Selected case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
               Brand systems, campaigns and physical experiences, shown with the
-              thinking and responsibility behind them.
+              decisions and responsibility behind them.
             </span>
           </header>
 
@@ -243,7 +250,7 @@ export default function Home() {
         </section>
 
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
-          <header className={styles.archiveHeader}>
+          <header className={`${styles.archiveHeader} brand-section-head`}>
             <p>Selected archive / {archiveProjects.length} projects</p>
             <h2 id="archive-title">A wider cut of the work.</h2>
           </header>
@@ -279,31 +286,29 @@ export default function Home() {
         </section>
 
         <section id="about" className={styles.about} aria-labelledby="about-title">
-          <div className={styles.aboutTitle}>
+          <div className={`${styles.aboutTitle} brand-section-head`}>
             <p>Experience</p>
             <h2 id="about-title">I lead the work. I still make it.</h2>
           </div>
 
-          <div className={styles.aboutStory}>
+          <div className={`${styles.aboutStory} brand-about-story`}>
             <div>
               <p>
-                I move between setting the direction and making sure the work lands.
-                I co-founded Blacksheep Communications, helped grow its design team
-                from three to 15 and stayed close to the work, clients and production.
+                I have worked across agency networks, independent practice and
+                production teams, moving from hands-on designer to creative director
+                and studio co-founder.
               </p>
               <p>
-                Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on
-                Apple, I learned how ideas survive demanding brand systems and real
-                production. Today I work across events and experiences at C Square
-                Creative Communications, while The Fat Oracle is my independent
-                practice for brand, packaging and 3D.
+                The common thread is accountability. I stay close to the brief, the
+                team and the final output, especially when a project has many
+                stakeholders, formats or production constraints.
               </p>
             </div>
 
             <dl className={styles.metrics}>
               <div><dt>26+</dt><dd>Years across design, direction and production</dd></div>
               <div><dt>3 → 15</dt><dd>Creative-team growth at Blacksheep</dd></div>
-              <div><dt>6</dt><dd>Major agency networks plus independent practice</dd></div>
+              <div><dt>3 modes</dt><dd>Agency, independent and in-house practice</dd></div>
             </dl>
           </div>
 
@@ -317,26 +322,26 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className={styles.process} aria-labelledby="process-title">
-          <header>
-            <p>How the work gets done</p>
-            <h2 id="process-title">One idea. Built all the way through.</h2>
+        <section className={`${styles.process} brand-home-process`} aria-labelledby="process-title">
+          <header className="brand-section-head">
+            <p>How I build the work</p>
+            <h2 id="process-title">From brief to durable system.</h2>
           </header>
           <ol>
             <li data-reveal="process" data-reveal-delay="0">
               <span>01</span>
-              <h3>Find the real brief</h3>
-              <p>Agree on the audience, the problem and the decision the work must influence.</p>
+              <h3>Define the decision</h3>
+              <p>Clarify the audience, the problem and what the work must change.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="1">
               <span>02</span>
-              <h3>Build one clear world</h3>
-              <p>Set the idea, tone and anchor visual, then make every touchpoint belong.</p>
+              <h3>Set the visual logic</h3>
+              <p>Build a recognisable idea, hierarchy and set of rules for the team.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="2">
               <span>03</span>
-              <h3>Make it hold up</h3>
-              <p>Take it across screens, spaces and formats without watering the idea down.</p>
+              <h3>Carry it into production</h3>
+              <p>Test the system across real formats and protect the idea through delivery.</p>
             </li>
           </ol>
         </section>
@@ -344,10 +349,10 @@ export default function Home() {
 
       <footer id="contact" className={styles.footer}>
         <div data-reveal="contact" data-reveal-delay="0">
-          <p>Have a role?</p>
-          <h2>Or a brief worth solving?</h2>
+          <p>Selected roles and collaborations</p>
+          <h2>Bring me the brief.</h2>
         </div>
-        <div className={styles.contactLinks}>
+        <div className={`${styles.contactLinks} brand-contact-links`}>
           <a
             href="mailto:g@doesdesignwork.com"
             data-contact-link
@@ -364,7 +369,7 @@ export default function Home() {
             data-reveal-delay="1"
           >
             <span>Leadership CV</span>
-            <small>Experience and role fit</small>
+            <small>Experience, capabilities and role fit</small>
           </Link>
           <a
             href="https://www.linkedin.com/in/gerard-teo-0b106429/"
@@ -378,7 +383,7 @@ export default function Home() {
             <small>Connect professionally</small>
           </a>
         </div>
-        <div className={styles.footerLine}>
+        <div className={`${styles.footerLine} brand-footer-line`}>
           <span>Gerard Teo / Singapore</span>
           <span>Art Director / Senior Brand Designer / Creative Lead</span>
           <Link href="#top">Back to top ↑</Link>
