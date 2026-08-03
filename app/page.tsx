@@ -1,860 +1,310 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
-import { ScrollMotion } from "./components/scroll-motion";
 import { projects, type Project } from "./data/projects";
+import styles from "./home.module.css";
 
-const featuredProjectNumbers = ["13", "08", "01"];
-const featuredProjects = featuredProjectNumbers
-  .map((number) => projects.find((project) => project.number === number))
-  .filter((project): project is Project => Boolean(project));
-const selectedProjectNumbers = ["03", "04", "06", "09", "14", "10", "11", "15"];
-const selectedProjects = selectedProjectNumbers
-  .map((number) => projects.find((project) => project.number === number))
-  .filter((project): project is Project => Boolean(project));
-const selectedProjectClusterNumbers = new Set(["14", "10", "11", "15"]);
-const selectedProjectsBeforeCluster = selectedProjects.filter(
-  (project) => !selectedProjectClusterNumbers.has(project.number),
-);
-const selectedProjectsInCluster = selectedProjects.filter((project) =>
-  selectedProjectClusterNumbers.has(project.number),
-);
-const navigableProjects = [...featuredProjects, ...selectedProjects];
-
-const galleryTileSizes: Record<string, string> = {
-  "03": "tile-2x2",
-  "04": "tile-1x1",
-  "06": "tile-1x1",
-  "09": "tile-2x1",
-  "10": "tile-1x1",
-  "11": "tile-1x1",
-  "14": "tile-2x1",
-  "15": "tile-2x2",
+const byNumber = (number: string) => {
+  const project = projects.find((item) => item.number === number);
+  if (!project) {
+    throw new Error(`Missing portfolio project ${number}`);
+  }
+  return project;
 };
 
-const modalImageLimits: Record<string, { width: number; height: number }> = {
-  "/assets/brewerkz-packaging.webp": { width: 526, height: 466 },
-  "/assets/herdsman-packaging.webp": { width: 500, height: 378 },
-  "/assets/herdsman-sauces.webp": { width: 511, height: 360 },
-  "/assets/herdsman-egg.webp": { width: 514, height: 362 },
-  "/assets/herdsman-store.webp": { width: 516, height: 362 },
-  "/assets/raffles-card.webp": { width: 493, height: 362 },
-  "/assets/raffles-signage.webp": { width: 248, height: 362 },
-  "/assets/passion-entrance.webp": { width: 640, height: 620 },
-  "/assets/passion-signage.webp": { width: 437, height: 424 },
-  "/assets/munch-packaging.webp": { width: 515, height: 362 },
-  "/assets/munch-menu-board.webp": { width: 514, height: 392 },
-  "/assets/munch-menu.webp": { width: 330, height: 232 },
-};
-
-const imagePreloadCache = new Map<string, Promise<void>>();
-
-const loadProjectImage = (source: string) => {
-  if (typeof window === "undefined") return Promise.resolve();
-
-  const cached = imagePreloadCache.get(source);
-  if (cached) return cached;
-
-  const loadPromise = new Promise<void>((resolve) => {
-    const image = new window.Image();
-    image.decoding = "async";
-    image.onload = () => {
-      image.decode().catch(() => undefined).finally(resolve);
-    };
-    image.onerror = () => resolve();
-    image.src = source;
-  });
-
-  imagePreloadCache.set(source, loadPromise);
-  return loadPromise;
-};
-
-const preloadProjectImages = (project: Project) => {
-  if (typeof window === "undefined") return;
-
-  project.images.forEach((source) => void loadProjectImage(source));
-};
-
-const preloadAdjacentProjectImages = (project: Project, imageIndex: number) => {
-  if (project.images.length < 2) return;
-  const previous = (imageIndex - 1 + project.images.length) % project.images.length;
-  const next = (imageIndex + 1) % project.images.length;
-  void loadProjectImage(project.images[previous]);
-  void loadProjectImage(project.images[next]);
-};
-
-const projectHash = (project: Project) => `#project-${project.number}`;
-
-const projectIndexFromHash = (hash: string) => {
-  const match = /^#project-(\d{2})$/.exec(hash);
-  if (!match) return -1;
-  return projects.findIndex((project) => project.number === match[1]);
-};
+const featuredProjects = ["13", "08", "01"].map(byNumber);
+const archiveProjects = ["03", "04", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const capabilities = [
-  { label: "Creative direction" },
-  { label: "Brand systems", href: "/services/brand-identity-design-singapore/" },
-  { label: "Campaigns" },
-  { label: "Experiential", href: "/services/experiential-exhibition-design-singapore/" },
-  { label: "Packaging", href: "/services/packaging-product-design-singapore/" },
-  { label: "3D visualisation", href: "/services/packaging-product-design-singapore/" },
-];
+  ["01", "Creative direction"],
+  ["02", "Brand systems"],
+  ["03", "Campaigns"],
+  ["04", "Experiential"],
+  ["05", "Packaging"],
+  ["06", "3D visualisation"],
+] as const;
 
-export default function Home() {
-  const projectDialogRef = useRef<HTMLDivElement>(null);
-  const projectCopyRef = useRef<HTMLElement>(null);
-  const aboutCopyMeasureRef = useRef<HTMLDivElement>(null);
-  const careerLedgerRef = useRef<HTMLDListElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const lastProjectTriggerRef = useRef<HTMLAnchorElement>(null);
-  const imageRequestRef = useRef(0);
-  const [activeProject, setActiveProject] = useState(0);
-  const [activeProjectImage, setActiveProjectImage] = useState(0);
-  const [isProjectOpen, setIsProjectOpen] = useState(false);
-  const [isProjectImageLoading, setIsProjectImageLoading] = useState(false);
-
-  const selectedProject = projects[activeProject];
-  const selectedImageIndex = Math.min(
-    activeProjectImage,
-    selectedProject.images.length - 1,
-  );
-  const selectedImageSource = selectedProject.images[selectedImageIndex];
-  const selectedImageLimit = modalImageLimits[selectedImageSource];
-  const selectedImageScale = selectedImageSource.startsWith("/assets/brewerkz-")
-    ? 1
-    : 1.35;
-  const selectedImageStyle = selectedImageLimit
-    ? ({
-        "--modal-image-max-width": `${Math.round(selectedImageLimit.width * selectedImageScale)}px`,
-        "--modal-image-max-height": `${Math.round(selectedImageLimit.height * selectedImageScale)}px`,
-      } as CSSProperties)
-    : undefined;
-
-  const closeProject = useCallback(() => {
-    imageRequestRef.current += 1;
-    setIsProjectImageLoading(false);
-    setIsProjectOpen(false);
-    if (projectIndexFromHash(window.location.hash) >= 0) {
-      window.history.replaceState(
-        null,
-        "",
-        `${window.location.pathname}${window.location.search}`,
-      );
-    }
-  }, []);
-
-  const changeProjectImage = useCallback(
-    async (nextIndex: number) => {
-      const project = projects[activeProject];
-      const safeIndex =
-        (nextIndex + project.images.length) % project.images.length;
-      if (safeIndex === activeProjectImage) return;
-
-      const requestId = imageRequestRef.current + 1;
-      imageRequestRef.current = requestId;
-      const dialogScroll = projectDialogRef.current?.scrollTop ?? 0;
-      const copyScroll = projectCopyRef.current?.scrollTop ?? 0;
-      setIsProjectImageLoading(true);
-
-      await loadProjectImage(project.images[safeIndex]);
-      if (requestId !== imageRequestRef.current) return;
-
-      setActiveProjectImage(safeIndex);
-      preloadAdjacentProjectImages(project, safeIndex);
-      window.requestAnimationFrame(() => {
-        if (projectDialogRef.current) projectDialogRef.current.scrollTop = dialogScroll;
-        if (projectCopyRef.current) projectCopyRef.current.scrollTop = copyScroll;
-        setIsProjectImageLoading(false);
-      });
-    },
-    [activeProject, activeProjectImage],
-  );
-
-  const openProject = (project: Project, trigger: HTMLAnchorElement) => {
-    const projectIndex = projects.indexOf(project);
-    preloadProjectImages(project);
-    preloadAdjacentProjectImages(project, 0);
-    lastProjectTriggerRef.current = trigger;
-    window.history.pushState(null, "", projectHash(project));
-    setActiveProject(projectIndex);
-    setActiveProjectImage(0);
-    setIsProjectOpen(true);
-  };
-
-  const handleProjectNavigation = (
-    event: ReactMouseEvent<HTMLAnchorElement>,
-    project: Project,
-  ) => {
-    if (
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-    openProject(project, event.currentTarget);
-  };
-
-  const changeProject = (nextProject: Project) => {
-    const projectIndex = projects.indexOf(nextProject);
-    imageRequestRef.current += 1;
-    preloadProjectImages(nextProject);
-    preloadAdjacentProjectImages(nextProject, 0);
-    window.history.replaceState(null, "", projectHash(nextProject));
-    setActiveProject(projectIndex);
-    setActiveProjectImage(0);
-    setIsProjectImageLoading(false);
-    if (projectCopyRef.current) projectCopyRef.current.scrollTop = 0;
-  };
-
-  const showPreviousProject = () => {
-    const currentIndex = navigableProjects.findIndex(
-      (project) => project.number === selectedProject.number,
-    );
-    const safeIndex = currentIndex < 0 ? 0 : currentIndex;
-    changeProject(
-      navigableProjects[
-        (safeIndex - 1 + navigableProjects.length) % navigableProjects.length
-      ],
-    );
-  };
-
-  const showNextProject = () => {
-    const currentIndex = navigableProjects.findIndex(
-      (project) => project.number === selectedProject.number,
-    );
-    const safeIndex = currentIndex < 0 ? 0 : currentIndex;
-    changeProject(navigableProjects[(safeIndex + 1) % navigableProjects.length]);
-  };
-
-  const showPreviousImage = () => {
-    void changeProjectImage(selectedImageIndex - 1);
-  };
-
-  const showNextImage = () => {
-    void changeProjectImage(selectedImageIndex + 1);
-  };
-
-  const navigateToSection = useCallback((href: string) => {
-    const targetId = decodeURIComponent(href.slice(1));
-    const target = document.getElementById(targetId);
-    if (!target) return;
-
-    const root = document.documentElement;
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const scrollPaddingTop =
-      Number.parseFloat(window.getComputedStyle(root).scrollPaddingTop) || 0;
-    const destination =
-      targetId === "top"
-        ? 0
-        : Math.max(
-            0,
-            window.scrollY + target.getBoundingClientRect().top - scrollPaddingTop,
-          );
-
-    root.classList.add("is-programmatic-scroll");
-    window.history.pushState(
-      null,
-      "",
-      `${window.location.pathname}${window.location.search}${href}`,
-    );
-
-    if (targetId === "top") {
-      const scrollingElement = document.scrollingElement;
-      root.style.scrollBehavior = "auto";
-      root.style.scrollSnapType = "none";
-      void root.offsetHeight;
-
-      if (scrollingElement) {
-        scrollingElement.scrollTop = 0;
-      } else {
-        window.scrollTo(0, 0);
-      }
-
-      window.requestAnimationFrame(() => {
-        if (scrollingElement) {
-          scrollingElement.scrollTop = 0;
-        } else {
-          window.scrollTo(0, 0);
-        }
-
-        window.requestAnimationFrame(() => {
-          root.style.removeProperty("scroll-behavior");
-          root.style.removeProperty("scroll-snap-type");
-          root.classList.remove("is-programmatic-scroll");
-        });
-      });
-      return;
-    }
-
-    let hasSettled = false;
-    let fallbackTimer = 0;
-    const finishNavigation = () => {
-      if (hasSettled) return;
-      hasSettled = true;
-      window.clearTimeout(fallbackTimer);
-      window.removeEventListener("scrollend", finishNavigation);
-      root.classList.remove("is-programmatic-scroll");
-    };
-
-    window.addEventListener("scrollend", finishNavigation, { once: true });
-    window.scrollTo({
-      top: destination,
-      behavior: reducedMotion ? "auto" : "smooth",
-    });
-
-    if (reducedMotion) {
-      window.requestAnimationFrame(finishNavigation);
-    } else {
-      fallbackTimer = window.setTimeout(finishNavigation, 1600);
-    }
-  }, []);
-
-  const handleSectionNavigation = useCallback(
-    (event: ReactMouseEvent<HTMLAnchorElement>) => {
-      const href = event.currentTarget.getAttribute("href");
-      if (
-        !href?.startsWith("#") ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-      navigateToSection(href);
-    },
-    [navigateToSection],
-  );
-
-  useEffect(() => {
-    const syncProjectFromUrl = () => {
-      const projectIndex = projectIndexFromHash(window.location.hash);
-      if (projectIndex < 0) {
-        setIsProjectOpen(false);
-        return;
-      }
-
-      const project = projects[projectIndex];
-      preloadProjectImages(project);
-      preloadAdjacentProjectImages(project, 0);
-      setActiveProject(projectIndex);
-      setActiveProjectImage(0);
-      setIsProjectOpen(true);
-    };
-
-    syncProjectFromUrl();
-    window.addEventListener("hashchange", syncProjectFromUrl);
-    window.addEventListener("popstate", syncProjectFromUrl);
-    return () => {
-      window.removeEventListener("hashchange", syncProjectFromUrl);
-      window.removeEventListener("popstate", syncProjectFromUrl);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isProjectOpen) return;
-
-    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
-
-    const handleDialogKeys = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeProject();
-      if (event.key !== "Tab") return;
-
-      const focusable = Array.from(
-        projectDialogRef.current?.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
-        ) ?? [],
-      ).filter((element) => element.getClientRects().length > 0);
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleDialogKeys);
-    return () => {
-      window.removeEventListener("keydown", handleDialogKeys);
-      window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus());
-    };
-  }, [closeProject, isProjectOpen]);
-
-  useEffect(() => {
-    if (!isProjectOpen) return;
-
-    const handleGalleryKeys = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        void changeProjectImage(selectedImageIndex - 1);
-      }
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        void changeProjectImage(selectedImageIndex + 1);
-      }
-    };
-
-    window.addEventListener("keydown", handleGalleryKeys);
-    return () => window.removeEventListener("keydown", handleGalleryKeys);
-  }, [changeProjectImage, isProjectOpen, selectedImageIndex]);
-
-  useEffect(() => {
-    const copy = aboutCopyMeasureRef.current;
-    const ledger = careerLedgerRef.current;
-    if (!copy || !ledger) return;
-
-    const updateCareerScale = () => {
-      const copyHeight = copy.getBoundingClientRect().height;
-      const heightBasedSize = Math.max(46, Math.min(92, copyHeight / 4.7));
-
-      ledger.style.setProperty(
-        "--career-ledger-height",
-        `${Math.round(copyHeight)}px`,
-      );
-      ledger.style.setProperty(
-        "--career-number-size",
-        `${heightBasedSize.toFixed(2)}px`,
-      );
-
-      const numberLabels = Array.from(ledger.querySelectorAll("dt"));
-      let fittedSize = heightBasedSize;
-
-      for (let pass = 0; pass < 2; pass += 1) {
-        ledger.style.setProperty(
-          "--career-number-size",
-          `${fittedSize.toFixed(2)}px`,
-        );
-        const fitRatio = numberLabels.reduce((smallestRatio, label) => {
-          if (label.scrollWidth <= label.clientWidth) return smallestRatio;
-          return Math.min(smallestRatio, label.clientWidth / label.scrollWidth);
-        }, 1);
-        if (fitRatio === 1) break;
-        fittedSize = Math.max(46, fittedSize * fitRatio * 0.98);
-      }
-
-      ledger.style.setProperty(
-        "--career-number-size",
-        `${fittedSize.toFixed(2)}px`,
-      );
-    };
-
-    const resizeObserver = new ResizeObserver(updateCareerScale);
-    resizeObserver.observe(copy);
-    updateCareerScale();
-
-    return () => resizeObserver.disconnect();
-  }, []);
-
-  const renderFeaturedProject = (project: Project, index: number) => (
+function ProjectLink({
+  project,
+  priority = false,
+  className = "",
+}: {
+  project: Project;
+  priority?: boolean;
+  className?: string;
+}) {
+  return (
     <Link
-      key={project.number}
-      id={`project-${project.number}`}
-      className={`featured-project featured-project-${index + 1}`}
+      className={`${styles.projectCard} ${className}`}
       href={`/work/${project.slug}/`}
-      prefetch={false}
-      onClick={(event) => handleProjectNavigation(event, project)}
-      onPointerEnter={() => preloadProjectImages(project)}
-      onFocus={() => preloadProjectImages(project)}
       aria-label={`View ${project.client} case study: ${project.title}`}
     >
-      <span className="featured-project-media">
+      <span className={styles.projectMedia}>
         <Image
           src={project.images[0]}
           alt={project.imageAlts[0] ?? project.alt}
           width={1800}
-          height={1300}
-          sizes={index === 0 ? "(max-width: 900px) 100vw, 72vw" : "(max-width: 900px) 100vw, 48vw"}
+          height={1400}
+          sizes="(max-width: 760px) 100vw, 70vw"
+          priority={priority}
         />
       </span>
-      <span className="project-caption">
-        <span className="project-number">{project.number}</span>
+      <span className={styles.projectCaption}>
+        <span className={styles.projectNumber}>{project.number}</span>
         <span>
           <strong>{project.client}</strong>
           <small>{project.discipline}</small>
         </span>
-        <span className="project-title">{project.title}</span>
-        <span className="project-open">View project</span>
+        <span className={styles.projectTitle}>{project.title}</span>
+        <span className={styles.projectArrow} aria-hidden="true">↗</span>
       </span>
     </Link>
   );
+}
 
-  const renderSelectedProject = (project: Project) => {
-    const tileSize = galleryTileSizes[project.number] ?? "tile-1x1";
-
-    return (
-      <Link
-        key={project.number}
-        id={`project-${project.number}`}
-        className={`selected-project selected-project-${project.number} ${tileSize}`}
-        href={`/work/${project.slug}/`}
-        prefetch={false}
-        onClick={(event) => handleProjectNavigation(event, project)}
-        onPointerEnter={() => preloadProjectImages(project)}
-        onFocus={() => preloadProjectImages(project)}
-        aria-label={`View ${project.client} case study: ${project.title}`}
-      >
-        <span className="selected-project-media">
-          <Image
-            src={project.images[0]}
-            alt={project.imageAlts[0] ?? project.alt}
-            width={1400}
-            height={1100}
-            sizes={
-              tileSize === "tile-1x1"
-                ? "(max-width: 720px) 50vw, 25vw"
-                : "(max-width: 720px) 100vw, 50vw"
-            }
-          />
-        </span>
-        <span className="selected-project-copy">
-          <span>{project.number}</span>
-          <strong>{project.client}</strong>
-          <small>{project.discipline}</small>
-        </span>
-      </Link>
-    );
-  };
+export default function Home() {
+  const [sgInnovate, dow, modajar] = featuredProjects;
 
   return (
-    <main className="site-shell">
-      <ScrollMotion />
-      <div className="scroll-progress" aria-hidden="true">
-        <span />
-      </div>
-      <a className="skip-link" href="#work" onClick={handleSectionNavigation}>Skip to selected work</a>
+    <div className={styles.page}>
+      <a className={styles.skipLink} href="#work">
+        Skip to selected work
+      </a>
 
-      <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Gerard Teo, home" onClick={handleSectionNavigation}>
+      <header className={styles.header}>
+        <Link className={styles.wordmark} href="#top" aria-label="Gerard Teo, portfolio home">
           <Image
             src="/assets/g-image.webp"
             alt=""
             width={640}
             height={640}
-            sizes="54px"
+            sizes="48px"
             priority
           />
-        </a>
+        </Link>
         <nav aria-label="Primary navigation">
-          <a href="#work" onClick={handleSectionNavigation}>Work</a>
-          <a href="#about" onClick={handleSectionNavigation}>About</a>
-          <a href="#contact" onClick={handleSectionNavigation}>Contact</a>
+          <Link href="#work">Work</Link>
+          <Link href="#about">About</Link>
+          <Link href="#contact">Contact</Link>
           <Link href="/cv/">CV</Link>
         </nav>
       </header>
 
-      <section
-        id="top"
-        className="hero snap-panel panel-hero"
-        aria-labelledby="hero-title"
-        data-snap-section
-      >
-        <div className="hero-heading">
-          <p className="hero-eyebrow">Gerard Teo</p>
-          <h1 id="hero-title" className="hero-role">Art Director and Senior Brand Designer in Singapore</h1>
-          <p className="hero-statement">
-            <span>Clear thinking.</span>
-            {" "}
-            <em>Properly made.</em>
-          </p>
+      <aside className={styles.marginRail} aria-label="Page index">
+        <div>
+          <span>GT</span>
+          <span>01 / 08</span>
         </div>
+        <nav>
+          <Link href="#top">Introduction</Link>
+          <Link href="#work">Selected work</Link>
+          <Link href="#archive">Archive</Link>
+          <Link href="#about">Experience</Link>
+          <Link href="#contact">Contact</Link>
+        </nav>
+        <p>Singapore<br />Available for the right work</p>
+      </aside>
 
-        <div className="hero-support">
-          <p>I turn complex briefs into brand systems, campaigns and experiences people can understand and use.</p>
-          <div className="hero-actions">
-            <a href="#work" onClick={handleSectionNavigation}>View selected work</a>
-            <Link href="/cv/">Leadership CV</Link>
+      <main>
+        <section id="top" className={styles.hero} aria-labelledby="hero-title">
+          <div className={styles.heroIdentity}>
+            <p>Gerard Teo</p>
+            <p>Art Director / Senior Brand Designer</p>
           </div>
-        </div>
 
-        <section className="hero-work-preview" aria-labelledby="featured-preview-title">
-          <h2 id="featured-preview-title" className="sr-only">Featured work preview</h2>
-          <figure className="hero-work-main">
+          <div className={styles.heroStatement}>
+            <h1 id="hero-title">
+              Clear thinking.
+              <em>Properly made.</em>
+            </h1>
             <div>
+              <p>
+                I turn complex briefs into brand systems, campaigns and experiences
+                people can understand, remember and use.
+              </p>
+              <div className={styles.heroActions}>
+                <Link href="#work">View selected work</Link>
+                <Link href="/cv/">Leadership CV</Link>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            className={styles.heroProject}
+            href={`/work/${sgInnovate.slug}/`}
+            aria-label={`View ${sgInnovate.client} case study`}
+          >
+            <div className={styles.heroProjectMedia}>
               <Image
-                src={featuredProjects[0].images[0]}
-                alt={featuredProjects[0].imageAlts[0] ?? featuredProjects[0].alt}
+                src={sgInnovate.images[0]}
+                alt={sgInnovate.imageAlts[0] ?? sgInnovate.alt}
                 width={1800}
-                height={1300}
-                sizes="(max-width: 900px) 100vw, 66vw"
+                height={1400}
+                sizes="(max-width: 760px) 100vw, 82vw"
                 priority
               />
             </div>
-            <figcaption><span>{featuredProjects[0].client}</span><small>{featuredProjects[0].discipline}</small></figcaption>
-          </figure>
-          <figure className="hero-work-secondary">
-            <div>
-              <Image
-                src={featuredProjects[1].images[0]}
-                alt={featuredProjects[1].imageAlts[0] ?? featuredProjects[1].alt}
-                width={1200}
-                height={900}
-                sizes="(max-width: 900px) 50vw, 32vw"
-              />
+            <div className={styles.heroProjectCaption}>
+              <span>{sgInnovate.number}</span>
+              <strong>{sgInnovate.client}</strong>
+              <small>{sgInnovate.discipline}</small>
+              <b>Open case study ↗</b>
             </div>
-            <figcaption><span>{featuredProjects[1].client}</span><small>{featuredProjects[1].discipline}</small></figcaption>
-          </figure>
+          </Link>
         </section>
-      </section>
 
-      <section
-        className="manifesto snap-panel panel-manifesto"
-        aria-labelledby="manifesto-title"
-        data-reveal
-        data-snap-section
-      >
-        <h2 id="manifesto-title">
-          <span>The idea has to work</span>
-          {" "}
-          <span>before the design can.</span>
-        </h2>
-        <p>Get the brief straight. Find the point. Build a visual world that survives every screen, space and deadline.</p>
-      </section>
-
-      <section
-        id="work"
-        className="work-section snap-panel panel-work"
-        aria-labelledby="work-title"
-        data-snap-section
-      >
-        <header className="work-heading" data-reveal>
+        <section className={styles.manifesto} aria-labelledby="manifesto-title">
           <p>Strategy / Direction / Execution</p>
-          <h2 id="work-title">Selected work</h2>
-          <span>Selected brand identity, campaign, exhibition and digital-retail work, each with a full case study.</span>
-        </header>
+          <h2 id="manifesto-title">The idea has to work before the design can.</h2>
+          <p>
+            Get the brief straight. Find the point. Build one visual world that
+            survives every screen, space and deadline.
+          </p>
+        </section>
 
-        <div className="featured-work">
-          {featuredProjects.map(renderFeaturedProject)}
-        </div>
-      </section>
+        <section id="work" className={styles.selectedWork} aria-labelledby="work-title">
+          <header className={styles.sectionHeader}>
+            <p>Selected case studies</p>
+            <h2 id="work-title">Work with a point.</h2>
+            <span>
+              Brand systems, campaigns and physical experiences, shown with the
+              thinking and responsibility behind them.
+            </span>
+          </header>
 
-      <section
-        className="more-work-section snap-panel panel-more-work"
-        aria-labelledby="more-work-title"
-        data-snap-section
-      >
-        <header
-          className="more-work-heading"
-          data-reveal
-        >
-          <span className="more-work-kicker">Selected archive / {selectedProjects.length} projects</span>
-          <h3 id="more-work-title">A wider cut of the work.</h3>
-          <p>{selectedProjects.length} projects across identity, packaging, campaigns, products and experience.</p>
-        </header>
-        <div className="selected-work">
-          {selectedProjectsBeforeCluster.map(renderSelectedProject)}
-          <div className="selected-project-cluster">
-            {selectedProjectsInCluster.map(renderSelectedProject)}
+          <div className={styles.featuredStack}>
+            <ProjectLink project={sgInnovate} priority className={styles.featureWide} />
+            <ProjectLink project={dow} className={styles.featureOffset} />
+            <ProjectLink project={modajar} className={styles.featureNarrow} />
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        id="about"
-        className="about-section snap-panel panel-about"
-        aria-labelledby="about-title"
-        data-snap-section
-      >
-        <div className="about-heading" data-reveal>
-          <h2 id="about-title">
-            <span>I lead the work.</span>
-            {" "}
-            <span>I still make it.</span>
-          </h2>
-        </div>
-        <div className="about-content" data-reveal>
-          <div className="about-copy">
-            <div ref={aboutCopyMeasureRef} className="about-copy-main">
-              <p>I move between setting the direction and making sure the work lands. I co-founded Blacksheep Communications, helped grow its design team from three to 15 and stayed close to the work, clients and production.</p>
-              <p>Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on Apple, I learned how ideas survive demanding brand systems and real production. Today I work across events and experiences at C Square Creative Communications (C2), while The Fat Oracle is my independent practice for brand, packaging and 3D.</p>
+        <section id="archive" className={styles.archive} aria-labelledby="archive-title">
+          <header className={styles.archiveHeader}>
+            <p>Selected archive / {archiveProjects.length} projects</p>
+            <h2 id="archive-title">A wider cut of the work.</h2>
+          </header>
+
+          <div className={styles.archiveList}>
+            {archiveProjects.map((project) => (
+              <Link
+                key={project.number}
+                className={styles.archiveItem}
+                href={`/work/${project.slug}/`}
+              >
+                <span className={styles.archiveNumber}>{project.number}</span>
+                <span className={styles.archiveName}>
+                  <strong>{project.client}</strong>
+                  <small>{project.title}</small>
+                </span>
+                <span className={styles.archiveDiscipline}>{project.discipline}</span>
+                <span className={styles.archivePreview}>
+                  <Image
+                    src={project.images[0]}
+                    alt={project.imageAlts[0] ?? project.alt}
+                    width={900}
+                    height={650}
+                    sizes="(max-width: 760px) 100vw, 32vw"
+                  />
+                </span>
+                <span className={styles.archiveArrow} aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section id="about" className={styles.about} aria-labelledby="about-title">
+          <div className={styles.aboutTitle}>
+            <p>Experience</p>
+            <h2 id="about-title">I lead the work. I still make it.</h2>
+          </div>
+
+          <div className={styles.aboutStory}>
+            <div>
+              <p>
+                I move between setting the direction and making sure the work lands.
+                I co-founded Blacksheep Communications, helped grow its design team
+                from three to 15 and stayed close to the work, clients and production.
+              </p>
+              <p>
+                Across Ogilvy, Batey, DDB, Saatchi, McCann and Hogarth Worldwide on
+                Apple, I learned how ideas survive demanding brand systems and real
+                production. Today I work across events and experiences at C Square
+                Creative Communications, while The Fat Oracle is my independent
+                practice for brand, packaging and 3D.
+              </p>
             </div>
-            <p className="brand-line">Selected experience includes Apple, Unilever, Dow, American Express, L&apos;Oréal, Singtel, Red Bull and Tiger Beer.</p>
-          </div>
-          <section className="career-highlights" aria-labelledby="career-highlights-title">
-            <h3 id="career-highlights-title" className="sr-only">Career highlights</h3>
-            <dl ref={careerLedgerRef} className="career-ledger">
+
+            <dl className={styles.metrics}>
               <div><dt>26+</dt><dd>Years across design, direction and production</dd></div>
-              <div><dt>3 to 15</dt><dd>Creative team growth at Blacksheep</dd></div>
-              <div><dt>6</dt><dd>Experience across six major agency networks, alongside independent practice</dd></div>
+              <div><dt>3 → 15</dt><dd>Creative-team growth at Blacksheep</dd></div>
+              <div><dt>6</dt><dd>Major agency networks plus independent practice</dd></div>
             </dl>
-          </section>
-        </div>
+          </div>
 
-        <ul className="capability-index" aria-label="Capabilities" data-reveal>
-          {capabilities.map((capability, index) => (
-            <li key={capability.label}>
-              <b>{String(index + 1).padStart(2, "0")}</b>
-              {capability.href
-                ? <a href={capability.href}>{capability.label}<small>View service</small></a>
-                : <span>{capability.label}</span>}
+          <ul className={styles.capabilities} aria-label="Capabilities">
+            {capabilities.map(([number, label]) => (
+              <li key={number}>
+                <span>{number}</span>
+                <strong>{label}</strong>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className={styles.process} aria-labelledby="process-title">
+          <header>
+            <p>How the work gets done</p>
+            <h2 id="process-title">One idea. Built all the way through.</h2>
+          </header>
+          <ol>
+            <li>
+              <span>01</span>
+              <h3>Find the real brief</h3>
+              <p>Agree on the audience, the problem and the decision the work must influence.</p>
             </li>
-          ))}
-        </ul>
-      </section>
+            <li>
+              <span>02</span>
+              <h3>Build one clear world</h3>
+              <p>Set the idea, tone and anchor visual, then make every touchpoint belong.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Make it hold up</h3>
+              <p>Take it across screens, spaces and formats without watering the idea down.</p>
+            </li>
+          </ol>
+        </section>
+      </main>
 
-      <section
-        className="process-section snap-panel panel-process"
-        aria-labelledby="process-title"
-        data-snap-section
-      >
-        <div className="process-heading" data-reveal>
-          <h2 id="process-title">
-            <span>One idea.</span>
-            {" "}
-            <span>Built all the way through.</span>
-          </h2>
+      <footer id="contact" className={styles.footer}>
+        <div>
+          <p>Have a role?</p>
+          <h2>Or a brief worth solving?</h2>
         </div>
-        <ol data-reveal>
-          <li><b>01</b><h3>Find the real brief</h3><p>Agree on the audience, the problem and the decision the work needs to influence.</p></li>
-          <li><b>02</b><h3>Build one clear world</h3><p>Set the idea, tone and anchor visual, then make every touchpoint belong.</p></li>
-          <li><b>03</b><h3>Make it hold up</h3><p>Take it across screens, spaces and formats without watering the idea down.</p></li>
-        </ol>
-      </section>
-
-      <footer
-        id="contact"
-        className="contact-section snap-panel panel-contact"
-        data-snap-section
-      >
-        <h2 data-reveal>
-          <span>Have a role?</span>
-          {" "}
-          <span>Or a brief worth solving?</span>
-        </h2>
-        <div className="contact-links" data-reveal>
-          <a href="mailto:g@doesdesignwork.com"><span>Email Gerard</span><small>g@doesdesignwork.com</small></a>
-          <Link href="/cv/"><span>Leadership CV</span><small>Experience and role fit</small></Link>
-          <a href="https://www.linkedin.com/in/gerard-teo-0b106429/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><small>Connect professionally</small></a>
+        <div className={styles.contactLinks}>
+          <a href="mailto:g@doesdesignwork.com">
+            <span>Email Gerard</span>
+            <small>g@doesdesignwork.com</small>
+          </a>
+          <Link href="/cv/">
+            <span>Leadership CV</span>
+            <small>Experience and role fit</small>
+          </Link>
+          <a
+            href="https://www.linkedin.com/in/gerard-teo-0b106429/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>LinkedIn</span>
+            <small>Connect professionally</small>
+          </a>
         </div>
-        <div className="footer-line">
+        <div className={styles.footerLine}>
           <span>Gerard Teo / Singapore</span>
           <span>Art Director / Senior Brand Designer / Creative Lead</span>
-          <a href="#top" onClick={handleSectionNavigation}>Back to top</a>
+          <Link href="#top">Back to top ↑</Link>
         </div>
       </footer>
-
-      {isProjectOpen && (
-        <div
-          ref={projectDialogRef}
-          className="project-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="project-dialog-title"
-          aria-describedby="project-dialog-summary"
-          onClick={closeProject}
-        >
-          <button
-            ref={closeButtonRef}
-            className="project-dialog-close"
-            type="button"
-            onClick={closeProject}
-          >
-            Close project
-          </button>
-
-          <div className="project-dialog-shell" onClick={(event) => event.stopPropagation()}>
-            <div
-              className={`project-dialog-media${selectedImageLimit ? " is-resolution-limited" : ""}`}
-              aria-busy={isProjectImageLoading}
-            >
-              <Image
-                src={selectedImageSource}
-                alt={selectedProject.imageAlts[selectedImageIndex] ?? selectedProject.alt}
-                width={selectedImageLimit?.width ?? 1800}
-                height={selectedImageLimit?.height ?? 1400}
-                style={selectedImageStyle}
-                loading="eager"
-                fetchPriority="high"
-                sizes="(max-width: 900px) 100vw, 68vw"
-              />
-              {selectedProject.images.length > 1 && (
-                <div className="project-image-controls">
-                  <button type="button" onClick={showPreviousImage}>Previous image</button>
-                  <span aria-live="polite">{String(selectedImageIndex + 1).padStart(2, "0")} / {String(selectedProject.images.length).padStart(2, "0")}</span>
-                  <button type="button" onClick={showNextImage}>Next image</button>
-                </div>
-              )}
-            </div>
-
-            <aside ref={projectCopyRef} className="project-dialog-copy">
-              <div className="project-dialog-topline"><span>{selectedProject.number}</span><strong>{selectedProject.client}</strong></div>
-              <h2 id="project-dialog-title">{selectedProject.title}</h2>
-              <p id="project-dialog-summary" className="project-summary">{selectedProject.summary}</p>
-              <p className="project-discipline">{selectedProject.discipline}</p>
-
-              <dl className="project-facts">
-                <div><dt>Context</dt><dd>{selectedProject.context}</dd></div>
-                {selectedProject.year && <div><dt>Year</dt><dd>{selectedProject.year}</dd></div>}
-                {selectedProject.credit && <div><dt>Credit</dt><dd>{selectedProject.credit}</dd></div>}
-              </dl>
-
-              <div className="project-story">
-                <section><h3>Business problem</h3><p>{selectedProject.challenge}</p></section>
-                <section><h3>My responsibility</h3><p>{selectedProject.role}</p></section>
-                <section><h3>Strategic decision</h3><p>{selectedProject.approach}</p></section>
-                <section><h3>What was produced</h3><p>{selectedProject.deliverables}</p></section>
-                <section><h3>What changed</h3><p>{selectedProject.outcome}</p></section>
-              </div>
-
-              <div className="project-thumbnails" role="group" aria-label={`${selectedProject.client} image gallery`}>
-                {selectedProject.images.map((image, index) => (
-                  <button
-                    key={image}
-                    type="button"
-                    className={selectedImageIndex === index ? "is-active" : ""}
-                    onClick={() => void changeProjectImage(index)}
-                    aria-label={`Show image ${index + 1} of ${selectedProject.images.length}`}
-                    aria-pressed={selectedImageIndex === index}
-                  >
-                    <Image
-                      src={image}
-                      alt=""
-                      width={320}
-                      height={220}
-                      loading="eager"
-                      sizes="96px"
-                    />
-                  </button>
-                ))}
-              </div>
-
-              <div className="project-dialog-actions">
-                <div>
-                  <button type="button" onClick={showPreviousProject}>Previous project</button>
-                  <button type="button" onClick={showNextProject}>Next project</button>
-                </div>
-                <a href={`/work/${selectedProject.slug}/`}>Full case study</a>
-                <a
-                  href="#contact"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    closeProject();
-                    window.requestAnimationFrame(() => navigateToSection("#contact"));
-                  }}
-                >
-                  Discuss a project
-                </a>
-              </div>
-            </aside>
-          </div>
-        </div>
-      )}
-    </main>
+    </div>
   );
 }
