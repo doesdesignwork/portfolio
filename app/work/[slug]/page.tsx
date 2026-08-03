@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { InteriorHeader } from "@/app/components/interior-header";
 import { projects } from "@/app/data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
-import styles from "@/app/editorial-pages.module.css";
+import styles from "./project.module.css";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -125,63 +124,160 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className={styles.page}>
-      <InteriorHeader />
-      <main className={styles.main}>
+      <a className={styles.skipLink} href="#case-study">Skip to case study</a>
+
+      <header className={styles.header}>
+        <Link className={styles.brand} href="/" aria-label="Gerard Teo, portfolio home">
+          <Image
+            src="/assets/g-image.webp"
+            alt=""
+            width={640}
+            height={640}
+            sizes="46px"
+            priority
+          />
+          <span>Gerard Teo</span>
+        </Link>
+        <nav aria-label="Primary navigation">
+          <Link href="/#work">Work</Link>
+          <Link href="/#about">About</Link>
+          <Link href="/#contact">Contact</Link>
+          <Link href="/cv/">CV</Link>
+        </nav>
+      </header>
+
+      <aside className={styles.margin} aria-label="Case-study index">
+        <span>{project.number}</span>
+        <p>{project.client}</p>
+        <Link href="/#work">All work</Link>
+      </aside>
+
+      <main id="case-study">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/">Home</Link><span>/</span><Link href="/#work">Work</Link><span>/</span><span>{project.client}</span>
+          <Link href="/">Home</Link>
+          <span>/</span>
+          <Link href="/#work">Work</Link>
+          <span>/</span>
+          <span>{project.client}</span>
         </nav>
 
         <article>
           <header className={styles.hero}>
-            <p className={styles.kicker}>{project.number} / {project.context}</p>
-            <h1>{project.seoTitle}</h1>
-            <p className={styles.deck}>{project.summary}</p>
+            <div className={styles.heroMeta}>
+              <p>{project.number} / {project.context}</p>
+              <p>{project.discipline}</p>
+            </div>
+
+            <div className={styles.heroTitle}>
+              <h1>{project.title}</h1>
+              <p>{project.summary}</p>
+            </div>
+
             <dl className={styles.facts}>
-              <div><dt>My responsibility</dt><dd>{project.role}</dd></div>
-              <div><dt>Disciplines</dt><dd>{project.discipline}</dd></div>
-              {project.credit && <div><dt>Credit</dt><dd>{project.credit}</dd></div>}
-              {project.year && <div><dt>Year</dt><dd>{project.year}</dd></div>}
+              <div>
+                <dt>My responsibility</dt>
+                <dd>{project.role}</dd>
+              </div>
+              {project.credit && (
+                <div>
+                  <dt>Credit</dt>
+                  <dd>{project.credit}</dd>
+                </div>
+              )}
+              {project.year && (
+                <div>
+                  <dt>Year</dt>
+                  <dd>{project.year}</dd>
+                </div>
+              )}
             </dl>
           </header>
 
-          <div className={styles.caseFields}>
-            <section><h2>Business problem</h2><p>{project.challenge}</p></section>
-            <section><h2>My responsibility</h2><p>{project.role}</p></section>
-            <section><h2>Strategic decision</h2><p>{project.approach}</p></section>
-            <section><h2>What was produced</h2><p>{project.deliverables}</p></section>
-            <section><h2>What changed</h2><p>{project.outcome}</p></section>
-          </div>
+          <figure className={styles.leadImage}>
+            <Image
+              src={project.images[0]}
+              alt={project.imageAlts[0] ?? project.alt}
+              width={2000}
+              height={1500}
+              sizes="(max-width: 760px) 100vw, 88vw"
+              priority
+            />
+            <figcaption>{project.imageAlts[0] ?? project.alt}</figcaption>
+          </figure>
 
-          <section className={styles.gallery} aria-labelledby="work-shown-title">
-            <div className={styles.sectionHead}>
-              <h2 id="work-shown-title">Work shown</h2>
-              <p>{project.images.length} image{project.images.length === 1 ? "" : "s"}</p>
-            </div>
-            <div className={styles.imageGrid}>
-              {project.images.map((image, imageIndex) => (
-                <figure key={image}>
-                  <Image
-                    src={image}
-                    alt={project.imageAlts[imageIndex] ?? project.alt}
-                    width={1800}
-                    height={1400}
-                    sizes="(max-width: 760px) 100vw, 50vw"
-                  />
-                  <figcaption>
-                    {project.imageAlts[imageIndex] ?? project.alt}
-                  </figcaption>
-                </figure>
-              ))}
+          <section className={styles.story} aria-labelledby="case-thinking">
+            <header>
+              <p>Case-study thinking</p>
+              <h2 id="case-thinking">From problem to working system.</h2>
+            </header>
+
+            <div className={styles.storyFields}>
+              <section>
+                <span>01</span>
+                <h3>The assignment</h3>
+                <p>{project.challenge}</p>
+              </section>
+              <section>
+                <span>02</span>
+                <h3>My responsibility</h3>
+                <p>{project.role}</p>
+              </section>
+              <section>
+                <span>03</span>
+                <h3>The strategic decision</h3>
+                <p>{project.approach}</p>
+              </section>
+              <section>
+                <span>04</span>
+                <h3>The system</h3>
+                <p>{project.deliverables}</p>
+              </section>
+              <section>
+                <span>05</span>
+                <h3>The outcome</h3>
+                <p>{project.outcome}</p>
+              </section>
             </div>
           </section>
 
+          {project.images.length > 1 && (
+            <section className={styles.gallery} aria-labelledby="work-shown-title">
+              <header>
+                <p>Work in use / {project.images.length - 1} additional view{project.images.length === 2 ? "" : "s"}</p>
+                <h2 id="work-shown-title">The system, carried through.</h2>
+              </header>
+
+              <div className={styles.imageGrid}>
+                {project.images.slice(1).map((image, imageIndex) => {
+                  const actualIndex = imageIndex + 1;
+                  return (
+                    <figure key={image}>
+                      <Image
+                        src={image}
+                        alt={project.imageAlts[actualIndex] ?? project.alt}
+                        width={1800}
+                        height={1400}
+                        sizes="(max-width: 760px) 100vw, 50vw"
+                      />
+                      <figcaption>
+                        <span>{String(actualIndex + 1).padStart(2, "0")}</span>
+                        {project.imageAlts[actualIndex] ?? project.alt}
+                      </figcaption>
+                    </figure>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           {relatedServices.length > 0 && (
             <nav className={styles.relatedServices} aria-label="Related expertise">
-              <h2>Related expertise</h2>
+              <p>Related expertise</p>
               <div>
                 {relatedServices.map((service) => (
                   <Link key={service.href} href={service.href}>
                     {service.label}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 ))}
               </div>
@@ -189,19 +285,31 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           )}
 
           <nav className={styles.projectNav} aria-label="Other case studies">
-            <Link href={`/work/${previous.slug}/`}><small>Previous case study</small><strong>{previous.client}</strong></Link>
-            <Link href={`/work/${next.slug}/`}><small>Next case study</small><strong>{next.client}</strong></Link>
+            <Link href={`/work/${previous.slug}/`}>
+              <small>Previous case study</small>
+              <strong>{previous.client}</strong>
+              <span>{previous.title}</span>
+            </Link>
+            <Link href={`/work/${next.slug}/`}>
+              <small>Next case study</small>
+              <strong>{next.client}</strong>
+              <span>{next.title}</span>
+            </Link>
           </nav>
         </article>
 
         <section className={styles.cta}>
-          <h2>Have a role or a brief worth solving?</h2>
-          <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
+          <p>Have a role?</p>
+          <h2>Or a brief worth solving?</h2>
+          <a href="mailto:g@doesdesignwork.com">Email Gerard ↗</a>
         </section>
       </main>
+
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
     </div>
   );
