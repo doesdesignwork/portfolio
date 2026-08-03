@@ -1,0 +1,134 @@
+/* Stability and visual corrections after live review. Imported last on the homepage. */
+
+/* SIDE INDEX: remove the moving locator and the bracket geometry that was widening the rail. */
+aside[data-side-index] nav::after {
+  display: none !important;
+}
+
+aside[data-side-index] nav {
+  padding-bottom: 0 !important;
+}
+
+aside[data-side-index] nav a {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: 8px 0 !important;
+}
+
+aside[data-side-index] nav a > span {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  gap: 0 !important;
+  transform: none !important;
+  animation: none !important;
+  letter-spacing: 0.075em !important;
+}
+
+aside[data-side-index] nav a > span::before,
+aside[data-side-index] nav a > span::after {
+  content: none !important;
+  display: none !important;
+}
+
+aside[data-side-index] nav a[aria-current="location"] {
+  color: var(--ink, #151515) !important;
+  font-weight: 850 !important;
+  opacity: 1 !important;
+  background: color-mix(in srgb, var(--signal, #e34832) 9%, transparent);
+  box-shadow: inset 0 0 0 1px var(--signal, #e34832);
+}
+
+aside[data-side-index] nav a:not([aria-current="location"]) {
+  opacity: 0.52;
+}
+
+aside[data-side-index] nav a:not([aria-current="location"]):hover,
+aside[data-side-index] nav a:not([aria-current="location"]):focus-visible {
+  opacity: 0.9;
+  background: rgba(21, 21, 21, 0.035);
+}
+
+/* INTRODUCTION: let the biography be the dominant column. */
+[data-intro-panel] {
+  grid-template-columns:
+    minmax(150px, 0.24fr)
+    minmax(520px, 1.35fr)
+    minmax(220px, 0.42fr) !important;
+  gap: clamp(28px, 3.4vw, 54px) !important;
+}
+
+[data-intro-copy] {
+  max-width: 800px !important;
+}
+
+[data-intro-copy] p {
+  max-width: 760px;
+}
+
+[data-intro-facts] {
+  min-width: 0;
+}
+
+@media (max-width: 1260px) and (min-width: 961px) {
+  [data-intro-panel] {
+    grid-template-columns: minmax(140px, 0.28fr) minmax(0, 1fr) !important;
+  }
+
+  [data-intro-copy] {
+    max-width: 760px !important;
+  }
+
+  [data-intro-facts] {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 800px) {
+  [data-intro-panel] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [data-intro-facts] {
+    grid-column: auto;
+  }
+}
+
+/* CONTACT: use the paper tone throughout and give the kicker proper presence. */
+footer#contact,
+footer#contact h2,
+footer#contact a,
+footer#contact span,
+footer#contact small,
+footer#contact > div:first-child > p {
+  color: var(--paper, #f2f0eb) !important;
+}
+
+footer#contact > div:first-child > p {
+  font-size: clamp(18px, 1.55vw, 26px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.06em !important;
+  opacity: 1 !important;
+}
+
+footer#contact small {
+  opacity: 0.72;
+}
+
+footer#contact .home-module__txgM7a__contactLinks,
+footer#contact .home-module__txgM7a__footerLine {
+  border-color: color-mix(in srgb, var(--paper, #f2f0eb) 45%, transparent) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  aside[data-side-index] nav a,
+  aside[data-side-index] nav a > span {
+    transition: none !important;
+    animation: none !important;
+  }
+}
