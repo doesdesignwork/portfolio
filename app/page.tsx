@@ -5,6 +5,7 @@ import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./home-fixes.css";
 import "./side-index.css";
+import "./stability-fixes.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
