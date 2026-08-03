@@ -1,3 +1,5 @@
+@import "./mobile-type-consistency.css";
+
 /* A clearer, playful availability signal for the desktop side rail. */
 
 aside[data-side-index] [data-availability] {
