@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./home-fixes.css";
@@ -28,16 +29,21 @@ function ProjectLink({
   project,
   priority = false,
   className = "",
+  revealIndex = 0,
 }: {
   project: Project;
   priority?: boolean;
   className?: string;
+  revealIndex?: number;
 }) {
   return (
     <Link
       className={`${styles.projectCard} ${className}`}
       href={`/work/${project.slug}/`}
       aria-label={`View ${project.client} case study: ${project.title}`}
+      data-reveal="case-study"
+      data-reveal-delay={revealIndex}
+      data-magnetic="true"
     >
       <span className={styles.projectMedia}>
         <Image
@@ -58,7 +64,13 @@ function ProjectLink({
           <small>{project.discipline}</small>
         </span>
         <span className={styles.projectTitle}>{project.title}</span>
-        <span className={styles.projectArrow} aria-hidden="true">↗</span>
+        <span
+          className={styles.projectArrow}
+          aria-hidden="true"
+          data-magnetic-indicator
+        >
+          ↗
+        </span>
       </span>
     </Link>
   );
@@ -69,6 +81,8 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <PortfolioMotion />
+
       <a className={styles.skipLink} href="#work">
         Skip to selected work
       </a>
@@ -116,8 +130,12 @@ export default function Home() {
 
           <div className={styles.heroStatement}>
             <h1 id="hero-title">
-              Clear thinking.
-              <em>Properly made.</em>
+              <span data-hero-line>
+                <span>Clear thinking.</span>
+              </span>
+              <span data-hero-line>
+                <span><em>Properly made.</em></span>
+              </span>
             </h1>
             <div>
               <p>
@@ -135,6 +153,7 @@ export default function Home() {
             className={styles.heroProject}
             href={`/work/${sgInnovate.slug}/`}
             aria-label={`View ${sgInnovate.client} case study`}
+            data-magnetic="true"
           >
             <div className={styles.heroProjectMedia}>
               <Image
@@ -152,7 +171,7 @@ export default function Home() {
               <span>{sgInnovate.number}</span>
               <strong>{sgInnovate.client}</strong>
               <small>{sgInnovate.discipline}</small>
-              <b>Open case study ↗</b>
+              <b data-magnetic-indicator>Open case study ↗</b>
             </div>
           </Link>
         </section>
@@ -177,9 +196,22 @@ export default function Home() {
           </header>
 
           <div className={styles.featuredStack}>
-            <ProjectLink project={sgInnovate} priority className={styles.featureWide} />
-            <ProjectLink project={dow} className={styles.featureOffset} />
-            <ProjectLink project={modajar} className={styles.featureNarrow} />
+            <ProjectLink
+              project={sgInnovate}
+              priority
+              className={styles.featureWide}
+              revealIndex={0}
+            />
+            <ProjectLink
+              project={dow}
+              className={styles.featureOffset}
+              revealIndex={1}
+            />
+            <ProjectLink
+              project={modajar}
+              className={styles.featureNarrow}
+              revealIndex={2}
+            />
           </div>
         </section>
 
@@ -264,17 +296,17 @@ export default function Home() {
             <h2 id="process-title">One idea. Built all the way through.</h2>
           </header>
           <ol>
-            <li>
+            <li data-reveal="process" data-reveal-delay="0">
               <span>01</span>
               <h3>Find the real brief</h3>
               <p>Agree on the audience, the problem and the decision the work must influence.</p>
             </li>
-            <li>
+            <li data-reveal="process" data-reveal-delay="1">
               <span>02</span>
               <h3>Build one clear world</h3>
               <p>Set the idea, tone and anchor visual, then make every touchpoint belong.</p>
             </li>
-            <li>
+            <li data-reveal="process" data-reveal-delay="2">
               <span>03</span>
               <h3>Make it hold up</h3>
               <p>Take it across screens, spaces and formats without watering the idea down.</p>
@@ -284,16 +316,26 @@ export default function Home() {
       </main>
 
       <footer id="contact" className={styles.footer}>
-        <div>
+        <div data-reveal="contact" data-reveal-delay="0">
           <p>Have a role?</p>
           <h2>Or a brief worth solving?</h2>
         </div>
         <div className={styles.contactLinks}>
-          <a href="mailto:g@doesdesignwork.com">
+          <a
+            href="mailto:g@doesdesignwork.com"
+            data-contact-link
+            data-reveal="contact"
+            data-reveal-delay="0"
+          >
             <span>Email Gerard</span>
             <small>g@doesdesignwork.com</small>
           </a>
-          <Link href="/cv/">
+          <Link
+            href="/cv/"
+            data-contact-link
+            data-reveal="contact"
+            data-reveal-delay="1"
+          >
             <span>Leadership CV</span>
             <small>Experience and role fit</small>
           </Link>
@@ -301,6 +343,9 @@ export default function Home() {
             href="https://www.linkedin.com/in/gerard-teo-0b106429/"
             target="_blank"
             rel="noopener noreferrer"
+            data-contact-link
+            data-reveal="contact"
+            data-reveal-delay="2"
           >
             <span>LinkedIn</span>
             <small>Connect professionally</small>

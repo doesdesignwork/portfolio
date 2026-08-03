@@ -160,3 +160,207 @@ footer#contact small {
   transform: none !important;
   filter: none !important;
 }
+
+/* --------------------------------------------------------------------------
+   Motion system
+   Native CSS and a small IntersectionObserver controller keep the page light.
+   -------------------------------------------------------------------------- */
+
+/* 1. Hero statement: clipped baseline reveal without holding back the copy. */
+#top h1 {
+  animation: none !important;
+}
+
+[data-hero-line] {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+[data-hero-line]:nth-child(2) {
+  justify-self: end;
+}
+
+[data-hero-line] > span {
+  display: block;
+  transform: translate3d(0, 108%, 0);
+  clip-path: inset(100% 0 0 0);
+  animation: ddw-hero-line-reveal 860ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, clip-path;
+}
+
+[data-hero-line]:nth-child(2) > span {
+  animation-delay: 90ms;
+}
+
+@keyframes ddw-hero-line-reveal {
+  to {
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* 2 and 4. Scroll reveals for selected work, process and contact areas. */
+.motion-enabled [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  animation: none !important;
+  transition:
+    opacity 680ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.motion-enabled [data-reveal="process"] {
+  transform: translate3d(34px, 0, 0);
+}
+
+.motion-enabled [data-reveal="contact"] {
+  transform: translate3d(0, 20px, 0);
+}
+
+.motion-enabled [data-reveal="case-study"][data-reveal-delay="1"] {
+  transition-delay: 50ms;
+}
+
+.motion-enabled [data-reveal="case-study"][data-reveal-delay="2"] {
+  transition-delay: 100ms;
+}
+
+.motion-enabled [data-reveal="process"][data-reveal-delay="1"] {
+  transition-delay: 110ms;
+}
+
+.motion-enabled [data-reveal="process"][data-reveal-delay="2"] {
+  transition-delay: 220ms;
+}
+
+.motion-enabled [data-reveal="contact"][data-reveal-delay="1"] {
+  transition-delay: 80ms;
+}
+
+.motion-enabled [data-reveal="contact"][data-reveal-delay="2"] {
+  transition-delay: 160ms;
+}
+
+.motion-enabled [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 3. Magnetic feedback moves only the indicator, never the whole card. */
+[data-magnetic] {
+  --mag-x: 0px;
+  --mag-y: 0px;
+}
+
+[data-magnetic-indicator] {
+  display: inline-block;
+  transform: translate3d(var(--mag-x), var(--mag-y), 0) !important;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: transform;
+}
+
+[data-magnetic] [data-sharp-image="true"] {
+  transform-origin: center center;
+  backface-visibility: hidden;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-magnetic][data-magnetic-active="true"] [data-sharp-image="true"],
+  [data-magnetic]:focus-visible [data-sharp-image="true"] {
+    transform: scale(1.02) !important;
+  }
+}
+
+/* 5. Contact links: a controlled centre-out sweep and underline. */
+[data-contact-link] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-decoration: none !important;
+}
+
+[data-contact-link]::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: rgba(22, 11, 8, 0.09);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-contact-link] > span,
+[data-contact-link] > small {
+  position: relative;
+  z-index: 1;
+}
+
+[data-contact-link] > span {
+  width: fit-content;
+}
+
+[data-contact-link] > span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-contact-link]:hover::before,
+[data-contact-link]:focus-visible::before,
+[data-contact-link]:hover > span::after,
+[data-contact-link]:focus-visible > span::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 800px) {
+  [data-hero-line]:nth-child(2) {
+    justify-self: start;
+  }
+
+  .motion-enabled [data-reveal="process"] {
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .motion-enabled [data-reveal="process"].is-visible {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-hero-line] > span {
+    animation: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .motion-enabled [data-reveal],
+  .motion-enabled [data-reveal].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-magnetic-indicator],
+  [data-magnetic] [data-sharp-image="true"] {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-contact-link]::before,
+  [data-contact-link] > span::after {
+    transition: none !important;
+  }
+}
