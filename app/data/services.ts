@@ -23,8 +23,10 @@ export const services: Service[] = [
       "visual identity designer Singapore",
       "brand architecture designer",
     ],
-    description: "Brand identity and design systems by Gerard Teo, a Singapore art director working across naming, identity, campaigns, digital, print, environments and motion.",
-    intro: "I build identity systems for organisations, products and places that need more than a logo. The work starts with the business problem, then extends through the touchpoints the brand actually has to survive.",
+    description:
+      "Brand identity and design systems for organisations, products and places, from naming and core identity through campaigns, digital, print, environments and motion.",
+    intro:
+      "The objective is not a larger logo library. It is a compact set of rules that helps teams make recognisable work quickly, even when formats, partners and production needs change.",
     problems: [
       "A new brand needs a clear name, idea and visual identity.",
       "An existing identity has become inconsistent across teams and channels.",
@@ -39,7 +41,8 @@ export const services: Service[] = [
       "Digital, print and environmental rollout",
       "Guidelines and production-ready design direction",
     ],
-    approach: "I define one recognisable visual logic, test it across real applications early, and refine the rules until other people can use the system without weakening it.",
+    approach:
+      "I identify the few brand elements that must remain stable, test them early on real applications and document only the rules people need to use the system well.",
     proofProjectNumbers: ["13", "01", "06", "09", "11"],
   },
   {
@@ -53,8 +56,10 @@ export const services: Service[] = [
       "exhibition creative direction",
       "3D event designer Singapore",
     ],
-    description: "Experiential and exhibition creative direction by Gerard Teo, covering visitor narrative, spatial brand systems, exhibition graphics and 3D visualisation.",
-    intro: "I shape the idea, visitor narrative and visual system for exhibitions and branded spaces. My role is creative direction and design—not booth contracting or fabrication—so the experience begins with what visitors should understand and remember.",
+    description:
+      "Creative direction for exhibitions and branded environments, including visitor narrative, spatial identity, communication hierarchy and 3D visualisation.",
+    intro:
+      "I focus on what visitors should notice, understand and remember. That keeps the space from becoming a collection of disconnected messages and gives fabricators a clearer creative framework.",
     problems: [
       "Technical or corporate content is difficult to understand on the exhibition floor.",
       "The space looks assembled from separate graphics instead of one visitor story.",
@@ -69,7 +74,8 @@ export const services: Service[] = [
       "3D visualisation and presentation views",
       "Creative direction through production handoff",
     ],
-    approach: "I organise the content around the visitor journey, create one spatial visual language, and use clear 3D views to align the idea before fabrication decisions begin.",
+    approach:
+      "I organise content around the visitor journey, establish one spatial language and use clear 3D views to align hierarchy, scale and flow before fabrication decisions begin.",
     proofProjectNumbers: ["08", "06", "11"],
   },
   {
@@ -83,8 +89,10 @@ export const services: Service[] = [
       "label design Singapore",
       "3D packaging visualisation",
     ],
-    description: "Packaging design and product visualisation by Gerard Teo across FMCG, beauty, food, beverage and ingredient-led product concepts.",
-    intro: "I design packaging systems and product visualisations that make the proposition clear at a glance and keep a range visibly related. The work can move from concept and naming through pack structure, labels and polished 3D views.",
+    description:
+      "Packaging systems and product visualisation for FMCG, beauty, food, beverage and ingredient-led concepts.",
+    intro:
+      "The work makes the product proposition legible at a glance, separates variants without fragmenting the range and gives teams credible visuals before production.",
     problems: [
       "Different products in a range are difficult to distinguish at shelf.",
       "A new proposition is still too technical or abstract to evaluate.",
@@ -99,7 +107,8 @@ export const services: Service[] = [
       "Food and beverage packaging",
       "3D product and packaging visualisation",
     ],
-    approach: "I keep the brand anchors and range logic stable, then use colour, form, hierarchy and visualisation to make each proposition distinct and easy to assess.",
+    approach:
+      "I keep the brand anchors and range logic stable, then use colour, form, hierarchy and visualisation to make each proposition distinct and easy to assess.",
     proofProjectNumbers: ["04", "15", "07", "10", "02", "12"],
   },
 ];
