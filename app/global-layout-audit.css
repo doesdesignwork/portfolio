@@ -1,4 +1,5 @@
 @import "./brand-system.css";
+@import "./availability-motion.css";
 
 /* Shared collision and contrast safeguards across homepage, case studies and service pages. */
 
@@ -13,10 +14,32 @@ body {
   min-width: 0;
 }
 
-/* Long client names and headlines should wrap at natural word boundaries. */
-:where(h1, h2, h3, h4, h5, h6, p, dd, dt, figcaption, strong, small, a) {
+/* Body copy can protect itself from unusually long strings and URLs. */
+:where(p, dd, figcaption, small, a) {
   overflow-wrap: break-word;
   word-break: normal;
+}
+
+/* Display copy, names and metrics may wrap only at natural spaces. */
+:where(h1, h2, h3, h4, h5, h6, dt, strong) {
+  max-width: 100%;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.site-page :where(h1, h2, h3, h4, h5, h6, dt, strong) {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+.site-page :where(h1, h2) {
+  text-wrap: balance;
+}
+
+.site-page :where(p, dd, figcaption) {
+  text-wrap: pretty;
 }
 
 img,
@@ -62,7 +85,13 @@ svg {
   min-width: 0;
 }
 
-#case-study article :where(h1, h2, h3, p, dd, dt, figcaption, strong, small) {
+#case-study article :where(h1, h2, h3, dt, strong) {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+#case-study article :where(p, dd, figcaption, small) {
   overflow-wrap: break-word;
   word-break: normal;
 }
@@ -81,6 +110,45 @@ svg {
 /* Service and CV layouts share the editorial template. Keep their grids shrinkable. */
 main :where(article, section, nav, dl, ul, ol, div) {
   min-width: 0;
+}
+
+/* Homepage display statements use signal orange as the consistent editorial accent. */
+.site-page--home #about h2#about-title,
+.site-page--home .brand-home-process h2#process-title {
+  color: var(--brand-signal) !important;
+}
+
+/* Archive previews must sit above row copy rather than allowing labels through the image. */
+.site-page--home #archive [class*="archiveItem"] {
+  isolation: isolate;
+}
+
+.site-page--home #archive [class*="archivePreview"] {
+  z-index: 30 !important;
+  border: 10px solid var(--brand-paper-bright);
+  background: var(--brand-paper-bright) !important;
+  box-shadow: 0 28px 76px rgba(21, 21, 21, 0.2) !important;
+}
+
+.site-page--home #archive [class*="archiveDiscipline"] {
+  transition: opacity 180ms ease, color 180ms ease;
+}
+
+.site-page--home #archive [class*="archiveItem"]:hover [class*="archiveDiscipline"],
+.site-page--home #archive [class*="archiveItem"]:focus-visible [class*="archiveDiscipline"] {
+  opacity: 0;
+}
+
+/* Keep the experience metrics intact, especially the '3 modes' label. */
+.site-page--home #about dl > div {
+  grid-template-columns: minmax(230px, 0.62fr) minmax(0, 1fr) !important;
+}
+
+.site-page--home #about dt {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  font-size: clamp(42px, 3.8vw, 66px) !important;
 }
 
 @media (max-width: 1180px) and (min-width: 901px) {
@@ -104,6 +172,11 @@ main :where(article, section, nav, dl, ul, ol, div) {
     border-left: 0 !important;
     border-top: 1px solid rgba(21, 21, 21, 0.18);
   }
+
+  /* At this width the homepage metrics become three independent cards. */
+  .site-page--home #about dl > div {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (max-width: 760px) {
@@ -114,5 +187,25 @@ main :where(article, section, nav, dl, ul, ol, div) {
   /* Avoid tiny third columns on service, CV and project facts. */
   main :where(dl, ul, ol) > * {
     min-width: 0;
+  }
+
+  /* Mobile metric rows have enough room for full labels without word fractures. */
+  .site-page--home #about dl > div {
+    grid-template-columns: minmax(112px, 0.4fr) minmax(0, 1fr) !important;
+  }
+
+  .site-page--home #about dt {
+    font-size: clamp(38px, 12vw, 58px) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-page--home #about dl > div {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .site-page--home #about dt {
+    white-space: normal !important;
   }
 }
