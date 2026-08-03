@@ -178,17 +178,6 @@ main :where(article, section, nav, dl, ul, ol, div) {
   }
 }
 
-@media (max-width: 1080px) {
-  /* Hover previews are not useful once the archive columns become compact. */
-  .site-page--home #archive [class*="archivePreview"] {
-    display: none !important;
-  }
-
-  .site-page--home #archive [class*="archiveDiscipline"] {
-    opacity: 1 !important;
-  }
-}
-
 @media (max-width: 760px) {
   :where(h1, h2) {
     text-wrap: balance;
