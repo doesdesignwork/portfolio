@@ -97,11 +97,14 @@ function ExperienceSection({
   roles: typeof currentRoles;
 }) {
   return (
-    <section className={styles.cvSection}>
+    <section className={`${styles.cvSection} brand-cv-section`}>
       <h2>{title}</h2>
       <div>
         {roles.map((role) => (
-          <article className={styles.cvRole} key={`${role.dates}-${role.title}`}>
+          <article
+            className={`${styles.cvRole} brand-cv-role`}
+            key={`${role.dates}-${role.title}`}
+          >
             <p>{role.dates}</p>
             <div>
               <h3>{role.title}</h3>
@@ -153,31 +156,28 @@ const structuredData = {
 
 export default function CvPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} site-page site-page--interior site-page--cv`}>
       <InteriorHeader />
-      <main className={`${styles.main} ${styles.cvMain}`}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+      <main className={`${styles.main} ${styles.cvMain} brand-main`}>
+        <nav className={`${styles.breadcrumb} brand-breadcrumb`} aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span>/</span>
           <span>CV</span>
         </nav>
 
-        <header className={styles.hero}>
-          <p className={styles.kicker}>
-            Gerard Teo / CV / Singapore / Updated July 2026
-          </p>
+        <header className={`${styles.hero} brand-interior-hero brand-cv-hero`}>
+          <p>Gerard Teo / CV / Singapore / Updated July 2026</p>
           <h1>Gerard Teo</h1>
-          <p className={styles.cvTitle}>
+          <p className={`${styles.cvTitle} brand-cv-title`}>
             Art Director and Senior Brand Designer
             <span>Creative Lead / Hands-on maker</span>
           </p>
-          <p className={styles.deck}>
-            Singapore-based creative with 26+ years across brand identity,
-            campaigns, events and production. I set direction, make the work and
-            carry ideas from an unclear brief through presentation, artwork and
-            delivery.
+          <p className={`${styles.deck} brand-deck`}>
+            Senior creative combining direction with hands-on delivery across brand,
+            campaigns, exhibitions, packaging and production. Comfortable leading the
+            room, resolving the system and making sure the final work holds together.
           </p>
-          <div className={styles.cvActions}>
+          <div className={`${styles.cvActions} brand-action-row`}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
             <a
               href="/gerard-teo-creative-lead-senior-designer-cv.pdf"
@@ -197,16 +197,19 @@ export default function CvPage() {
           </div>
         </header>
 
-        <div className={styles.cvLayout}>
+        <div className={`${styles.cvLayout} brand-cv-layout`}>
           <div>
             <ExperienceSection title="Current work" roles={currentRoles} />
             <ExperienceSection
-              title="EXPERIENCE"
+              title="Selected experience"
               roles={selectedExperience}
             />
           </div>
 
-          <aside className={styles.cvSidebar} aria-label="Additional CV details">
+          <aside
+            className={`${styles.cvSidebar} brand-cv-sidebar`}
+            aria-label="Additional CV details"
+          >
             <section>
               <h2>Contact</h2>
               <a href="tel:+6598782541">+65 9878 2541</a>
@@ -267,17 +270,16 @@ export default function CvPage() {
 
             <section>
               <h2>Tools</h2>
-              <p>
-                Photoshop, Illustrator, InDesign, After Effects and Figma.
-              </p>
+              <p>Photoshop, Illustrator, InDesign, After Effects and Figma.</p>
               <p>Blender, Cinema 4D, Spline and Webflow.</p>
               <p>ChatGPT, Firefly, Midjourney and Runway.</p>
             </section>
           </aside>
         </div>
 
-        <section className={styles.cta}>
-          <h2>Need an art director who still makes the work?</h2>
+        <section className={`${styles.cta} brand-cta`}>
+          <p>Considering a senior creative hire?</p>
+          <h2>Review the work, then start the conversation.</h2>
           <a href="mailto:g@doesdesignwork.com">Get in touch</a>
         </section>
       </main>
