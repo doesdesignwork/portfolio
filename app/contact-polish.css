@@ -1,0 +1,21 @@
+/* Final homepage polish requested after live visual review. */
+
+/* Keep the bracketed active state, but remove the red sliding locator. */
+aside[data-side-index] nav::after {
+  display: none !important;
+}
+
+/* Let the contact section read as paper ink reversed out of the signal field. */
+footer#contact,
+footer#contact a,
+footer#contact span,
+footer#contact small,
+footer#contact > div:first-child > p {
+  color: var(--paper, #f2f0eb) !important;
+}
+
+footer#contact > div:first-child > p {
+  font-size: clamp(18px, 1.6vw, 26px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.06em !important;
+}
