@@ -4,6 +4,7 @@ import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./home-fixes.css";
+import "./side-index.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -23,6 +24,14 @@ const capabilities = [
   ["04", "Experiential"],
   ["05", "Packaging"],
   ["06", "3D visualisation"],
+] as const;
+
+const sideSections = [
+  ["top", "Introduction"],
+  ["work", "Selected work"],
+  ["archive", "Archive"],
+  ["about", "Experience"],
+  ["contact", "Contact"],
 ] as const;
 
 function ProjectLink({
@@ -106,19 +115,32 @@ export default function Home() {
         </nav>
       </header>
 
-      <aside className={styles.marginRail} aria-label="Page index">
+      <aside className={styles.marginRail} aria-label="Page index" data-side-index data-active-section="top">
         <div>
           <span>GT</span>
-          <span>01 / 08</span>
+          <span data-section-counter aria-live="polite">
+            <b data-section-counter-current>01</b>
+            <span> / 05</span>
+          </span>
         </div>
         <nav>
-          <Link href="#top">Introduction</Link>
-          <Link href="#work">Selected work</Link>
-          <Link href="#archive">Archive</Link>
-          <Link href="#about">Experience</Link>
-          <Link href="#contact">Contact</Link>
+          {sideSections.map(([id, label], index) => (
+            <Link
+              key={id}
+              href={`#${id}`}
+              data-section-link={id}
+              aria-current={index === 0 ? "location" : undefined}
+            >
+              <span>{label}</span>
+            </Link>
+          ))}
         </nav>
-        <p>Singapore<br />Available for the right work</p>
+        <p data-availability>
+          <span>Available for the </span>
+          <strong data-right-work>right</strong>
+          <span> work</span>
+          <i aria-hidden="true" />
+        </p>
       </aside>
 
       <main>
@@ -149,31 +171,35 @@ export default function Home() {
             </div>
           </div>
 
-          <Link
-            className={styles.heroProject}
-            href={`/work/${sgInnovate.slug}/`}
-            aria-label={`View ${sgInnovate.client} case study`}
-            data-magnetic="true"
-          >
-            <div className={styles.heroProjectMedia}>
-              <Image
-                src={sgInnovate.images[0]}
-                alt={sgInnovate.imageAlts[0] ?? sgInnovate.alt}
-                width={1800}
-                height={1400}
-                sizes="(max-width: 760px) 100vw, 82vw"
-                priority
-                unoptimized
-                data-sharp-image="true"
-              />
+          <div data-intro-panel data-reveal="intro">
+            <p data-intro-kicker>Senior enough to set the direction. Still close enough to make the work.</p>
+            <div data-intro-copy>
+              <p>
+                I have spent 26+ years across brand identity, campaigns, packaging,
+                exhibitions and production, working inside major agency networks,
+                building an independent practice and leading creative teams.
+              </p>
+              <p>
+                My useful zone is the stretch between strategy and craft: untangling
+                the brief, finding the visual point and carrying it through until the
+                final thing survives screens, spaces, budgets and deadlines.
+              </p>
             </div>
-            <div className={styles.heroProjectCaption}>
-              <span>{sgInnovate.number}</span>
-              <strong>{sgInnovate.client}</strong>
-              <small>{sgInnovate.discipline}</small>
-              <b data-magnetic-indicator>Open case study ↗</b>
-            </div>
-          </Link>
+            <dl data-intro-facts>
+              <div>
+                <dt>26+</dt>
+                <dd>Years of design and direction</dd>
+              </div>
+              <div>
+                <dt>3 → 15</dt>
+                <dd>Creative-team growth</dd>
+              </div>
+              <div>
+                <dt>Idea → delivery</dt>
+                <dd>No disappearing after the concept deck</dd>
+              </div>
+            </dl>
+          </div>
         </section>
 
         <section className={styles.manifesto} aria-labelledby="manifesto-title">
