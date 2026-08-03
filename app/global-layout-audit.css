@@ -227,6 +227,21 @@ main :where(article, section, nav, dl, ul, ol, div) {
   font-size: clamp(42px, 3.8vw, 66px) !important;
 }
 
+/* Keep long-form copy readable without letting landscape columns turn into ribbons. */
+.site-page--home [class*="heroStatement"] > div > p,
+.site-page--home .brand-about-story > div > p,
+.site-page--home .brand-home-process li p,
+.site-page--project .brand-project-title > p,
+.site-page--project .brand-story-fields p {
+  max-width: 68ch;
+}
+
+.site-page--home [class*="projectCaption"] strong,
+.site-page--home [class*="archiveName"] strong,
+.site-page--project .brand-project-nav strong {
+  text-wrap: balance;
+}
+
 @media (max-width: 1180px) and (min-width: 901px) {
   /* Stack the large case-study title above its deck before the columns become cramped. */
   #case-study article > header > div:nth-of-type(2) {
@@ -252,6 +267,81 @@ main :where(article, section, nav, dl, ul, ol, div) {
   /* At this width the homepage metrics become three independent cards. */
   .site-page--home #about dl > div {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/*
+ * Phone landscape and small-tablet widths were still inheriting desktop grids.
+ * Stack only the pressure points, while preserving the editorial two-column sections.
+ */
+@media (max-width: 900px) and (min-width: 801px) {
+  .site-page--home {
+    --rail: 0px !important;
+  }
+
+  .site-page--home [class*="marginRail"] {
+    display: none !important;
+  }
+
+  .site-page--home main,
+  .site-page--home footer {
+    margin-left: 0 !important;
+  }
+
+  .site-page--home [class*="heroStatement"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 36px !important;
+  }
+
+  .site-page--home [class*="heroStatement"] > div {
+    max-width: 680px !important;
+  }
+
+  .site-page--home [class*="featureWide"],
+  .site-page--home [class*="featureOffset"],
+  .site-page--home [class*="featureNarrow"] {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .site-page--home .brand-about-story {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 48px !important;
+  }
+
+  .site-page--home .brand-home-process li {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  .site-page--home .brand-home-process li p {
+    grid-column: 2 !important;
+  }
+}
+
+/* Case-study story rows and Previous/Next cards need more room in phone landscape. */
+@media (max-width: 820px) {
+  .site-page--project .brand-story-fields section {
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  .site-page--project .brand-story-fields p {
+    grid-column: 2 !important;
+  }
+
+  .site-page--project .brand-project-nav {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .site-page--project .brand-project-nav a {
+    min-height: 170px !important;
+    text-align: left !important;
+  }
+
+  .site-page--project .brand-project-nav a:last-child {
+    border-left: 0 !important;
+    border-top: 1px solid rgba(250, 249, 246, 0.24) !important;
   }
 }
 
@@ -287,5 +377,47 @@ main :where(article, section, nav, dl, ul, ol, div) {
 
   .site-page--home #about dt {
     white-space: normal !important;
+  }
+}
+
+/* Small portrait screens keep the hierarchy without creating seven-line display towers. */
+@media (max-width: 470px) {
+  .site-page--home [class*="heroStatement"] h1 {
+    font-size: clamp(50px, 15.5vw, 68px) !important;
+    line-height: 0.9 !important;
+  }
+
+  .site-page--home .brand-home-manifesto h2,
+  .site-page--home .brand-section-head h2,
+  .site-page--home footer h2 {
+    font-size: clamp(46px, 13.5vw, 62px) !important;
+    line-height: 0.94 !important;
+    letter-spacing: -0.045em !important;
+  }
+
+  .site-page--project .brand-project-title h1 {
+    font-size: clamp(48px, 15vw, 66px) !important;
+    line-height: 0.9 !important;
+  }
+
+  .site-page--project .brand-project-story > header h2,
+  .site-page--project .brand-project-gallery > header h2 {
+    font-size: clamp(46px, 13.5vw, 62px) !important;
+    line-height: 0.94 !important;
+  }
+
+  .site-page--project .brand-project-nav strong {
+    font-size: clamp(32px, 9.5vw, 40px) !important;
+    line-height: 1 !important;
+  }
+
+  .site-page--project .brand-cta h2 {
+    font-size: clamp(48px, 14.5vw, 66px) !important;
+    line-height: 0.9 !important;
+  }
+
+  .site-page--project .brand-related-services a {
+    gap: 16px !important;
+    line-height: 1.25 !important;
   }
 }
