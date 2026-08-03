@@ -1,3 +1,5 @@
+@import "./stability-fixes.css";
+
 /* Active side index and revised introduction. Imported after the homepage fixes. */
 
 aside[data-side-index] {
