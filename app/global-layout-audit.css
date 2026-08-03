@@ -1,0 +1,103 @@
+/* Shared collision and contrast safeguards across homepage, case studies and service pages. */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Grid and flex children must be allowed to shrink instead of pushing into neighbours. */
+:where(main, article, section, header, footer, nav, aside, div, dl, ol, ul, li, figure) > * {
+  min-width: 0;
+}
+
+/* Long client names and headlines should wrap at natural word boundaries. */
+:where(h1, h2, h3, h4, h5, h6, p, dd, dt, figcaption, strong, small, a) {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+/* Vertical navigation labels must never wrap into adjacent columns. */
+[data-section-link],
+[data-section-link] > span {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Every case-study CTA uses the signal-orange field. Reverse all copy to paper white. */
+#case-study > section:last-child,
+#case-study > section:last-child :where(h1, h2, h3, p, a, span, strong, small) {
+  color: #faf9f6 !important;
+}
+
+#case-study > section:last-child a {
+  border-color: rgba(250, 249, 246, 0.82) !important;
+}
+
+/* Case-study typography and data rows should never collide. */
+#case-study article,
+#case-study article * {
+  min-width: 0;
+}
+
+#case-study article :where(h1, h2, h3, p, dd, dt, figcaption, strong, small) {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+#case-study article h1,
+#case-study article h2 {
+  text-wrap: balance;
+}
+
+#case-study article p,
+#case-study article dd,
+#case-study article figcaption {
+  text-wrap: pretty;
+}
+
+/* Service and CV layouts share the editorial template. Keep their grids shrinkable. */
+main :where(article, section, nav, dl, ul, ol, div) {
+  min-width: 0;
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  /* Stack the large case-study title above its deck before the columns become cramped. */
+  #case-study article > header > div:nth-of-type(2) {
+    grid-template-columns: 1fr !important;
+    gap: 34px !important;
+  }
+
+  #case-study article > header > div:nth-of-type(2) > p {
+    max-width: 760px !important;
+  }
+
+  #case-study article > header > dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #case-study article > header > dl > div:nth-child(3) {
+    grid-column: 1 / -1;
+    padding-left: 0 !important;
+    border-left: 0 !important;
+    border-top: 1px solid rgba(21, 21, 21, 0.18);
+  }
+}
+
+@media (max-width: 760px) {
+  :where(h1, h2) {
+    text-wrap: balance;
+  }
+
+  /* Avoid tiny third columns on service, CV and project facts. */
+  main :where(dl, ul, ol) > * {
+    min-width: 0;
+  }
+}
