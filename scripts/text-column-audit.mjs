@@ -194,10 +194,9 @@ for (const viewport of viewports) {
           ".brand-project-title > *, .brand-service-intro > *, .brand-cv-layout > *",
         )) {
           if (!visible(element)) continue;
-          const style = getComputedStyle(element);
-          if (style.whiteSpace === "nowrap") continue;
-          if (element.scrollWidth > element.clientWidth + 3) {
-            problems.push(`text clips horizontally: ${name(element)}`);
+          const rect = element.getBoundingClientRect();
+          if (rect.left < -tolerance || rect.right > window.innerWidth + tolerance) {
+            problems.push(`content leaves viewport: ${name(element)}`);
           }
         }
 
