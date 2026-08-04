@@ -7,10 +7,12 @@
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-image-manifest.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "audit:images": "node scripts/generate-image-manifest.mjs --audit"
   },
   "dependencies": {
     "gsap": "^3.15.0",
