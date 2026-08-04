@@ -13,12 +13,12 @@ const byNumber = (number: string) => {
   return project;
 };
 
-const featuredProjects = ["13", "08", "01"].map(byNumber);
-const archiveProjects = ["03", "04", "06", "09", "14", "10", "11", "15"].map(byNumber);
+const featuredProjects = ["13", "04", "01"].map(byNumber);
+const archiveProjects = ["03", "08", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const archiveNotes: Record<string, string> = {
   "03": "Four premium card directions with a controlled co-brand hierarchy.",
-  "04": "Brand, label and pack form treated as one consumer system.",
+  "08": "Industrial applications organised into clear exhibition zones.",
   "06": "Naming and identity built from the architecture itself.",
   "09": "A historic identity made more consistent across applications.",
   "14": "Licensed worlds designed into the shoe, not pasted onto it.",
@@ -122,7 +122,7 @@ function ProjectLink({
 }
 
 export default function Home() {
-  const [sgInnovate, dow, modajar] = featuredProjects;
+  const [sgInnovate, sunsilk, modajar] = featuredProjects;
 
   return (
     <div className={`${styles.page} site-page site-page--home`}>
@@ -295,7 +295,7 @@ export default function Home() {
               revealIndex={0}
             />
             <ProjectLink
-              project={dow}
+              project={sunsilk}
               className={styles.featureOffset}
               revealIndex={1}
             />
