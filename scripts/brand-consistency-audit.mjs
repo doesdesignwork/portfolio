@@ -33,6 +33,7 @@ const viewports = [
   { name: "tablet-768", width: 768, height: 1024 },
   { name: "tablet-912", width: 912, height: 1368 },
   { name: "laptop-1180", width: 1180, height: 820 },
+  { name: "laptop-1280", width: 1280, height: 800 },
   { name: "desktop-1440", width: 1440, height: 900 },
   { name: "desktop-1920", width: 1920, height: 1080 },
 ];
@@ -106,7 +107,9 @@ for (const viewport of viewports) {
           return `${element.tagName.toLowerCase()}${text ? ` “${text}”` : ""}`;
         };
 
-        const normalizeFont = (value) => value.replace(/["']/g, "").split(",")[0].trim().toLowerCase();
+        const normalizeFont = (value) =>
+          value.replace(/["']/g, "").split(",")[0].trim().toLowerCase();
+
         const probe = document.createElement("span");
         probe.style.position = "fixed";
         probe.style.visibility = "hidden";
@@ -119,10 +122,23 @@ for (const viewport of viewports) {
         probe.remove();
         const allowedFonts = new Set([displayFont, textFont]);
 
-        const parseRgb = (value) => {
-          const match = value.match(/rgba?\(([^)]+)\)/i);
-          if (!match) return null;
-          const parts = match[1].split(/[ ,/]+/).filter(Boolean).slice(0, 3).map(Number);
+        const parseColor = (value) => {
+          const input = value.trim();
+          const shortHex = input.match(/^#([0-9a-f]{3})$/i);
+          if (shortHex) {
+            return [...shortHex[1]].map((channel) => Number.parseInt(channel + channel, 16));
+          }
+          const longHex = input.match(/^#([0-9a-f]{6})$/i);
+          if (longHex) {
+            return [0, 2, 4].map((offset) => Number.parseInt(longHex[1].slice(offset, offset + 2), 16));
+          }
+          const rgb = input.match(/rgba?\(([^)]+)\)/i);
+          if (!rgb) return null;
+          const parts = rgb[1]
+            .split(/[ ,/]+/)
+            .filter(Boolean)
+            .slice(0, 3)
+            .map(Number);
           return parts.length === 3 && parts.every(Number.isFinite) ? parts : null;
         };
 
@@ -177,9 +193,11 @@ for (const viewport of viewports) {
         }
 
         const computedRoot = getComputedStyle(root);
-        const muted = parseRgb(computedRoot.getPropertyValue("--brand-muted").trim());
-        const paper = parseRgb(computedRoot.getPropertyValue("--brand-paper").trim());
-        if (muted && paper) {
+        const muted = parseColor(computedRoot.getPropertyValue("--brand-muted"));
+        const paper = parseColor(computedRoot.getPropertyValue("--brand-paper"));
+        if (!muted || !paper) {
+          problems.push("unable to parse brand contrast tokens");
+        } else {
           const ratio = contrastRatio(muted, paper);
           if (ratio < 4.5) {
             problems.push(`muted text contrast ${ratio.toFixed(2)}:1 is below WCAG AA`);
@@ -236,16 +254,17 @@ for (const viewport of viewports) {
             for (const row of proofRows) {
               const term = row.querySelector("dt");
               const description = row.querySelector("dd");
-              if (visible(term) && visible(description) && overlaps(
-                term.getBoundingClientRect(),
-                description.getBoundingClientRect(),
-              )) {
+              if (
+                visible(term) &&
+                visible(description) &&
+                overlaps(term.getBoundingClientRect(), description.getBoundingClientRect())
+              ) {
                 problems.push(`proof collision: ${label(term)} ↔ ${label(description)}`);
               }
             }
           }
 
-          if (window.innerWidth <= 1179) {
+          if (window.innerWidth <= 1279) {
             for (const row of proofRows) {
               if (row.getBoundingClientRect().width < (proof?.getBoundingClientRect().width ?? 0) * 0.9) {
                 problems.push(`proof row is not full width at ${window.innerWidth}px`);
