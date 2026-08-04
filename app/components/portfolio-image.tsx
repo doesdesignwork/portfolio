@@ -1,4 +1,5 @@
 import Image, { type ImageProps } from "next/image";
+import type { CSSProperties } from "react";
 import { getImageDimensions } from "@/app/lib/image-dimensions";
 
 type PortfolioImageProps = Omit<
@@ -9,6 +10,10 @@ type PortfolioImageProps = Omit<
   capToSource?: boolean;
 };
 
+type SourceAwareStyle = CSSProperties & {
+  "--source-image-width": string;
+};
+
 export function PortfolioImage({
   src,
   capToSource = true,
@@ -16,6 +21,14 @@ export function PortfolioImage({
   ...props
 }: PortfolioImageProps) {
   const { width, height } = getImageDimensions(src);
+  const sourceAwareStyle: SourceAwareStyle = {
+    "--source-image-width": capToSource ? `${width}px` : "100%",
+    width: "100%",
+    height: "auto",
+    maxWidth: capToSource ? width : "100%",
+    marginInline: capToSource ? "auto" : undefined,
+    ...style,
+  };
 
   return (
     <Image
@@ -28,13 +41,7 @@ export function PortfolioImage({
       data-quality-image="true"
       data-source-width={width}
       data-source-height={height}
-      style={{
-        width: "100%",
-        height: "auto",
-        maxWidth: capToSource ? width : undefined,
-        marginInline: capToSource ? "auto" : undefined,
-        ...style,
-      }}
+      style={sourceAwareStyle}
     />
   );
 }
