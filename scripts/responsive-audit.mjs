@@ -27,18 +27,24 @@ const routes = [
 ];
 
 const viewports = [
+  { name: "mobile-320", width: 320, height: 720 },
   { name: "mobile-360", width: 360, height: 800 },
+  { name: "mobile-375", width: 375, height: 812 },
   { name: "mobile-390", width: 390, height: 844 },
   { name: "mobile-430", width: 430, height: 932 },
+  { name: "tablet-600", width: 600, height: 960 },
   { name: "landscape-844", width: 844, height: 390 },
   { name: "landscape-932", width: 932, height: 430 },
   { name: "landscape-956", width: 956, height: 440 },
   { name: "tablet-768", width: 768, height: 1024 },
   { name: "tablet-820", width: 820, height: 1180 },
+  { name: "tablet-912", width: 912, height: 1368 },
   { name: "tablet-landscape", width: 1024, height: 768 },
   { name: "laptop-1180", width: 1180, height: 820 },
+  { name: "laptop-1280", width: 1280, height: 800 },
   { name: "desktop-1366", width: 1366, height: 768 },
   { name: "desktop-1440", width: 1440, height: 900 },
+  { name: "desktop-1536", width: 1536, height: 960 },
   { name: "desktop-1920", width: 1920, height: 1080 },
 ];
 
@@ -50,12 +56,12 @@ const auditedContainers = [
   "[data-intro-panel]",
   "[data-intro-facts]",
   ".brand-section-head",
-  "[class*='projectCaption']",
-  "[class*='archiveItem']",
+  "[data-project-caption]",
+  "[data-archive-item]",
   ".brand-about-story",
   "#about dl > div",
   "[class*='capabilities']",
-  ".brand-home-process li",
+  "[data-process-point]",
   "[class*='contactLinks']",
   "[class*='footerLine']",
   ".brand-project-title",
@@ -192,6 +198,19 @@ for (const viewport of viewports) {
           .join("")
           .trim();
 
+      const numericStyle = (element, property) => {
+        const value = Number.parseFloat(getComputedStyle(element)[property]);
+        return Number.isFinite(value) ? value : 0;
+      };
+
+      const renderedLineCount = (element) => {
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        const lineHeight = Number.parseFloat(style.lineHeight);
+        if (!Number.isFinite(lineHeight) || lineHeight <= 0) return 1;
+        return Math.max(1, Math.round(rect.height / lineHeight));
+      };
+
       const normalizeFont = (value) => value.replace(/\s+/g, " ").trim().toLowerCase();
       const fontProbe = document.createElement("span");
       fontProbe.textContent = "Aa";
@@ -241,6 +260,63 @@ for (const viewport of viewports) {
         ) {
           problems.push(`metric collision: ${label(term)} ↔ ${label(description)}`);
         }
+      }
+
+      // Process headings must never fall back into the removed number column.
+      for (const row of document.querySelectorAll("[data-process-point]")) {
+        if (!(row instanceof HTMLElement) || !isVisible(row)) continue;
+        const heading = row.querySelector(":scope > h3");
+        const copy = row.querySelector(":scope > p");
+        if (!(heading instanceof HTMLElement) || !(copy instanceof HTMLElement)) continue;
+
+        const headingRect = heading.getBoundingClientRect();
+        const copyRect = copy.getBoundingClientRect();
+        const headingLines = renderedLineCount(heading);
+
+        if (window.innerWidth > 700) {
+          if (headingRect.width < 170) {
+            problems.push(`process title column too narrow: ${Math.round(headingRect.width)}px in ${label(row)}`);
+          }
+          if (headingLines > 3) {
+            problems.push(`process title wraps into ${headingLines} lines: ${label(heading)}`);
+          }
+          if (copyRect.width < 260) {
+            problems.push(`process copy column too narrow: ${Math.round(copyRect.width)}px in ${label(row)}`);
+          }
+        }
+      }
+
+      // Adjacent fact rows may use one separator, not a top-and-bottom pair.
+      const factRows = [...document.querySelectorAll("[data-intro-facts] > div")].filter(
+        (element) => element instanceof HTMLElement && isVisible(element),
+      );
+      for (let index = 0; index < factRows.length - 1; index += 1) {
+        const current = factRows[index];
+        const next = factRows[index + 1];
+        const currentRect = current.getBoundingClientRect();
+        const nextRect = next.getBoundingClientRect();
+        const verticalGap = nextRect.top - currentRect.bottom;
+        const sameColumn = Math.abs(currentRect.left - nextRect.left) < 4;
+        const duplicateBorders =
+          numericStyle(current, "borderBottomWidth") > 0 &&
+          numericStyle(next, "borderTopWidth") > 0;
+
+        if (sameColumn && verticalGap < 32 && duplicateBorders) {
+          problems.push(`double separator between ${label(current)} and ${label(next)}`);
+        }
+      }
+
+      const introPanel = document.querySelector("[data-intro-panel]");
+      const lastFact = factRows.at(-1);
+      if (
+        introPanel instanceof HTMLElement &&
+        lastFact instanceof HTMLElement &&
+        isVisible(introPanel) &&
+        numericStyle(introPanel, "borderBottomWidth") > 0 &&
+        numericStyle(lastFact, "borderBottomWidth") > 0 &&
+        introPanel.getBoundingClientRect().bottom - lastFact.getBoundingClientRect().bottom < 80
+      ) {
+        problems.push("double terminal separator below intro facts");
       }
 
       const textElements = document.querySelectorAll(
@@ -305,5 +381,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `\nResponsive and typography audit passed: ${routes.length} routes × ${viewports.length} viewports.`,
+  `\nResponsive, separator and typography audit passed: ${routes.length} routes × ${viewports.length} viewports.`,
 );

@@ -1,84 +1,199 @@
-/* Final homepage layout adjustments after removing visible indices. */
+/*
+ * HOMEPAGE LAYOUT INTEGRITY
+ *
+ * This is the final homepage layer after visible indices were removed. It
+ * replaces the old number tracks with deliberate copy tracks and normalises
+ * separators so desktop, tablet and phone layouts use the same structure.
+ */
 
-[data-project-caption] {
-  grid-template-columns: minmax(140px, 0.72fr) minmax(220px, 1.2fr) 34px;
+/* Selected work captions: client, statement, arrow. */
+.site-page--home [data-project-caption] {
+  grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.28fr) 32px !important;
+  gap: 16px clamp(20px, 3vw, 42px) !important;
+  align-items: start !important;
 }
 
-[data-project-title] {
-  grid-column: 2;
+.site-page--home [data-project-caption] > span:first-child {
+  grid-column: 1 !important;
 }
 
-[data-project-arrow] {
-  grid-column: 3;
+.site-page--home [data-project-title] {
+  grid-column: 2 !important;
+  min-width: 0 !important;
 }
 
-[data-archive-item] {
-  grid-template-columns: minmax(230px, 0.8fr) minmax(260px, 1fr) 36px;
+.site-page--home [data-project-arrow] {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
 }
 
-[data-archive-name] {
-  grid-column: 1;
+/* Archive rows: project, discipline, arrow. */
+.site-page--home [data-archive-item] {
+  grid-template-columns: minmax(250px, 0.82fr) minmax(0, 1.18fr) 32px !important;
+  gap: 16px clamp(22px, 3vw, 44px) !important;
+  align-items: center !important;
 }
 
-[data-archive-discipline] {
-  grid-column: 2;
+.site-page--home [data-archive-name] {
+  grid-column: 1 !important;
 }
 
-[data-archive-arrow] {
-  grid-column: 3;
+.site-page--home [data-archive-discipline] {
+  grid-column: 2 !important;
 }
 
-[data-capability-list] li {
-  justify-content: flex-end;
+.site-page--home [data-archive-arrow] {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
 }
 
-[data-process-point] {
-  grid-template-columns: minmax(230px, 0.8fr) minmax(300px, 1fr);
+/* Intro facts use one separator per boundary, never stacked double rules. */
+.site-page--home [data-intro-panel] {
+  border-bottom: 0 !important;
 }
 
-@media (max-width: 800px) {
-  [data-project-caption] {
-    grid-template-columns: minmax(0, 1fr) 28px;
+.site-page--home [data-intro-facts] {
+  gap: 0 !important;
+  border-top: 1px solid var(--brand-line, rgba(21, 21, 21, 0.18)) !important;
+}
+
+.site-page--home [data-intro-facts] > div,
+.site-page--home [data-intro-facts] > div:last-child {
+  padding: 18px 0 20px !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid var(--brand-line, rgba(21, 21, 21, 0.18)) !important;
+}
+
+/* Capabilities retain their grid but no longer reserve space for indices. */
+.site-page--home [data-capability-list] li {
+  justify-content: flex-end !important;
+}
+
+/* Process rows: title and explanation only. */
+.site-page--home [data-process-point] {
+  display: grid !important;
+  grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr) !important;
+  gap: clamp(30px, 5vw, 72px) !important;
+  align-items: start !important;
+}
+
+.site-page--home [data-process-point] h3 {
+  grid-column: 1 !important;
+  max-width: 16ch !important;
+  min-width: 0 !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+.site-page--home [data-process-point] p {
+  grid-column: 2 !important;
+  align-self: start !important;
+  max-width: 62ch !important;
+  min-width: 0 !important;
+}
+
+/* Tablets and phone landscape use a safe stacked caption pattern. */
+@media (max-width: 1024px) {
+  .site-page--home [data-project-caption] {
+    grid-template-columns: minmax(0, 1fr) 28px !important;
+    gap: 12px 18px !important;
   }
 
-  [data-project-title] {
-    grid-column: 1 / -1;
+  .site-page--home [data-project-caption] > span:first-child {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
   }
 
-  [data-project-arrow] {
-    grid-column: 2;
-    grid-row: 1;
+  .site-page--home [data-project-title] {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
   }
 
-  [data-archive-item] {
-    grid-template-columns: minmax(0, 1fr) 28px;
+  .site-page--home [data-project-arrow] {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
   }
 
-  [data-archive-name] {
-    grid-column: 1;
+  .site-page--home [data-archive-item] {
+    grid-template-columns: minmax(0, 1fr) 28px !important;
+    gap: 8px 18px !important;
+    align-items: start !important;
   }
 
-  [data-archive-discipline],
-  [data-archive-preview] {
-    grid-column: 1 / -1;
+  .site-page--home [data-archive-name] {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
   }
 
-  [data-archive-arrow] {
-    grid-column: 2;
-    grid-row: 1;
+  .site-page--home [data-archive-discipline] {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
   }
 
-  [data-process-point] {
-    grid-template-columns: 1fr;
+  .site-page--home [data-archive-arrow] {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
   }
 
-  [data-process-point] p {
-    grid-column: 1;
+  .site-page--home [data-process-point] {
+    grid-template-columns: minmax(190px, 0.72fr) minmax(0, 1.28fr) !important;
+    gap: clamp(24px, 4vw, 46px) !important;
+  }
+}
+
+/* Three-up intro facts keep one shared top rule and clean column dividers. */
+@media (min-width: 761px) and (max-width: 1180px) {
+  .site-page--home [data-intro-facts] > div {
+    padding-inline: 20px !important;
+    border-right: 1px solid var(--brand-line, rgba(21, 21, 21, 0.18)) !important;
+  }
+
+  .site-page--home [data-intro-facts] > div:first-child {
+    padding-left: 0 !important;
+  }
+
+  .site-page--home [data-intro-facts] > div:last-child {
+    padding-right: 0 !important;
+    border-right: 0 !important;
+  }
+}
+
+/* Portrait phones stack the process cleanly and collapse intro spacing. */
+@media (max-width: 760px) {
+  .site-page--home [data-intro-panel] {
+    row-gap: 30px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .site-page--home [data-intro-facts] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  .site-page--home [data-intro-facts] > div,
+  .site-page--home [data-intro-facts] > div:last-child {
+    padding: 18px 0 20px !important;
+    border-right: 0 !important;
+  }
+
+  .site-page--home [data-process-point] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding-block: 24px 28px !important;
+  }
+
+  .site-page--home [data-process-point] h3,
+  .site-page--home [data-process-point] p {
+    grid-column: 1 !important;
+    max-width: 100% !important;
   }
 }
 
 @media (max-width: 520px) {
-  [data-project-caption] {
-    grid-template-columns: minmax(0, 1fr) 24px;
+  .site-page--home [data-project-caption],
+  .site-page--home [data-archive-item] {
+    grid-template-columns: minmax(0, 1fr) 24px !important;
+    column-gap: 14px !important;
   }
 }
