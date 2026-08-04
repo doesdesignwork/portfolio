@@ -55,6 +55,7 @@ export default function SiteImageMotion() {
       image.dataset.qualityImage = "true";
       image.dataset.sourceWidth = String(sourceWidth);
       image.dataset.sourceHeight = String(sourceHeight);
+      image.style.setProperty("--source-image-width", `${sourceWidth}px`);
       image.style.maxWidth = `${sourceWidth}px`;
       image.style.marginInline = "auto";
 
