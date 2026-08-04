@@ -1,0 +1,244 @@
+/*
+ * DOES DESIGN WORK / CONTENT + BRAND REFINEMENT
+ *
+ * Final presentation rules for the evidence-led homepage structure.
+ * This layer uses explicit brand classes rather than filename or DOM-position selectors.
+ */
+
+:root {
+  --brand-muted: #666660;
+}
+
+.site-page--home {
+  --muted: #666660;
+}
+
+/* Proof belongs close to the proposition, not repeated in the Experience section. */
+.site-page--home .brand-hero-proof {
+  width: 100%;
+  margin: clamp(56px, 7vw, 104px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--brand-line);
+  border-bottom: 1px solid var(--brand-line);
+}
+
+.site-page--home .brand-hero-proof > div {
+  min-width: 0;
+  padding: clamp(24px, 2.8vw, 42px) clamp(22px, 3vw, 48px);
+  display: grid;
+  grid-template-columns: minmax(108px, max-content) minmax(0, 1fr);
+  gap: clamp(18px, 2.2vw, 36px);
+  align-items: end;
+}
+
+.site-page--home .brand-hero-proof > div:first-child {
+  padding-left: 0;
+}
+
+.site-page--home .brand-hero-proof > div:last-child {
+  padding-right: 0;
+}
+
+.site-page--home .brand-hero-proof > div + div {
+  border-left: 1px solid var(--brand-line);
+}
+
+.site-page--home .brand-hero-proof dt {
+  margin: 0;
+  color: var(--brand-signal);
+  font-family: var(--brand-font-display) !important;
+  font-size: clamp(44px, 4.6vw, 74px);
+  font-weight: 650;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+}
+
+.site-page--home .brand-hero-proof dd {
+  max-width: 28ch;
+  margin: 0;
+  color: var(--brand-muted);
+  font-family: var(--brand-font-text) !important;
+  font-size: clamp(14px, 1.05vw, 17px);
+  font-weight: 500;
+  line-height: 1.48;
+  text-wrap: pretty;
+}
+
+/* Experience explains leadership and accountability. The proof is no longer repeated here. */
+.site-page--home .brand-about-story--focused {
+  grid-template-columns: minmax(0, var(--brand-reading-width)) !important;
+  justify-content: start;
+}
+
+.site-page--home .brand-about-story--focused > div {
+  max-width: var(--brand-reading-width);
+}
+
+.site-page--home .brand-about-story--focused > div > p {
+  max-width: 66ch;
+}
+
+/* Capabilities are organised by client value rather than as a loose software-like list. */
+.site-page--home .brand-capability-matrix {
+  margin-top: clamp(64px, 8vw, 120px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--brand-line);
+  border-bottom: 1px solid var(--brand-line);
+}
+
+.site-page--home .brand-capability-matrix > section {
+  min-width: 0;
+  padding: clamp(30px, 3.5vw, 54px) clamp(24px, 3.5vw, 54px);
+}
+
+.site-page--home .brand-capability-matrix > section:first-child {
+  padding-left: 0;
+}
+
+.site-page--home .brand-capability-matrix > section:last-child {
+  padding-right: 0;
+}
+
+.site-page--home .brand-capability-matrix > section + section {
+  border-left: 1px solid var(--brand-line);
+}
+
+.site-page--home .brand-capability-matrix h3 {
+  margin: 0;
+  color: var(--brand-signal);
+  font-family: var(--brand-font-display) !important;
+  font-size: clamp(30px, 3vw, 48px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.site-page--home .brand-capability-matrix p {
+  max-width: 34ch;
+  margin: 22px 0 0;
+  color: var(--brand-ink);
+  font-family: var(--brand-font-text) !important;
+  font-size: clamp(16px, 1.2vw, 19px);
+  line-height: 1.52;
+}
+
+.site-page--home .brand-capability-matrix ul {
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brand-line);
+}
+
+.site-page--home .brand-capability-matrix li {
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--brand-line);
+  color: var(--brand-muted);
+  font-family: var(--brand-font-text) !important;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.42;
+}
+
+/* Functional type roles remain identical on homepage, projects, services and CV. */
+.site-page :where(
+  .brand-hero-proof dd,
+  .brand-capability-matrix p,
+  .brand-capability-matrix li,
+  .brand-project-nav small,
+  .brand-project-nav span,
+  .brand-breadcrumb,
+  figcaption
+) {
+  font-family: var(--brand-font-text) !important;
+  font-style: normal !important;
+}
+
+.site-page :where(
+  .brand-hero-proof dt,
+  .brand-capability-matrix h3,
+  .brand-project-nav strong
+) {
+  font-family: var(--brand-font-display) !important;
+  font-style: normal !important;
+}
+
+/* Keep the orange rhythm intentional: proof figures and matrix headings are signals. */
+.site-page--home .brand-hero-proof dt,
+.site-page--home .brand-capability-matrix h3 {
+  color: var(--brand-signal);
+}
+
+@media (max-width: 1179px) {
+  .site-page--home .brand-hero-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .site-page--home .brand-hero-proof > div,
+  .site-page--home .brand-hero-proof > div:first-child,
+  .site-page--home .brand-hero-proof > div:last-child {
+    padding-inline: 0;
+    grid-template-columns: minmax(170px, 0.34fr) minmax(0, 1fr);
+  }
+
+  .site-page--home .brand-hero-proof > div + div {
+    border-top: 1px solid var(--brand-line);
+    border-left: 0;
+  }
+
+  .site-page--home .brand-hero-proof dd {
+    max-width: 44ch;
+  }
+
+  .site-page--home .brand-capability-matrix {
+    grid-template-columns: 1fr;
+  }
+
+  .site-page--home .brand-capability-matrix > section,
+  .site-page--home .brand-capability-matrix > section:first-child,
+  .site-page--home .brand-capability-matrix > section:last-child {
+    padding-inline: 0;
+  }
+
+  .site-page--home .brand-capability-matrix > section + section {
+    border-top: 1px solid var(--brand-line);
+    border-left: 0;
+  }
+
+  .site-page--home .brand-capability-matrix p {
+    max-width: 48ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-page--home .brand-hero-proof {
+    margin-top: 48px;
+  }
+
+  .site-page--home .brand-hero-proof > div,
+  .site-page--home .brand-hero-proof > div:first-child,
+  .site-page--home .brand-hero-proof > div:last-child {
+    padding-block: 24px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .site-page--home .brand-hero-proof dt {
+    font-size: clamp(42px, 14vw, 58px);
+  }
+
+  .site-page--home .brand-capability-matrix {
+    margin-top: 56px;
+  }
+
+  .site-page--home .brand-capability-matrix > section,
+  .site-page--home .brand-capability-matrix > section:first-child,
+  .site-page--home .brand-capability-matrix > section:last-child {
+    padding-block: 30px;
+  }
+}
