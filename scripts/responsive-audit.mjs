@@ -71,7 +71,21 @@ const auditedContainers = [
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ reducedMotion: "reduce" });
+
+// Images are not required to calculate text and grid geometry. Blocking their
+// payloads keeps the audit deterministic on image-heavy case-study routes while
+// preserving intrinsic width and height attributes in the rendered markup.
+await context.route("**/*", async (route) => {
+  const type = route.request().resourceType();
+  if (["image", "media"].includes(type)) {
+    await route.abort();
+    return;
+  }
+  await route.continue();
+});
+
 const page = await context.newPage();
+page.setDefaultNavigationTimeout(15_000);
 const failures = [];
 
 await mkdir("artifacts/responsive-audit", { recursive: true });
@@ -80,12 +94,46 @@ function safeName(route) {
   return route === "/" ? "home" : route.replace(/^\//, "").replaceAll("/", "-");
 }
 
+async function openRenderedPage(url) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15_000 });
+      await page.waitForLoadState("load", { timeout: 5_000 }).catch(() => {});
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+      });
+      await page.waitForTimeout(80);
+      return;
+    } catch (error) {
+      lastError = error;
+      await page.waitForTimeout(250);
+    }
+  }
+
+  throw lastError;
+}
+
 for (const viewport of viewports) {
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
 
   for (const route of routes) {
     const url = new URL(route, baseUrl).toString();
-    await page.goto(url, { waitUntil: "networkidle" });
+
+    try {
+      await openRenderedPage(url);
+    } catch (error) {
+      failures.push({
+        route,
+        viewport,
+        issues: [`navigation failure: ${error instanceof Error ? error.message : String(error)}`],
+      });
+      console.error(`FAIL ${viewport.name} ${route}`);
+      console.error(`  - navigation failure: ${error instanceof Error ? error.message : String(error)}`);
+      continue;
+    }
+
     await page.addStyleTag({
       content: `
         *, *::before, *::after {
@@ -203,8 +251,7 @@ for (const viewport of viewports) {
     }, auditedContainers);
 
     if (issues.length > 0) {
-      const entry = { route, viewport, issues };
-      failures.push(entry);
+      failures.push({ route, viewport, issues });
       await page.screenshot({
         path: `artifacts/responsive-audit/${safeName(route)}-${viewport.name}.png`,
         fullPage: true,
