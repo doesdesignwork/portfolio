@@ -288,3 +288,71 @@
     display: none !important;
   }
 }
+
+/*
+ * FINAL TYPOGRAPHY GUARD
+ *
+ * The current system uses only two loaded families: the display face and the
+ * text/interface face. Legacy page modules still contain an older editorial
+ * serif stack, so this final layer explicitly assigns every visible role and
+ * prevents that retired stack from leaking back into cards or page templates.
+ */
+.site-page {
+  font-family: var(--brand-font-text) !important;
+  font-synthesis: none;
+}
+
+.site-page :where(
+  p,
+  li,
+  dd,
+  figcaption,
+  small,
+  label,
+  input,
+  textarea,
+  select,
+  button,
+  nav,
+  a
+),
+.site-page [class*="breadcrumb"],
+.site-page [data-section-link],
+.site-page [class*="projectNumber"],
+.site-page [class*="archiveNumber"],
+.site-page [class*="projectDiscipline"],
+.site-page [class*="archiveDiscipline"],
+.site-page [class*="heroIdentity"] {
+  font-family: var(--brand-font-text) !important;
+  font-style: normal !important;
+}
+
+.site-page :where(h1, h2, h3, h4, h5, h6),
+.site-page--home [class*="projectTitle"],
+.site-page--home [class*="projectCaption"] strong,
+.site-page--home [class*="archiveName"] strong,
+.site-page--home #about dt,
+.site-page--home [class*="capabilities"] strong,
+.site-page--home [class*="contactLinks"] > a > span,
+.site-page--project [class*="margin"] > span,
+.site-page--project .brand-project-nav strong,
+.site-page--service [class*="proofCard"] strong,
+.site-page--cv [class*="cvTitle"] {
+  font-family: var(--brand-font-display) !important;
+  font-style: normal !important;
+}
+
+/* Small uppercase headings are interface labels, even when authored as h2. */
+.site-page--service .brand-service-intro h2,
+.site-page--service .brand-service-block h2,
+.site-page--service .brand-service-approach h2,
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-sidebar h2 {
+  font-family: var(--brand-font-text) !important;
+  font-style: normal !important;
+}
+
+.site-page--home [data-hero-line] em {
+  font-family: inherit !important;
+  font-style: normal !important;
+}
