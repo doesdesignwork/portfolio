@@ -58,6 +58,9 @@ jobs:
       - name: Audit rendered text columns
         run: node scripts/text-column-audit.mjs
 
+      - name: Audit brand and content consistency
+        run: node scripts/brand-consistency-audit.mjs
+
       - name: Audit image motion quality and numbering
         run: node scripts/image-motion-audit.mjs
 
@@ -70,6 +73,7 @@ jobs:
             artifacts/responsive-audit
             artifacts/column-spacing-audit
             artifacts/text-column-audit
+            artifacts/brand-consistency-audit
             artifacts/image-motion-audit
           if-no-files-found: ignore
           retention-days: 7
