@@ -3,6 +3,7 @@ import Link from "next/link";
 import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
+import "./numberless-layout.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -16,12 +17,12 @@ const featuredProjects = ["13", "08", "01"].map(byNumber);
 const archiveProjects = ["03", "04", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const capabilities = [
-  ["01", "Creative direction"],
-  ["02", "Brand systems"],
-  ["03", "Campaigns"],
-  ["04", "Experiential"],
-  ["05", "Packaging"],
-  ["06", "3D visualisation"],
+  "Creative direction",
+  "Brand systems",
+  "Campaigns",
+  "Experiential",
+  "Packaging",
+  "3D visualisation",
 ] as const;
 
 const sideSections = [
@@ -64,17 +65,19 @@ function ProjectLink({
           data-sharp-image="true"
         />
       </span>
-      <span className={styles.projectCaption}>
-        <span className={styles.projectNumber}>{project.number}</span>
+      <span className={styles.projectCaption} data-project-caption>
         <span>
           <strong>{project.client}</strong>
           <small>{project.discipline}</small>
         </span>
-        <span className={styles.projectTitle}>{project.title}</span>
+        <span className={styles.projectTitle} data-project-title>
+          {project.title}
+        </span>
         <span
           className={styles.projectArrow}
           aria-hidden="true"
           data-magnetic-indicator
+          data-project-arrow
         >
           ↗
         </span>
@@ -163,7 +166,9 @@ export default function Home() {
                 <span>Clear thinking.</span>
               </span>
               <span data-hero-line>
-                <span><em>Properly made.</em></span>
+                <span>
+                  <em>Properly made.</em>
+                </span>
               </span>
             </h1>
             <div>
@@ -210,7 +215,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={`${styles.manifesto} brand-home-manifesto`} aria-labelledby="manifesto-title">
+        <section
+          className={`${styles.manifesto} brand-home-manifesto`}
+          aria-labelledby="manifesto-title"
+        >
           <p>Working principle</p>
           <h2 id="manifesto-title">Clarity before decoration.</h2>
           <p>
@@ -251,7 +259,7 @@ export default function Home() {
 
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
           <header className={`${styles.archiveHeader} brand-section-head`}>
-            <p>Selected archive / {archiveProjects.length} projects</p>
+            <p>Selected archive</p>
             <h2 id="archive-title">A wider cut of the work.</h2>
           </header>
 
@@ -261,14 +269,16 @@ export default function Home() {
                 key={project.number}
                 className={styles.archiveItem}
                 href={`/work/${project.slug}/`}
+                data-archive-item
               >
-                <span className={styles.archiveNumber}>{project.number}</span>
-                <span className={styles.archiveName}>
+                <span className={styles.archiveName} data-archive-name>
                   <strong>{project.client}</strong>
                   <small>{project.title}</small>
                 </span>
-                <span className={styles.archiveDiscipline}>{project.discipline}</span>
-                <span className={styles.archivePreview}>
+                <span className={styles.archiveDiscipline} data-archive-discipline>
+                  {project.discipline}
+                </span>
+                <span className={styles.archivePreview} data-archive-preview>
                   <Image
                     src={project.images[0]}
                     alt={project.imageAlts[0] ?? project.alt}
@@ -279,7 +289,13 @@ export default function Home() {
                     data-sharp-image="true"
                   />
                 </span>
-                <span className={styles.archiveArrow} aria-hidden="true">↗</span>
+                <span
+                  className={styles.archiveArrow}
+                  aria-hidden="true"
+                  data-archive-arrow
+                >
+                  ↗
+                </span>
               </Link>
             ))}
           </div>
@@ -288,7 +304,7 @@ export default function Home() {
         <section id="about" className={styles.about} aria-labelledby="about-title">
           <div className={`${styles.aboutTitle} brand-section-head`}>
             <p>Experience</p>
-            <h2 id="about-title">I lead the work. I still make it.</h2>
+            <h2 id="about-title">I lead the work. I make it.</h2>
           </div>
 
           <div className={`${styles.aboutStory} brand-about-story`}>
@@ -306,40 +322,53 @@ export default function Home() {
             </div>
 
             <dl className={styles.metrics}>
-              <div><dt>26+</dt><dd>Years across design, direction and production</dd></div>
-              <div><dt>3 → 15</dt><dd>Creative-team growth at Blacksheep</dd></div>
-              <div><dt>3 modes</dt><dd>Agency, independent and in-house practice</dd></div>
+              <div>
+                <dt>26+</dt>
+                <dd>Years across design, direction and production</dd>
+              </div>
+              <div>
+                <dt>3 → 15</dt>
+                <dd>Creative-team growth at Blacksheep</dd>
+              </div>
+              <div>
+                <dt>3 modes</dt>
+                <dd>Agency, independent and in-house practice</dd>
+              </div>
             </dl>
           </div>
 
-          <ul className={styles.capabilities} aria-label="Capabilities">
-            {capabilities.map(([number, label]) => (
-              <li key={number}>
-                <span>{number}</span>
+          <ul
+            className={styles.capabilities}
+            aria-label="Capabilities"
+            data-capability-list
+          >
+            {capabilities.map((label) => (
+              <li key={label}>
                 <strong>{label}</strong>
               </li>
             ))}
           </ul>
         </section>
 
-        <section className={`${styles.process} brand-home-process`} aria-labelledby="process-title">
+        <section
+          className={`${styles.process} brand-home-process`}
+          aria-labelledby="process-title"
+          data-process-section
+        >
           <header className="brand-section-head">
             <p>How I build the work</p>
             <h2 id="process-title">From brief to durable system.</h2>
           </header>
           <ol>
-            <li data-reveal="process" data-reveal-delay="0">
-              <span>01</span>
+            <li data-reveal="process" data-reveal-delay="0" data-process-point>
               <h3>Define the decision</h3>
               <p>Clarify the audience, the problem and what the work must change.</p>
             </li>
-            <li data-reveal="process" data-reveal-delay="1">
-              <span>02</span>
+            <li data-reveal="process" data-reveal-delay="1" data-process-point>
               <h3>Set the visual logic</h3>
               <p>Build a recognisable idea, hierarchy and set of rules for the team.</p>
             </li>
-            <li data-reveal="process" data-reveal-delay="2">
-              <span>03</span>
+            <li data-reveal="process" data-reveal-delay="2" data-process-point>
               <h3>Carry it into production</h3>
               <p>Test the system across real formats and protect the idea through delivery.</p>
             </li>
