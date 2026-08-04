@@ -182,7 +182,7 @@
   }
 }
 
-@media (max-width: 1179px) {
+@media (max-width: 1279px) {
   .site-page--home .brand-hero-proof {
     grid-template-columns: 1fr;
   }
