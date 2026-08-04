@@ -1,0 +1,122 @@
+/*
+ * FINAL RESPONSIVE GUARD
+ *
+ * Loaded after every legacy module and brand-system stylesheet. These rules
+ * prevent mobile and tablet layouts from re-entering desktop grid states.
+ */
+
+.site-page--home #top,
+.site-page--home #work,
+.site-page--home #archive,
+.site-page--home #about,
+.site-page--home #contact {
+  scroll-margin-top: calc(var(--brand-header-height) + 16px);
+}
+
+/* Metric copy must always wrap by words, never by individual characters. */
+.site-page--home #about dl,
+.site-page--home #about dl > div,
+.site-page--home #about dt,
+.site-page--home #about dd {
+  min-width: 0 !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
+
+.site-page--home #about dt,
+.site-page--home #about dd {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+.site-page--home #about dd {
+  width: auto !important;
+  max-width: 52ch !important;
+  white-space: normal !important;
+}
+
+/*
+ * Once the biography and metrics stop sharing a desktop row, keep the metrics
+ * as a single readable list. The former three-card layout created 20–40px text
+ * columns in phone landscape.
+ */
+@media (max-width: 1180px) {
+  .site-page--home #about .brand-about-story {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: clamp(38px, 6vw, 64px) !important;
+  }
+
+  .site-page--home #about dl {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  .site-page--home #about dl > div {
+    width: 100% !important;
+    padding: 22px 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr) !important;
+    gap: clamp(20px, 4vw, 42px) !important;
+    align-items: end !important;
+  }
+
+  .site-page--home #about dt {
+    white-space: nowrap !important;
+  }
+
+  .site-page--home #about dd {
+    align-self: end !important;
+    line-height: 1.45 !important;
+  }
+}
+
+/* Phone landscape, including 932–956px iPhone Pro Max viewports. */
+@media (max-width: 1024px) {
+  :root {
+    --brand-rail-width: 0px;
+  }
+
+  .site-page--home > main,
+  .site-page--home > footer {
+    margin-left: 0 !important;
+  }
+
+  .site-page--home [data-side-index] {
+    display: none !important;
+  }
+
+  .site-page--home #about dl > div {
+    grid-template-columns: minmax(132px, 0.3fr) minmax(0, 1fr) !important;
+  }
+
+  .site-page--home #about dt {
+    font-size: clamp(42px, 7vw, 62px) !important;
+  }
+}
+
+/* Portrait phones: number first, explanation below, with no squeezed side column. */
+@media (max-width: 640px) {
+  .site-page--home #about dl > div {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .site-page--home #about dt {
+    white-space: normal !important;
+  }
+
+  .site-page--home #about dd {
+    max-width: 38ch !important;
+  }
+}
+
+/* Short landscape screens need breathing room below the fixed header. */
+@media (max-width: 1024px) and (max-height: 520px) and (orientation: landscape) {
+  .site-page--home #about {
+    padding-top: clamp(76px, 12vh, 96px) !important;
+  }
+}
