@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortfolioImage } from "@/app/components/portfolio-image";
 import { projects } from "@/app/data/projects";
+import { getImageDimensions } from "@/app/lib/image-dimensions";
 import { lastModified, siteUrl } from "@/lib/site";
 import styles from "./project.module.css";
 
@@ -87,6 +88,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const relatedServices = serviceLinks.filter((service) =>
     service.signals.some((signal) => project.discipline.includes(signal)),
   );
+  const leadImageDimensions = getImageDimensions(project.images[0]);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -198,13 +200,23 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </header>
 
           <figure className={styles.leadImage}>
-            <PortfolioImage
-              src={project.images[0]}
-              alt={project.imageAlts[0] ?? project.alt}
-              sizes="(max-width: 760px) 100vw, 88vw"
-              priority
-            />
-            <figcaption>{project.imageAlts[0] ?? project.alt}</figcaption>
+            <div
+              data-captioned-image
+              style={{
+                width: "100%",
+                maxWidth: leadImageDimensions.width,
+                marginInline: "auto",
+              }}
+            >
+              <PortfolioImage
+                src={project.images[0]}
+                alt={project.imageAlts[0] ?? project.alt}
+                sizes="(max-width: 760px) 100vw, 88vw"
+                priority
+                capToSource={false}
+              />
+              <figcaption>{project.imageAlts[0] ?? project.alt}</figcaption>
+            </div>
           </figure>
 
           <section className={`${styles.story} brand-project-story`} aria-labelledby="case-thinking">
@@ -243,12 +255,23 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <div className={styles.imageGrid}>
                 {project.images.slice(1).map((image, imageIndex) => {
                   const actualIndex = imageIndex + 1;
+                  const imageDimensions = getImageDimensions(image);
+
                   return (
-                    <figure key={image}>
+                    <figure
+                      key={image}
+                      data-captioned-image
+                      style={{
+                        width: "100%",
+                        maxWidth: imageDimensions.width,
+                        justifySelf: "center",
+                      }}
+                    >
                       <PortfolioImage
                         src={image}
                         alt={project.imageAlts[actualIndex] ?? project.alt}
                         sizes="(max-width: 760px) 100vw, 50vw"
+                        capToSource={false}
                       />
                       <figcaption>
                         {project.imageAlts[actualIndex] ?? project.alt}
