@@ -185,6 +185,26 @@ for (const viewport of viewports) {
         return `${name}${id}${classes}${text ? ` “${text}”` : ""}`;
       };
 
+      const directText = (element) =>
+        [...element.childNodes]
+          .filter((node) => node.nodeType === Node.TEXT_NODE)
+          .map((node) => node.textContent ?? "")
+          .join("")
+          .trim();
+
+      const normalizeFont = (value) => value.replace(/\s+/g, " ").trim().toLowerCase();
+      const fontProbe = document.createElement("span");
+      fontProbe.textContent = "Aa";
+      fontProbe.style.position = "fixed";
+      fontProbe.style.visibility = "hidden";
+      fontProbe.style.fontFamily = "var(--brand-font-display)";
+      document.body.append(fontProbe);
+      const displayFont = normalizeFont(getComputedStyle(fontProbe).fontFamily);
+      fontProbe.style.fontFamily = "var(--brand-font-text)";
+      const textFont = normalizeFont(getComputedStyle(fontProbe).fontFamily);
+      fontProbe.remove();
+      const allowedFonts = new Set([displayFont, textFont]);
+
       for (const selector of selectors) {
         for (const container of document.querySelectorAll(selector)) {
           if (!isVisible(container)) continue;
@@ -224,19 +244,20 @@ for (const viewport of viewports) {
       }
 
       const textElements = document.querySelectorAll(
-        "h1, h2, h3, h4, p, dt, dd, strong, small, a, figcaption",
+        ".site-page h1, .site-page h2, .site-page h3, .site-page h4, .site-page h5, .site-page h6, .site-page p, .site-page dt, .site-page dd, .site-page strong, .site-page small, .site-page a, .site-page figcaption, .site-page li, .site-page button, .site-page label, .site-page span",
       );
 
       for (const element of textElements) {
         if (!(element instanceof HTMLElement) || !isVisible(element)) continue;
-        const directText = [...element.childNodes]
-          .filter((node) => node.nodeType === Node.TEXT_NODE)
-          .map((node) => node.textContent ?? "")
-          .join("")
-          .trim();
-        if (!directText) continue;
+        const text = directText(element);
+        if (!text) continue;
 
         const style = getComputedStyle(element);
+        const font = normalizeFont(style.fontFamily);
+        if (!allowedFonts.has(font)) {
+          problems.push(`unexpected font ${style.fontFamily}: ${label(element)}`);
+        }
+
         const clipsX = ["hidden", "clip"].includes(style.overflowX);
         const clipsY = ["hidden", "clip"].includes(style.overflowY);
         if (clipsX && element.scrollWidth > element.clientWidth + tolerance) {
@@ -244,6 +265,18 @@ for (const viewport of viewports) {
         }
         if (clipsY && element.scrollHeight > element.clientHeight + tolerance) {
           problems.push(`clipped vertical text: ${label(element)}`);
+        }
+      }
+
+      const displayTargets = document.querySelectorAll(
+        ".site-page--home [class*='heroStatement'] h1, .site-page--home #manifesto-title, .site-page--home #work-title, .site-page--home #archive-title, .site-page--home #about-title, .site-page--home #process-title, .site-page--home footer h2, .site-page--home [class*='projectTitle'], .site-page--home [class*='projectCaption'] strong, .site-page--home [class*='archiveName'] strong, .site-page--home #about dt, .site-page--home [class*='capabilities'] strong, .site-page--home [class*='contactLinks'] > a > span, .site-page--project .brand-project-title h1, .site-page--project .brand-project-story > header h2, .site-page--project .brand-project-gallery > header h2, .site-page--project .brand-project-nav strong, .site-page--project [class*='margin'] > span, .site-page--service .brand-interior-hero h1, .site-page--service .brand-proof-card strong, .site-page--service .brand-cta h2, .site-page--cv .brand-interior-hero h1, .site-page--cv .brand-cv-title, .site-page--cv .brand-cv-role h3",
+      );
+
+      for (const element of displayTargets) {
+        if (!(element instanceof HTMLElement) || !isVisible(element)) continue;
+        const font = normalizeFont(getComputedStyle(element).fontFamily);
+        if (font !== displayFont) {
+          problems.push(`display font mismatch: ${label(element)}`);
         }
       }
 
@@ -272,5 +305,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `\nResponsive audit passed: ${routes.length} routes × ${viewports.length} viewports.`,
+  `\nResponsive and typography audit passed: ${routes.length} routes × ${viewports.length} viewports.`,
 );
