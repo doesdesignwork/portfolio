@@ -242,3 +242,49 @@
     position: absolute !important;
   }
 }
+
+/*
+ * Archive preview stacking guard.
+ *
+ * Every archive row creates its own stacking context. The active row must be
+ * raised above all siblings, otherwise copy from later rows can paint over its
+ * floating preview. The preview also needs a fully opaque surface.
+ */
+.site-page--home #archive a[class*="archiveItem"] {
+  z-index: 0 !important;
+}
+
+.site-page--home #archive a[class*="archiveItem"]:hover,
+.site-page--home #archive a[class*="archiveItem"]:focus-visible {
+  z-index: 80 !important;
+}
+
+.site-page--home #archive a[class*="archiveItem"] [class*="archivePreview"] {
+  z-index: 90 !important;
+  padding: 10px !important;
+  border: 0 !important;
+  background: var(--brand-paper-bright, #faf9f6) !important;
+  box-shadow: 0 28px 76px rgba(21, 21, 21, 0.22) !important;
+  overflow: hidden !important;
+  opacity: 0;
+  pointer-events: none !important;
+}
+
+.site-page--home #archive a[class*="archiveItem"] [class*="archivePreview"] img {
+  width: 100% !important;
+  height: 100% !important;
+  background: var(--brand-paper-bright, #faf9f6) !important;
+  object-fit: contain !important;
+}
+
+.site-page--home #archive a[class*="archiveItem"]:hover [class*="archivePreview"],
+.site-page--home #archive a[class*="archiveItem"]:focus-visible [class*="archivePreview"] {
+  opacity: 1 !important;
+}
+
+/* Floating previews are a desktop pointer interaction only. */
+@media (max-width: 1099px), (hover: none), (pointer: coarse) {
+  .site-page--home #archive a[class*="archiveItem"] [class*="archivePreview"] {
+    display: none !important;
+  }
+}
