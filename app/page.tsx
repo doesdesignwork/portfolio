@@ -181,10 +181,16 @@ export default function Home() {
           ))}
         </nav>
         <p data-availability>
-          <span>Available for the </span>
-          <strong data-right-work>right</strong>
-          <span> work</span>
-          <i aria-hidden="true" />
+          <a
+            href="mailto:g@doesdesignwork.com"
+            aria-label="Email Gerard about the right work"
+            data-availability-link
+          >
+            <span>Available for the </span>
+            <strong data-right-work>right</strong>
+            <span> work</span>
+            <i aria-hidden="true" />
+          </a>
         </p>
       </aside>
 
