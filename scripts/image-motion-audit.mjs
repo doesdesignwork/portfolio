@@ -50,11 +50,14 @@ const waitForImages = async () => {
       await pause(36);
     }
     window.scrollTo(0, maximum);
-    await pause(100);
+    await pause(180);
     const images = Array.from(document.querySelectorAll(".site-page main img, .site-page footer img"));
-    await Promise.all(images.map((image) => image.decode?.().catch(() => undefined)));
+    const decodeImages = Promise.all(
+      images.map((image) => image.decode?.().catch(() => undefined)),
+    );
+    await Promise.race([decodeImages, pause(8_000)]);
     window.scrollTo(0, 0);
-    await pause(120);
+    await pause(160);
   });
 };
 
