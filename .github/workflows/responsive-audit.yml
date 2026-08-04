@@ -52,6 +52,9 @@ jobs:
       - name: Audit responsive layouts
         run: node scripts/responsive-audit.mjs
 
+      - name: Audit image-caption alignment
+        run: node scripts/image-caption-audit.mjs
+
       - name: Audit column spacing
         run: node scripts/column-spacing-audit.mjs
 
@@ -71,6 +74,7 @@ jobs:
           name: responsive-audit-failures
           path: |
             artifacts/responsive-audit
+            artifacts/image-caption-audit
             artifacts/column-spacing-audit
             artifacts/text-column-audit
             artifacts/brand-consistency-audit
