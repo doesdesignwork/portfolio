@@ -1,0 +1,84 @@
+/* Final homepage layout adjustments after removing visible indices. */
+
+[data-project-caption] {
+  grid-template-columns: minmax(140px, 0.72fr) minmax(220px, 1.2fr) 34px;
+}
+
+[data-project-title] {
+  grid-column: 2;
+}
+
+[data-project-arrow] {
+  grid-column: 3;
+}
+
+[data-archive-item] {
+  grid-template-columns: minmax(230px, 0.8fr) minmax(260px, 1fr) 36px;
+}
+
+[data-archive-name] {
+  grid-column: 1;
+}
+
+[data-archive-discipline] {
+  grid-column: 2;
+}
+
+[data-archive-arrow] {
+  grid-column: 3;
+}
+
+[data-capability-list] li {
+  justify-content: flex-end;
+}
+
+[data-process-point] {
+  grid-template-columns: minmax(230px, 0.8fr) minmax(300px, 1fr);
+}
+
+@media (max-width: 800px) {
+  [data-project-caption] {
+    grid-template-columns: minmax(0, 1fr) 28px;
+  }
+
+  [data-project-title] {
+    grid-column: 1 / -1;
+  }
+
+  [data-project-arrow] {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  [data-archive-item] {
+    grid-template-columns: minmax(0, 1fr) 28px;
+  }
+
+  [data-archive-name] {
+    grid-column: 1;
+  }
+
+  [data-archive-discipline],
+  [data-archive-preview] {
+    grid-column: 1 / -1;
+  }
+
+  [data-archive-arrow] {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  [data-process-point] {
+    grid-template-columns: 1fr;
+  }
+
+  [data-process-point] p {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  [data-project-caption] {
+    grid-template-columns: minmax(0, 1fr) 24px;
+  }
+}
