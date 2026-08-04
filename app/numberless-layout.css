@@ -142,10 +142,19 @@
   }
 }
 
-/* Three-up intro facts keep one shared top rule and clean column dividers. */
+/*
+ * Three-up intro facts keep one shared top rule and deliberate breathing room
+ * on both sides of every internal divider. Outer edges stay aligned to the
+ * page grid, while internal columns use a larger responsive gutter.
+ */
 @media (min-width: 761px) and (max-width: 1180px) {
-  .site-page--home [data-intro-facts] > div {
-    padding-inline: 20px !important;
+  .site-page--home [data-intro-facts] {
+    --intro-column-gutter: clamp(28px, 3.2vw, 42px);
+  }
+
+  .site-page--home [data-intro-facts] > div,
+  .site-page--home [data-intro-facts] > div:last-child {
+    padding: 20px var(--intro-column-gutter) 24px !important;
     border-right: 1px solid var(--brand-line, rgba(21, 21, 21, 0.18)) !important;
   }
 
