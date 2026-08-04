@@ -49,11 +49,16 @@ jobs:
       - name: Audit responsive layouts
         run: node scripts/responsive-audit.mjs
 
+      - name: Audit column spacing
+        run: node scripts/column-spacing-audit.mjs
+
       - name: Upload failure screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: responsive-audit-failures
-          path: artifacts/responsive-audit
+          path: |
+            artifacts/responsive-audit
+            artifacts/column-spacing-audit
           if-no-files-found: ignore
           retention-days: 7
