@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PortfolioImage } from "@/app/components/portfolio-image";
 import { projects } from "@/app/data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import styles from "./project.module.css";
@@ -151,7 +152,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </header>
 
       <aside className={`${styles.margin} brand-project-margin`} aria-label="Case-study index">
-        <span>{project.number}</span>
         <p>{project.client}</p>
         <Link href="/#work">All work</Link>
       </aside>
@@ -168,7 +168,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <article>
           <header className={`${styles.hero} brand-project-hero`}>
             <div className={styles.heroMeta}>
-              <p>{project.number} / {project.context}</p>
+              <p>{project.context}</p>
               <p>{project.discipline}</p>
             </div>
 
@@ -198,11 +198,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </header>
 
           <figure className={styles.leadImage}>
-            <Image
+            <PortfolioImage
               src={project.images[0]}
               alt={project.imageAlts[0] ?? project.alt}
-              width={2000}
-              height={1500}
               sizes="(max-width: 760px) 100vw, 88vw"
               priority
             />
@@ -217,22 +215,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             <div className={`${styles.storyFields} brand-story-fields`}>
               <section>
-                <span>01</span>
                 <h3>The challenge</h3>
                 <p>{project.challenge}</p>
               </section>
               <section>
-                <span>02</span>
                 <h3>The decision</h3>
                 <p>{project.approach}</p>
               </section>
               <section>
-                <span>03</span>
                 <h3>The system</h3>
                 <p>{project.deliverables}</p>
               </section>
               <section>
-                <span>04</span>
                 <h3>The outcome</h3>
                 <p>{project.outcome}</p>
               </section>
@@ -251,15 +245,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   const actualIndex = imageIndex + 1;
                   return (
                     <figure key={image}>
-                      <Image
+                      <PortfolioImage
                         src={image}
                         alt={project.imageAlts[actualIndex] ?? project.alt}
-                        width={1800}
-                        height={1400}
                         sizes="(max-width: 760px) 100vw, 50vw"
                       />
                       <figcaption>
-                        <span>{String(actualIndex + 1).padStart(2, "0")}</span>
                         {project.imageAlts[actualIndex] ?? project.alt}
                       </figcaption>
                     </figure>

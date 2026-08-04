@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Krub } from "next/font/google";
+import SiteImageMotion from "./SiteImageMotion";
 import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
 import "./global-layout-audit.css";
 import "./final-responsive-guard.css";
+import "./sitewide-motion-quality.css";
 
 const siteTitle =
   "Gerard Teo | Art Director and Senior Brand Designer in Singapore";
@@ -265,6 +267,7 @@ export default function RootLayout({
       <body
         className={`${bodyFont.variable} ${headingFont.variable} antialiased`}
       >
+        <SiteImageMotion />
         {children}
       </body>
     </html>

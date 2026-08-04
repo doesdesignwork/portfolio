@@ -136,11 +136,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
           <div className={`${styles.proofGrid} brand-proof-grid`}>
             {proofProjects.map((project) => (
               <Link
-                key={project.number}
+                key={project.slug}
                 className={`${styles.proofCard} brand-proof-card`}
                 href={`/work/${project.slug}/`}
               >
-                <small>{project.number} / {project.primaryKeyword}</small>
+                <small>{project.primaryKeyword}</small>
                 <strong>{project.client}</strong>
                 <span>{project.role}</span>
                 <span>{project.outcome}</span>
