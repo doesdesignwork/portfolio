@@ -16,13 +16,48 @@ const byNumber = (number: string) => {
 const featuredProjects = ["13", "08", "01"].map(byNumber);
 const archiveProjects = ["03", "04", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
-const capabilities = [
-  "Creative direction",
-  "Brand systems",
-  "Campaigns",
-  "Experiential",
-  "Packaging",
-  "3D visualisation",
+const archiveNotes: Record<string, string> = {
+  "03": "Four premium card directions with a controlled co-brand hierarchy.",
+  "04": "Brand, label and pack form treated as one consumer system.",
+  "06": "Naming and identity built from the architecture itself.",
+  "09": "A historic identity made more consistent across applications.",
+  "14": "Licensed worlds designed into the shoe, not pasted onto it.",
+  "10": "Technical ingredient benefits translated into desirable products.",
+  "11": "Six restaurant concepts organised under one group architecture.",
+  "15": "Three beauty ranges clarified without losing parent-brand recognition.",
+};
+
+const capabilityGroups = [
+  {
+    title: "Direction",
+    description: "Set the decision and give the work one clear point of view.",
+    items: [
+      "Creative direction",
+      "Brief clarification",
+      "Concept development",
+      "Team leadership",
+    ],
+  },
+  {
+    title: "Systems",
+    description: "Build the visual logic that keeps every application related.",
+    items: [
+      "Brand identity",
+      "Campaign systems",
+      "Packaging systems",
+      "Visual language",
+    ],
+  },
+  {
+    title: "Delivery",
+    description: "Carry the idea through the formats, details and production realities.",
+    items: [
+      "Campaign rollout",
+      "Exhibition production",
+      "Artwork and adaptation",
+      "3D visualisation",
+    ],
+  },
 ] as const;
 
 const sideSections = [
@@ -183,6 +218,21 @@ export default function Home() {
             </div>
           </div>
 
+          <dl className="brand-hero-proof" data-hero-proof aria-label="Experience highlights">
+            <div>
+              <dt>26+</dt>
+              <dd>Years across design, direction and production</dd>
+            </div>
+            <div>
+              <dt>3 → 15</dt>
+              <dd>Creative-team growth at Blacksheep</dd>
+            </div>
+            <div>
+              <dt>6</dt>
+              <dd>Major agency networks plus independent and in-house practice</dd>
+            </div>
+          </dl>
+
           <div data-intro-panel data-reveal="intro">
             <p data-intro-kicker>
               Direction, design and delivery belong in the same conversation.
@@ -194,8 +244,8 @@ export default function Home() {
                 production.
               </p>
               <p>
-                That means fewer handovers, fewer diluted ideas and a clearer line from
-                the first decision to the finished experience.
+                Fewer handovers mean fewer diluted ideas and a clearer line from the
+                first decision to the finished experience.
               </p>
             </div>
             <dl data-intro-facts>
@@ -232,8 +282,8 @@ export default function Home() {
             <p>Selected case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
-              Brand systems, campaigns and physical experiences, shown with the
-              decisions and responsibility behind them.
+              Brand systems, campaigns and physical experiences, shown through the
+              decisions, responsibility and craft behind them.
             </span>
           </header>
 
@@ -273,7 +323,7 @@ export default function Home() {
               >
                 <span className={styles.archiveName} data-archive-name>
                   <strong>{project.client}</strong>
-                  <small>{project.title}</small>
+                  <small>{archiveNotes[project.number] ?? project.title}</small>
                 </span>
                 <span className={styles.archiveDiscipline} data-archive-discipline>
                   {project.discipline}
@@ -307,47 +357,34 @@ export default function Home() {
             <h2 id="about-title">I lead the work. I make it.</h2>
           </div>
 
-          <div className={`${styles.aboutStory} brand-about-story`}>
+          <div className={`${styles.aboutStory} brand-about-story brand-about-story--focused`}>
             <div>
               <p>
-                I have worked across agency networks, independent practice and
-                production teams, moving from hands-on designer to creative director
-                and studio co-founder.
+                I have worked across major agency networks, independent practice and
+                in-house teams, moving from hands-on designer to creative director and
+                studio co-founder.
               </p>
               <p>
-                The common thread is accountability. I stay close to the brief, the
-                team and the final output, especially when a project has many
-                stakeholders, formats or production constraints.
+                The scale has changed. The accountability has not. I stay close to the
+                brief, the team, the craft and the production details so the original
+                decision survives the route to delivery.
               </p>
             </div>
-
-            <dl className={styles.metrics}>
-              <div>
-                <dt>26+</dt>
-                <dd>Years across design, direction and production</dd>
-              </div>
-              <div>
-                <dt>3 → 15</dt>
-                <dd>Creative-team growth at Blacksheep</dd>
-              </div>
-              <div>
-                <dt>3 modes</dt>
-                <dd>Agency, independent and in-house practice</dd>
-              </div>
-            </dl>
           </div>
 
-          <ul
-            className={styles.capabilities}
-            aria-label="Capabilities"
-            data-capability-list
-          >
-            {capabilities.map((label) => (
-              <li key={label}>
-                <strong>{label}</strong>
-              </li>
+          <div className="brand-capability-matrix" aria-label="Creative capabilities">
+            {capabilityGroups.map((group) => (
+              <section key={group.title}>
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+                <ul>
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         </section>
 
         <section
@@ -413,7 +450,7 @@ export default function Home() {
           </a>
         </div>
         <div className={`${styles.footerLine} brand-footer-line`}>
-          <span>Gerard Teo / Singapore</span>
+          <span>Gerard Teo</span>
           <span>Art Director / Senior Brand Designer / Creative Lead</span>
           <Link href="#top">Back to top ↑</Link>
         </div>

@@ -31,16 +31,16 @@ const currentRoles = [
   {
     dates: "Jan 2026 — Present",
     title: "Graphic Designer",
-    company: "C Square Creative Communications (C2) / C2 Global Exhibitions, Singapore",
+    company: "C Square Creative Communications / C2 Global Exhibitions, Singapore",
     description:
       "Design key visuals and campaign materials for exhibitions, conferences, corporate events and experiential projects.",
   },
   {
     dates: "Jan 2014 — Present",
-    title: "Head of Art & Creative Operations",
-    company: "The Fat Oracle — Independent freelance practice, Singapore",
+    title: "Independent Creative Lead / Designer",
+    company: "The Fat Oracle (TFO) — Independent practice",
     description:
-      "Work directly with clients on brand identity, packaging, campaigns and 3D visualisation, from the first conversation to final production.",
+      "Direct client work across brand identity, packaging, campaigns and 3D visualisation, from concept definition through production.",
   },
 ];
 
@@ -166,16 +166,16 @@ export default function CvPage() {
         </nav>
 
         <header className={`${styles.hero} brand-interior-hero brand-cv-hero`}>
-          <p>Gerard Teo / CV / Singapore / Updated July 2026</p>
+          <p>Gerard Teo / CV / Singapore / Updated August 2026</p>
           <h1>Gerard Teo</h1>
           <p className={`${styles.cvTitle} brand-cv-title`}>
             Art Director and Senior Brand Designer
             <span>Creative Lead / Hands-on maker</span>
           </p>
           <p className={`${styles.deck} brand-deck`}>
-            Senior creative combining direction with hands-on delivery across brand,
-            campaigns, exhibitions, packaging and production. Comfortable leading the
-            room, resolving the system and making sure the final work holds together.
+            Creative lead with 26+ years across agency networks, independent practice
+            and in-house teams. I clarify the decision, build the visual system and stay
+            close through production.
           </p>
           <div className={`${styles.cvActions} brand-action-row`}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
@@ -224,11 +224,11 @@ export default function CvPage() {
             </section>
 
             <section>
-              <h2>Core capabilities</h2>
+              <h2>Direction, systems & delivery</h2>
               <ul>
-                <li>Creative direction and visual systems</li>
-                <li>Brand identity, campaigns and key visuals</li>
-                <li>Events, exhibitions and experiences</li>
+                <li>Creative direction and brief clarification</li>
+                <li>Brand identity and campaign systems</li>
+                <li>Events, exhibitions and spatial communication</li>
                 <li>Packaging, print and production</li>
                 <li>Pitches and stakeholder presentations</li>
                 <li>3D visualisation, UX and digital design</li>
