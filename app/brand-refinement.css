@@ -173,6 +173,15 @@
   color: var(--brand-signal);
 }
 
+/* Let each case study finish on a complete application rather than a small incidental tile. */
+@media (min-width: 901px) {
+  .site-page--project .brand-project-gallery [class*="imageGrid"] > figure:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+  }
+}
+
 @media (max-width: 1179px) {
   .site-page--home .brand-hero-proof {
     grid-template-columns: 1fr;
