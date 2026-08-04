@@ -8,7 +8,9 @@
 
 .site-page img[data-quality-image="true"] {
   width: 100% !important;
+  max-width: min(100%, var(--source-image-width, 100%)) !important;
   height: auto !important;
+  min-height: 0 !important;
   margin-inline: auto !important;
   display: block !important;
   object-fit: contain !important;
