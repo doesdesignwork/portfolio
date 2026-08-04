@@ -40,16 +40,30 @@ const failures = [];
 
 await mkdir("artifacts/image-motion-audit", { recursive: true });
 
+const setScrollPosition = async (position) => {
+  await page.evaluate((nextPosition) => {
+    document.documentElement.style.scrollBehavior = "auto";
+    document.body.style.scrollBehavior = "auto";
+    window.scrollTo(0, nextPosition);
+    window.dispatchEvent(new Event("scroll"));
+  }, position);
+  await page.waitForTimeout(220);
+};
+
 const waitForImages = async () => {
   await page.evaluate(async () => {
+    document.documentElement.style.scrollBehavior = "auto";
+    document.body.style.scrollBehavior = "auto";
     const pause = (duration) => new Promise((resolve) => setTimeout(resolve, duration));
     const step = Math.max(320, Math.floor(window.innerHeight * 0.72));
     const maximum = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     for (let position = 0; position <= maximum; position += step) {
       window.scrollTo(0, position);
+      window.dispatchEvent(new Event("scroll"));
       await pause(36);
     }
     window.scrollTo(0, maximum);
+    window.dispatchEvent(new Event("scroll"));
     await pause(180);
     const images = Array.from(document.querySelectorAll(".site-page main img, .site-page footer img"));
     const decodeImages = Promise.all(
@@ -57,7 +71,8 @@ const waitForImages = async () => {
     );
     await Promise.race([decodeImages, pause(8_000)]);
     window.scrollTo(0, 0);
-    await pause(160);
+    window.dispatchEvent(new Event("scroll"));
+    await pause(220);
   });
 };
 
@@ -121,26 +136,26 @@ for (const test of tests) {
       images.forEach((image, index) => {
         const rect = image.getBoundingClientRect();
         const style = getComputedStyle(image);
-        const label = image.getAttribute("src") || image.getAttribute("alt") || `image-${index + 1}`;
+        const imageLabel = image.getAttribute("src") || image.getAttribute("alt") || `image-${index + 1}`;
         if (!image.naturalWidth || !image.naturalHeight) {
-          imageProblems.push(`${label}: missing intrinsic dimensions`);
+          imageProblems.push(`${imageLabel}: missing intrinsic dimensions`);
           return;
         }
         if (rect.width > image.naturalWidth + 1.25) {
           imageProblems.push(
-            `${label}: horizontally upscaled ${rect.width.toFixed(1)} > ${image.naturalWidth}`,
+            `${imageLabel}: horizontally upscaled ${rect.width.toFixed(1)} > ${image.naturalWidth}`,
           );
         }
         if (rect.height > image.naturalHeight + 1.25) {
           imageProblems.push(
-            `${label}: vertically upscaled ${rect.height.toFixed(1)} > ${image.naturalHeight}`,
+            `${imageLabel}: vertically upscaled ${rect.height.toFixed(1)} > ${image.naturalHeight}`,
           );
         }
         if (image.currentSrc.includes("/_next/image")) {
-          imageProblems.push(`${label}: re-encoded through Next image optimisation`);
+          imageProblems.push(`${imageLabel}: re-encoded through Next image optimisation`);
         }
-        if (style.filter !== "none") imageProblems.push(`${label}: filter is ${style.filter}`);
-        if (style.transform !== "none") imageProblems.push(`${label}: image itself is transformed`);
+        if (style.filter !== "none") imageProblems.push(`${imageLabel}: filter is ${style.filter}`);
+        if (style.transform !== "none") imageProblems.push(`${imageLabel}: image itself is transformed`);
 
         const excluded = image.closest("header, [data-archive-preview], [data-no-scroll-motion]");
         const target = image.closest("figure") ?? image.parentElement;
@@ -150,7 +165,7 @@ for (const test of tests) {
           image.naturalHeight >= 180 &&
           !target?.hasAttribute("data-scroll-image-motion")
         ) {
-          imageProblems.push(`${label}: missing scroll-motion target`);
+          imageProblems.push(`${imageLabel}: missing scroll-motion target`);
         }
       });
 
@@ -165,22 +180,40 @@ for (const test of tests) {
     let motionProblem = null;
     const motionTarget = page.locator("[data-scroll-image-motion]").first();
     if ((await motionTarget.count()) > 0) {
-      const documentTop = await motionTarget.evaluate(
-        (element) => element.getBoundingClientRect().top + window.scrollY,
+      const geometry = await motionTarget.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          documentTop: rect.top + window.scrollY,
+          maximumScroll: Math.max(0, document.documentElement.scrollHeight - window.innerHeight),
+        };
+      });
+      const upperPosition = Math.min(
+        geometry.maximumScroll,
+        Math.max(0, geometry.documentTop - test.height * 0.82),
       );
-      const upperPosition = Math.max(0, documentTop - test.height * 0.78);
-      const lowerPosition = Math.max(0, documentTop - test.height * 0.22);
-      await page.evaluate((position) => window.scrollTo(0, position), upperPosition);
-      await page.waitForTimeout(90);
+      const lowerPosition = Math.min(
+        geometry.maximumScroll,
+        Math.max(0, geometry.documentTop - test.height * 0.12),
+      );
+
+      await setScrollPosition(upperPosition);
       const firstValue = await motionTarget.evaluate((element) =>
         getComputedStyle(element).getPropertyValue("--scroll-image-y").trim(),
       );
-      await page.evaluate((position) => window.scrollTo(0, position), lowerPosition);
-      await page.waitForTimeout(90);
+      await setScrollPosition(lowerPosition);
       const secondValue = await motionTarget.evaluate((element) =>
         getComputedStyle(element).getPropertyValue("--scroll-image-y").trim(),
       );
-      if (!firstValue || !secondValue || firstValue === secondValue) {
+
+      const firstNumber = Number.parseFloat(firstValue);
+      const secondNumber = Number.parseFloat(secondValue);
+      if (
+        !firstValue ||
+        !secondValue ||
+        !Number.isFinite(firstNumber) ||
+        !Number.isFinite(secondNumber) ||
+        Math.abs(firstNumber - secondNumber) < 0.5
+      ) {
         motionProblem = `motion variable did not change (${firstValue || "empty"} → ${secondValue || "empty"})`;
       }
     }
