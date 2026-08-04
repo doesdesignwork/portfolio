@@ -1,9 +1,9 @@
 /*
  * SITEWIDE IMAGE MOTION + SOURCE QUALITY GUARD
  *
- * Loaded last. Content images use their original files, retain their natural
- * aspect ratio and never grow beyond their intrinsic pixel width. Scroll motion
- * is applied to the media shell rather than scaling or filtering the image.
+ * Loaded after the shared site styles. Content images use their original files,
+ * retain their natural aspect ratio and never grow beyond their intrinsic pixel
+ * width. Scroll motion is applied to the media shell rather than the image.
  */
 
 .site-page img[data-quality-image="true"] {
@@ -42,18 +42,37 @@
   display: none !important;
 }
 
-/* Project pages no longer reserve a column for numbered case-study points. */
+/*
+ * Project story rows use two deliberate columns on wide screens. Every old
+ * number-column placement is reset here so headings and copy cannot occupy the
+ * same grid cell when the layout changes breakpoint.
+ */
 .site-page--project .brand-story-fields section {
-  grid-template-columns: minmax(220px, 0.48fr) minmax(0, 1fr) !important;
-  gap: clamp(30px, 5vw, 76px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  grid-auto-columns: minmax(0, 1fr) !important;
+  align-items: start !important;
+  column-gap: clamp(30px, 5vw, 76px) !important;
+  row-gap: 0 !important;
+}
+
+.site-page--project .brand-story-fields h3,
+.site-page--project .brand-story-fields p {
+  position: static !important;
+  inset: auto !important;
+  min-width: 0 !important;
+  transform: none !important;
 }
 
 .site-page--project .brand-story-fields h3 {
   grid-column: 1 !important;
+  grid-row: auto !important;
 }
 
 .site-page--project .brand-story-fields p {
   grid-column: 2 !important;
+  grid-row: auto !important;
 }
 
 .site-page--project [class*="imageGrid"] figcaption {
@@ -66,15 +85,41 @@
   justify-content: space-between !important;
 }
 
-@media (max-width: 760px) {
-  .site-page--project .brand-story-fields section {
+/*
+ * Collapse editorial columns before they become cramped. Flex is intentional
+ * here: it prevents stale grid-column declarations from creating implicit
+ * columns in mobile Safari, Chrome and embedded browsers.
+ */
+@media (max-width: 900px) {
+  .site-page--project .brand-project-story > header,
+  .site-page--project .brand-project-gallery > header,
+  .site-page--project .brand-related-services {
     grid-template-columns: minmax(0, 1fr) !important;
-    gap: 12px !important;
+    gap: 22px !important;
+  }
+
+  .site-page--project .brand-story-fields section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
   }
 
   .site-page--project .brand-story-fields h3,
   .site-page--project .brand-story-fields p {
-    grid-column: 1 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .site-page--project .brand-story-fields section {
+    gap: 12px !important;
+    padding-top: 28px !important;
+    padding-bottom: 32px !important;
   }
 }
 
