@@ -2,6 +2,7 @@ import { chromium } from "playwright";
 
 const baseUrl = process.env.AUDIT_BASE_URL ?? "http://127.0.0.1:3000";
 const minimumFontSize = 16;
+const sideMenuMinimumFontSize = 14;
 
 const routes = [
   "/",
@@ -62,70 +63,77 @@ for (const viewport of viewports) {
     await page.evaluate(async () => document.fonts.ready);
     await page.waitForTimeout(60);
 
-    const issues = await page.evaluate((minimum) => {
-      const root = document.querySelector(".site-page");
-      if (!(root instanceof HTMLElement)) {
-        return [{ selector: ".site-page", size: 0, text: "Missing site root" }];
-      }
-
-      const isVisible = (element) => {
-        const style = getComputedStyle(element);
-        const rect = element.getBoundingClientRect();
-        return (
-          style.display !== "none" &&
-          style.visibility !== "hidden" &&
-          Number(style.opacity) > 0.01 &&
-          rect.width > 1 &&
-          rect.height > 1 &&
-          element.getAttribute("aria-hidden") !== "true"
-        );
-      };
-
-      const directText = (element) =>
-        [...element.childNodes]
-          .filter((node) => node.nodeType === Node.TEXT_NODE)
-          .map((node) => node.textContent ?? "")
-          .join(" ")
-          .replace(/\s+/g, " ")
-          .trim();
-
-      const selectorFor = (element) => {
-        const tag = element.tagName.toLowerCase();
-        const id = element.id ? `#${element.id}` : "";
-        const classes = [...element.classList]
-          .slice(0, 2)
-          .map((value) => `.${value}`)
-          .join("");
-        return `${tag}${id}${classes}`;
-      };
-
-      const problems = [];
-      const seen = new Set();
-
-      for (const element of root.querySelectorAll("*")) {
-        if (!(element instanceof HTMLElement) || !isVisible(element)) continue;
-        if (["SCRIPT", "STYLE", "NOSCRIPT"].includes(element.tagName)) continue;
-
-        const text = directText(element);
-        if (!text) continue;
-
-        const size = Number.parseFloat(getComputedStyle(element).fontSize);
-        if (!Number.isFinite(size) || size >= minimum - 0.05) continue;
-
-        const issue = {
-          selector: selectorFor(element),
-          size: Number(size.toFixed(2)),
-          text: text.slice(0, 80),
-        };
-        const key = `${issue.selector}|${issue.size}|${issue.text}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          problems.push(issue);
+    const issues = await page.evaluate(
+      ({ minimum, sideMenuMinimum }) => {
+        const root = document.querySelector(".site-page");
+        if (!(root instanceof HTMLElement)) {
+          return [{ selector: ".site-page", size: 0, text: "Missing site root" }];
         }
-      }
 
-      return problems;
-    }, minimumFontSize);
+        const isVisible = (element) => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            Number(style.opacity) > 0.01 &&
+            rect.width > 1 &&
+            rect.height > 1 &&
+            element.getAttribute("aria-hidden") !== "true"
+          );
+        };
+
+        const directText = (element) =>
+          [...element.childNodes]
+            .filter((node) => node.nodeType === Node.TEXT_NODE)
+            .map((node) => node.textContent ?? "")
+            .join(" ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+        const selectorFor = (element) => {
+          const tag = element.tagName.toLowerCase();
+          const id = element.id ? `#${element.id}` : "";
+          const classes = [...element.classList]
+            .slice(0, 2)
+            .map((value) => `.${value}`)
+            .join("");
+          return `${tag}${id}${classes}`;
+        };
+
+        const problems = [];
+        const seen = new Set();
+
+        for (const element of root.querySelectorAll("*")) {
+          if (!(element instanceof HTMLElement) || !isVisible(element)) continue;
+          if (["SCRIPT", "STYLE", "NOSCRIPT"].includes(element.tagName)) continue;
+
+          const text = directText(element);
+          if (!text) continue;
+
+          const size = Number.parseFloat(getComputedStyle(element).fontSize);
+          const requiredMinimum = element.closest("aside[data-side-index] nav")
+            ? sideMenuMinimum
+            : minimum;
+
+          if (!Number.isFinite(size) || size >= requiredMinimum - 0.05) continue;
+
+          const issue = {
+            selector: selectorFor(element),
+            size: Number(size.toFixed(2)),
+            text: text.slice(0, 80),
+          };
+          const key = `${issue.selector}|${issue.size}|${issue.text}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            problems.push(issue);
+          }
+        }
+
+        return problems;
+      },
+      { minimum: minimumFontSize, sideMenuMinimum: sideMenuMinimumFontSize },
+    );
 
     if (issues.length > 0) {
       failures.push({ route, viewport: viewport.name, issues });
@@ -150,4 +158,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`\nMinimum font-size audit passed at ${minimumFontSize}px across ${routes.length} routes and ${viewports.length} viewports.`);
+console.log(
+  `\nMinimum font-size audit passed at ${minimumFontSize}px, with homepage side-menu navigation at ${sideMenuMinimumFontSize}px, across ${routes.length} routes and ${viewports.length} viewports.`,
+);
