@@ -1,0 +1,164 @@
+/*
+ * READABLE TYPE SCALE
+ *
+ * Final brand-system layer. No visible interface or supporting copy should
+ * render below 16px. Body copy starts at 18px, while display typography keeps
+ * its existing responsive hierarchy.
+ */
+
+:root {
+  --brand-readable-min: 16px;
+  --brand-label: clamp(16px, 0.95vw, 18px);
+  --brand-body-md: clamp(18px, 1.25vw, 22px);
+  --brand-body-lg: clamp(21px, 1.65vw, 29px);
+}
+
+.site-page {
+  font-size: 18px !important;
+}
+
+/* Shared interface labels and navigation. */
+.site-page .brand-label,
+.site-page .brand-breadcrumb,
+.site-page .brand-header nav a,
+.site-page .interior-header nav a,
+.site-page .brand-interior-hero > p:first-child,
+.site-page .brand-section-head > p,
+.site-page .brand-section-head > span,
+.site-page .brand-cta > p {
+  font-size: var(--brand-label) !important;
+  line-height: 1.45 !important;
+}
+
+/* Homepage utility text and supporting information. */
+.site-page--home aside[data-side-index] > div,
+.site-page--home aside[data-side-index] nav a,
+.site-page--home aside[data-side-index] > p,
+.site-page--home aside[data-side-index] [data-availability-link],
+.site-page--home #top > div:first-of-type p,
+.site-page--home #top > div:has(> h1) a,
+.site-page--home [data-intro-kicker],
+.site-page--home [data-intro-facts] dd,
+.site-page--home [data-hero-proof] dd,
+.site-page--home [class*="projectCaption"] small,
+.site-page--home [class*="archiveName"] small,
+.site-page--home [class*="archiveDiscipline"],
+.site-page--home [class*="heroIdentity"] p,
+.site-page--home .brand-capability-matrix li,
+.site-page--home [class*="contactLinks"] small,
+.site-page--home [class*="footerLine"] > span,
+.site-page--home [class*="footerLine"] > a,
+.site-page--home .brand-home-process li p {
+  font-size: var(--brand-readable-min) !important;
+  line-height: 1.5 !important;
+}
+
+.site-page--home .brand-home-manifesto > p:first-child,
+.site-page--home .brand-home-process > header > p,
+.site-page--home #contact > div:first-child > p {
+  font-size: var(--brand-label) !important;
+  line-height: 1.45 !important;
+}
+
+/* Project-page labels, facts, captions and navigation. */
+.site-page--project .brand-project-margin > p,
+.site-page--project .brand-project-margin > a,
+.site-page--project .brand-project-hero > div:first-child p,
+.site-page--project .brand-project-story > header > p,
+.site-page--project .brand-project-gallery > header > p,
+.site-page--project .brand-project-facts dt,
+.site-page--project .brand-project-facts dd,
+.site-page--project .brand-story-fields section > span,
+.site-page--project .brand-story-fields p,
+.site-page--project #case-study article > figure figcaption,
+.site-page--project .brand-project-gallery figcaption,
+.site-page--project .brand-project-nav small,
+.site-page--project .brand-project-nav span,
+.site-page--project .brand-related-services > p,
+.site-page--project .brand-related-services a span {
+  font-size: var(--brand-readable-min) !important;
+  line-height: 1.5 !important;
+}
+
+.site-page--project .brand-project-margin > p,
+.site-page--project .brand-project-margin > a,
+.site-page--project .brand-project-hero > div:first-child p,
+.site-page--project .brand-project-story > header > p,
+.site-page--project .brand-project-gallery > header > p,
+.site-page--project .brand-related-services > p,
+.site-page--project .brand-project-nav small {
+  font-size: var(--brand-label) !important;
+  line-height: 1.45 !important;
+}
+
+/* Service-page labels, lists and proof captions. */
+.site-page--service .brand-service-intro h2,
+.site-page--service .brand-service-block h2,
+.site-page--service .brand-service-approach h2,
+.site-page--service .brand-service-block li,
+.site-page--service .brand-proof-card small,
+.site-page--service .brand-proof-card span {
+  font-size: var(--brand-readable-min) !important;
+  line-height: 1.5 !important;
+}
+
+/* CV labels, actions, dates and supporting copy. */
+.site-page--cv .brand-cv-title span,
+.site-page--cv .brand-action-row a,
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-sidebar h2,
+.site-page--cv .brand-cv-role > p,
+.site-page--cv .brand-cv-role div > p,
+.site-page--cv .brand-cv-sidebar p,
+.site-page--cv .brand-cv-sidebar li,
+.site-page--cv .brand-cv-sidebar a {
+  font-size: var(--brand-readable-min) !important;
+  line-height: 1.5 !important;
+}
+
+/* Form and control text should remain zoom-safe when added later. */
+.site-page :where(input, textarea, select, button, label) {
+  font-size: var(--brand-readable-min) !important;
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --brand-rail-width: 128px;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-page {
+    font-size: 18px !important;
+  }
+
+  .site-page .brand-header nav,
+  .site-page .interior-header nav {
+    gap: 12px !important;
+  }
+
+  .site-page .brand-header nav a,
+  .site-page .interior-header nav a {
+    min-height: 44px !important;
+    font-size: var(--brand-readable-min) !important;
+    letter-spacing: 0.035em !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .site-page .brand-header,
+  .site-page .interior-header {
+    padding-inline: 10px 12px !important;
+  }
+
+  .site-page .brand-header nav,
+  .site-page .interior-header nav {
+    gap: 8px !important;
+  }
+
+  .site-page .brand-header nav a,
+  .site-page .interior-header nav a {
+    padding-inline: 2px !important;
+    letter-spacing: 0 !important;
+  }
+}
