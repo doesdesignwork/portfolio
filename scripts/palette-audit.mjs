@@ -35,8 +35,9 @@ const viewports = [
 const expected = {
   ink: [37, 42, 46],
   paper: [242, 240, 235],
-  signal: [6, 112, 50],
-  bright: [182, 245, 0],
+  paperBright: [250, 249, 246],
+  signal: [0, 87, 255],
+  bright: [77, 216, 255],
 };
 
 const browser = await chromium.launch({ headless: true });
@@ -127,25 +128,33 @@ for (const viewport of viewports) {
         const tokens = {
           ink: parseColor(rootStyle.getPropertyValue("--brand-ink")),
           paper: parseColor(rootStyle.getPropertyValue("--brand-paper")),
+          paperBright: parseColor(rootStyle.getPropertyValue("--brand-paper-bright")),
           signal: parseColor(rootStyle.getPropertyValue("--brand-signal")),
           bright: parseColor(rootStyle.getPropertyValue("--brand-signal-bright")),
         };
 
         for (const [name, parsed] of Object.entries(tokens)) {
+          const property = name === "bright"
+            ? "--brand-signal-bright"
+            : name === "paperBright"
+              ? "--brand-paper-bright"
+              : `--brand-${name}`;
           if (!parsed || !same(parsed.rgb, expectedColors[name])) {
-            problems.push(`unexpected ${name} token: ${rootStyle.getPropertyValue(`--brand-${name === "bright" ? "signal-bright" : name}`).trim()}`);
+            problems.push(`unexpected ${name} token: ${rootStyle.getPropertyValue(property).trim()}`);
           }
         }
 
         if (tokens.signal && tokens.paper && contrast(tokens.signal.rgb, tokens.paper.rgb) < 4.5) {
-          problems.push(`signal green on paper contrast is ${contrast(tokens.signal.rgb, tokens.paper.rgb).toFixed(2)}:1`);
+          problems.push(`electric cobalt on paper contrast is ${contrast(tokens.signal.rgb, tokens.paper.rgb).toFixed(2)}:1`);
         }
         if (tokens.bright && tokens.ink && contrast(tokens.bright.rgb, tokens.ink.rgb) < 4.5) {
-          problems.push(`bright neon on gunmetal contrast is ${contrast(tokens.bright.rgb, tokens.ink.rgb).toFixed(2)}:1`);
+          problems.push(`bright cyan-blue on gunmetal contrast is ${contrast(tokens.bright.rgb, tokens.ink.rgb).toFixed(2)}:1`);
         }
 
-        const oldColors = [
+        const retiredColors = [
           [227, 72, 50],
+          [6, 112, 50],
+          [182, 245, 0],
           [21, 21, 21],
           [21, 21, 18],
           [0, 0, 0],
@@ -153,6 +162,9 @@ for (const viewport of viewports) {
 
         const isOrange = ([red, green, blue]) =>
           red >= 150 && green >= 35 && green <= 175 && blue <= 110 && red >= green + 45;
+
+        const isGreen = ([red, green, blue]) =>
+          green >= 88 && green >= red * 1.3 && green >= blue * 1.12;
 
         for (const element of [...document.querySelectorAll("body *")].filter(visible)) {
           if (["IMG", "VIDEO", "CANVAS", "PICTURE", "SOURCE"].includes(element.tagName)) continue;
@@ -168,8 +180,12 @@ for (const viewport of viewports) {
 
           for (const [property, parsed, relevant] of candidates) {
             if (!relevant || !parsed || parsed.alpha < 0.08) continue;
-            if (oldColors.some((color) => same(parsed.rgb, color)) || isOrange(parsed.rgb)) {
-              problems.push(`${property} retains orange/black ${parsed.rgb.join(",")}: ${label(element)}`);
+            if (
+              retiredColors.some((color) => same(parsed.rgb, color)) ||
+              isOrange(parsed.rgb) ||
+              isGreen(parsed.rgb)
+            ) {
+              problems.push(`${property} retains retired orange/green/black ${parsed.rgb.join(",")}: ${label(element)}`);
               break;
             }
           }
@@ -179,24 +195,66 @@ for (const viewport of viewports) {
           const actionLinks = [...document.querySelectorAll(".brand-action-row a")].filter(visible);
           if (actionLinks.length < 4) {
             problems.push(`expected 4 CV action links, found ${actionLinks.length}`);
-          }
-          for (const link of actionLinks) {
-            const color = parseColor(getComputedStyle(link).color);
-            if (!color || (!same(color.rgb, expectedColors.signal) && !same(color.rgb, expectedColors.bright))) {
-              problems.push(`CV action is not green: ${label(link)}`);
+          } else {
+            const firstStyle = getComputedStyle(actionLinks[0]);
+            const firstText = parseColor(firstStyle.color);
+            const firstBackground = parseColor(firstStyle.backgroundColor);
+            if (!firstText || !same(firstText.rgb, expectedColors.paperBright)) {
+              problems.push(`primary CV action text is not bright paper: ${label(actionLinks[0])}`);
+            }
+            if (!firstBackground || !same(firstBackground.rgb, expectedColors.signal)) {
+              problems.push(`primary CV action background is not electric cobalt: ${label(actionLinks[0])}`);
+            }
+            for (const link of actionLinks.slice(1)) {
+              const color = parseColor(getComputedStyle(link).color);
+              if (!color || !same(color.rgb, expectedColors.signal)) {
+                problems.push(`secondary CV action is not electric cobalt: ${label(link)}`);
+              }
             }
           }
 
           const ctaLabel = document.querySelector(".brand-cta > p");
           const ctaAction = document.querySelector(".brand-cta > a");
-          for (const element of [ctaLabel, ctaAction]) {
-            if (!visible(element)) {
-              problems.push("CV closing CTA is missing");
-              continue;
+          if (!visible(ctaLabel) || !visible(ctaAction)) {
+            problems.push("CV closing CTA is missing");
+          } else {
+            const labelColor = parseColor(getComputedStyle(ctaLabel).color);
+            const actionStyle = getComputedStyle(ctaAction);
+            const actionColor = parseColor(actionStyle.color);
+            const actionBackground = parseColor(actionStyle.backgroundColor);
+            if (!labelColor || !same(labelColor.rgb, expectedColors.bright)) {
+              problems.push(`CV closing label is not bright cyan-blue: ${label(ctaLabel)}`);
             }
-            const color = parseColor(getComputedStyle(element).color);
-            if (!color || !same(color.rgb, expectedColors.bright)) {
-              problems.push(`CV closing CTA is not bright neon: ${label(element)}`);
+            if (!actionColor || !same(actionColor.rgb, expectedColors.ink)) {
+              problems.push(`CV closing action text is not gunmetal: ${label(ctaAction)}`);
+            }
+            if (!actionBackground || !same(actionBackground.rgb, expectedColors.bright)) {
+              problems.push(`CV closing action background is not bright cyan-blue: ${label(ctaAction)}`);
+            }
+          }
+
+          const ruleFreeSelectors = [
+            ".brand-interior-hero",
+            ".brand-cv-section",
+            ".brand-cv-section > h2",
+            ".brand-cv-role",
+            ".brand-cv-sidebar",
+            ".brand-cv-sidebar h2",
+            ".brand-cv-sidebar a",
+            ".brand-cv-sidebar li",
+          ];
+          for (const selector of ruleFreeSelectors) {
+            for (const element of [...document.querySelectorAll(selector)].filter(visible)) {
+              const style = getComputedStyle(element);
+              const borderWidths = [
+                style.borderTopWidth,
+                style.borderRightWidth,
+                style.borderBottomWidth,
+                style.borderLeftWidth,
+              ].map(Number.parseFloat);
+              if (borderWidths.some((width) => width > 0)) {
+                problems.push(`CV structural rule remains on ${selector}: ${label(element)}`);
+              }
             }
           }
         }
