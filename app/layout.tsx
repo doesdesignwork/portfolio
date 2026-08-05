@@ -12,7 +12,7 @@ import "./brand-refinement.css";
 const siteTitle =
   "Gerard Teo | Art Director and Senior Brand Designer in Singapore";
 const siteDescription =
-  "Singapore art director and senior brand designer with 26+ years across brand identity, campaigns, packaging, exhibitions and creative production.";
+  "Singapore-based art director and senior brand designer with 26+ years making brand identities, campaigns, packaging and exhibitions work clearly across every format.";
 
 const bodyFont = Krub({
   variable: "--font-body",
@@ -155,7 +155,7 @@ const structuredData = {
       ],
       subjectOf: {
         "@type": "WebPage",
-        name: "Gerard Teo - Online CV",
+        name: "Gerard Teo CV",
         url: `${siteUrl}/cv/`,
       },
       address: {
