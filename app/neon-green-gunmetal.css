@@ -91,19 +91,19 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 }
 
 /* Online CV and shared action rows. */
-.brand-action-row a {
+.site-page--cv .brand-action-row a {
   border-color: var(--brand-signal) !important;
   color: var(--brand-signal) !important;
 }
 
-.brand-action-row a:first-child {
+.site-page--cv .brand-action-row a:first-child {
   border-color: var(--brand-ink) !important;
   background: var(--brand-ink) !important;
   color: var(--brand-signal-bright) !important;
 }
 
-.brand-action-row a:hover,
-.brand-action-row a:focus-visible {
+.site-page--cv .brand-action-row a:hover,
+.site-page--cv .brand-action-row a:focus-visible {
   border-color: var(--brand-ink) !important;
   background: var(--brand-ink) !important;
   color: var(--brand-signal-bright) !important;
