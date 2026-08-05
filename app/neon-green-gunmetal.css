@@ -1,0 +1,164 @@
+/*
+ * DOES DESIGN WORK / NEON GREEN + GUNMETAL PALETTE
+ *
+ * Final sitewide brand layer. The signal family uses a deep neon green on
+ * paper and white, plus a bright neon lime on gunmetal. This preserves the
+ * same visual identity while meeting readable contrast in both directions.
+ */
+
+:root {
+  --brand-ink: #252a2e;
+  --brand-graphite: #343a3f;
+  --brand-paper: #f2f0eb;
+  --brand-paper-bright: #faf9f6;
+  --brand-signal: #067032;
+  --brand-signal-bright: #b6f500;
+  --brand-muted: #626866;
+  --brand-silver: #9da19e;
+  --brand-line: rgba(37, 42, 46, 0.18);
+  --brand-line-strong: rgba(37, 42, 46, 0.44);
+  --brand-line-inverse: rgba(250, 249, 246, 0.24);
+  --brand-muted-inverse: rgba(250, 249, 246, 0.72);
+
+  /* Compatibility aliases used by older page modules. */
+  --palette-ink: var(--brand-ink);
+  --palette-ivory: var(--brand-paper);
+  --palette-cobalt: var(--brand-signal);
+  --palette-lime: var(--brand-signal-bright);
+}
+
+html,
+body,
+.site-page {
+  background: var(--brand-paper) !important;
+  color: var(--brand-ink) !important;
+}
+
+::selection {
+  background: var(--brand-signal-bright) !important;
+  color: var(--brand-ink) !important;
+}
+
+:focus-visible {
+  outline-color: var(--brand-signal) !important;
+}
+
+/* Gunmetal replaces black throughout shared dark surfaces. */
+.brand-header,
+.interior-header,
+.brand-cta,
+.site-page--home > footer {
+  background-color: var(--brand-ink) !important;
+}
+
+/* Active and editorial signals on light paper use the readable green. */
+.site-page--home #top h1 em,
+aside[data-side-index] nav a[aria-current="location"],
+aside[data-side-index] nav a:hover,
+aside[data-side-index] nav a:focus-visible,
+.site-page--home [data-hero-proof] dt,
+.site-page--home .brand-capability-matrix h3,
+.site-page--project .brand-project-story h2,
+.site-page--project .brand-project-gallery h2,
+.site-page--service .brand-service-block h2,
+.site-page--service .brand-service-approach h2,
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-sidebar h2 {
+  color: var(--brand-signal) !important;
+}
+
+/* Homepage actions remain visibly green before interaction. */
+.site-page--home [class*="heroActions"] a,
+.site-page--home [data-availability-link],
+.site-page--home [data-contact-link] {
+  border-color: var(--brand-signal) !important;
+}
+
+.site-page--home [class*="heroActions"] a {
+  color: var(--brand-signal) !important;
+}
+
+.site-page--home [class*="heroActions"] a:hover,
+.site-page--home [class*="heroActions"] a:focus-visible {
+  border-color: var(--brand-signal) !important;
+  color: var(--brand-signal) !important;
+}
+
+aside[data-side-index] [data-right-work],
+aside[data-side-index] [data-availability-link]:hover,
+aside[data-side-index] [data-availability-link]:focus-visible {
+  color: var(--brand-signal) !important;
+}
+
+/* Online CV and shared action rows. */
+.brand-action-row a {
+  border-color: var(--brand-signal) !important;
+  color: var(--brand-signal) !important;
+}
+
+.brand-action-row a:first-child {
+  border-color: var(--brand-ink) !important;
+  background: var(--brand-ink) !important;
+  color: var(--brand-signal-bright) !important;
+}
+
+.brand-action-row a:hover,
+.brand-action-row a:focus-visible {
+  border-color: var(--brand-ink) !important;
+  background: var(--brand-ink) !important;
+  color: var(--brand-signal-bright) !important;
+}
+
+/* Shared CTA system. */
+.brand-cta--signal {
+  background: var(--brand-signal) !important;
+}
+
+.brand-cta--signal,
+.brand-cta--signal :where(h1, h2, h3, p, span, strong, small) {
+  color: var(--brand-paper-bright) !important;
+}
+
+.brand-cta > p,
+.brand-cta > a,
+.site-page--cv .brand-cta > p,
+.site-page--cv .brand-cta > a {
+  color: var(--brand-signal-bright) !important;
+}
+
+.brand-cta > a,
+.site-page--cv .brand-cta > a {
+  border-bottom-color: var(--brand-signal-bright) !important;
+}
+
+.brand-cta > a:hover,
+.brand-cta > a:focus-visible {
+  color: var(--brand-paper-bright) !important;
+  border-bottom-color: var(--brand-paper-bright) !important;
+  opacity: 1 !important;
+}
+
+/* Contact actions on the gunmetal homepage footer. */
+.site-page--home > footer [data-contact-link] > span,
+.site-page--home > footer [data-contact-link]:hover > span,
+.site-page--home > footer [data-contact-link]:focus-visible > span,
+.site-page--home > footer [class*="footerLine"] > a {
+  color: var(--brand-signal-bright) !important;
+}
+
+/* Project and service call-to-action links on paper. */
+.site-page--project .brand-project-nav a,
+.site-page--project .brand-related-services a,
+.site-page--service .brand-proof-card,
+.site-page--service .brand-cta + a {
+  border-color: var(--brand-signal) !important;
+}
+
+.site-page--project .brand-project-nav a:hover,
+.site-page--project .brand-project-nav a:focus-visible,
+.site-page--project .brand-related-services a:hover,
+.site-page--project .brand-related-services a:focus-visible,
+.site-page--service .brand-proof-card:hover,
+.site-page--service .brand-proof-card:focus-visible {
+  color: var(--brand-signal) !important;
+}
