@@ -181,7 +181,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             <dl className={`${styles.facts} brand-project-facts`}>
               <div>
-                <dt>Role</dt>
+                <dt>My role</dt>
                 <dd>{project.role}</dd>
               </div>
               {project.credit && (
@@ -221,25 +221,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <section className={`${styles.story} brand-project-story`} aria-labelledby="case-thinking">
             <header>
-              <p>Case-study thinking</p>
-              <h2 id="case-thinking">The thinking behind the work.</h2>
+              <p>How the work came together</p>
+              <h2 id="case-thinking">What needed solving, and how I approached it.</h2>
             </header>
 
             <div className={`${styles.storyFields} brand-story-fields`}>
               <section>
-                <h3>The challenge</h3>
+                <h3>The brief</h3>
                 <p>{project.challenge}</p>
               </section>
               <section>
-                <h3>The decision</h3>
+                <h3>The idea</h3>
                 <p>{project.approach}</p>
               </section>
               <section>
-                <h3>The system</h3>
+                <h3>What I made</h3>
                 <p>{project.deliverables}</p>
               </section>
               <section>
-                <h3>The outcome</h3>
+                <h3>What it achieved</h3>
                 <p>{project.outcome}</p>
               </section>
             </div>
@@ -248,8 +248,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {project.images.length > 1 && (
             <section className={`${styles.gallery} brand-project-gallery`} aria-labelledby="work-shown-title">
               <header>
-                <p>Applications / {project.images.length - 1} additional view{project.images.length === 2 ? "" : "s"}</p>
-                <h2 id="work-shown-title">The system in use.</h2>
+                <p>{project.images.length - 1} more view{project.images.length === 2 ? "" : "s"} from the project</p>
+                <h2 id="work-shown-title">See the idea in use.</h2>
               </header>
 
               <div className={styles.imageGrid}>
@@ -288,7 +288,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               className={`${styles.relatedServices} brand-related-services`}
               aria-label="Related expertise"
             >
-              <p>Related expertise</p>
+              <p>Related work</p>
               <div>
                 {relatedServices.map((service) => (
                   <Link key={service.href} href={service.href}>
@@ -302,12 +302,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <nav className={`${styles.projectNav} brand-project-nav`} aria-label="Other case studies">
             <Link href={`/work/${previous.slug}/`}>
-              <small>Previous case study</small>
+              <small>Previous project</small>
               <strong>{previous.client}</strong>
               <span>{previous.title}</span>
             </Link>
             <Link href={`/work/${next.slug}/`}>
-              <small>Next case study</small>
+              <small>Next project</small>
               <strong>{next.client}</strong>
               <span>{next.title}</span>
             </Link>
@@ -315,8 +315,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </article>
 
         <section className={`${styles.cta} brand-cta brand-cta--signal`}>
-          <p>Planning the next project?</p>
-          <h2>Bring the problem. I’ll help build the system.</h2>
+          <p>Got a project taking shape?</p>
+          <h2>Tell me what needs solving. We can work out the right way to build it.</h2>
           <a href="mailto:g@doesdesignwork.com">Email Gerard ↗</a>
         </section>
       </main>

@@ -17,20 +17,20 @@ const featuredProjects = ["13", "04", "01"].map(byNumber);
 const archiveProjects = ["03", "08", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const archiveNotes: Record<string, string> = {
-  "03": "Four premium card directions with a controlled co-brand hierarchy.",
-  "08": "Industrial applications organised into clear exhibition zones.",
-  "06": "Naming and identity built from the architecture itself.",
-  "09": "A historic identity made more consistent across applications.",
-  "14": "Licensed worlds designed into the shoe, not pasted onto it.",
-  "10": "Technical ingredient benefits translated into desirable products.",
-  "11": "Six restaurant concepts organised under one group architecture.",
-  "15": "Three beauty ranges clarified without losing parent-brand recognition.",
+  "03": "Four premium card ideas, including two DBS co-branded directions.",
+  "08": "A busy technical booth broken into clear, easy-to-find zones.",
+  "06": "A property identity drawn directly from the building.",
+  "09": "A more consistent identity without erasing the school’s history.",
+  "14": "Licensed characters worked into the shoes, not simply printed on top.",
+  "10": "Technical ingredient benefits turned into products people could picture.",
+  "11": "Six restaurant brands connected by one clear group structure.",
+  "15": "Three beauty ranges made clearer at shelf while keeping their brand cues.",
 };
 
 const capabilityGroups = [
   {
     title: "Direction",
-    description: "Set the decision and give the work one clear point of view.",
+    description: "Find the idea worth backing, then make the brief clearer for everyone.",
     items: [
       "Creative direction",
       "Brief clarification",
@@ -40,7 +40,7 @@ const capabilityGroups = [
   },
   {
     title: "Systems",
-    description: "Build the visual logic that keeps every application related.",
+    description: "Turn that idea into a visual language that can stretch without falling apart.",
     items: [
       "Brand identity",
       "Campaign systems",
@@ -50,7 +50,7 @@ const capabilityGroups = [
   },
   {
     title: "Delivery",
-    description: "Carry the idea through the formats, details and production realities.",
+    description: "Stay with the work through the details, formats and production decisions.",
     items: [
       "Campaign rollout",
       "Exhibition production",
@@ -214,12 +214,12 @@ export default function Home() {
             </h1>
             <div>
               <p>
-                I turn complex briefs into brand systems, campaigns and experiences
-                people can understand, remember and use.
+                I make complex briefs easier to understand, then turn them into brands,
+                campaigns and experiences that hold together in the real world.
               </p>
               <div className={styles.heroActions}>
                 <Link href="#work">View selected work</Link>
-                <Link href="/cv/">Leadership CV</Link>
+                <Link href="/cv/">View my CV</Link>
               </div>
             </div>
           </div>
@@ -227,41 +227,41 @@ export default function Home() {
           <dl className="brand-hero-proof" data-hero-proof aria-label="Experience highlights">
             <div>
               <dt>26+</dt>
-              <dd>Years across design, direction and production</dd>
+              <dd>Years designing, directing and producing work</dd>
             </div>
             <div>
               <dt>3 → 15</dt>
-              <dd>Creative-team growth at Blacksheep</dd>
+              <dd>Grew the Blacksheep creative team from three to 15</dd>
             </div>
             <div>
               <dt>6</dt>
-              <dd>Major agency networks plus independent and in-house practice</dd>
+              <dd>Major agency networks, plus independent and in-house roles</dd>
             </div>
           </dl>
 
           <div data-intro-panel data-reveal="intro">
             <p data-intro-kicker>
-              Direction, design and delivery belong in the same conversation.
+              Good work gets weaker when thinking, design and production drift apart.
             </p>
             <div data-intro-copy>
               <p>
-                I work where strategy becomes something visible: clarifying the brief,
-                setting the creative direction and building the system through to final
-                production.
+                I like to stay close to all three. I help make sense of the brief, set a
+                clear direction and carry the idea through the awkward real-world details
+                that decide whether it works.
               </p>
               <p>
-                Fewer handovers mean fewer diluted ideas and a clearer line from the
-                first decision to the finished experience.
+                That means fewer handovers, fewer lost decisions and a finished piece that
+                still feels like the original idea.
               </p>
             </div>
             <dl data-intro-facts>
               <div>
                 <dt>Direction</dt>
-                <dd>A clear visual point before production starts</dd>
+                <dd>A clear idea before the design starts</dd>
               </div>
               <div>
                 <dt>System</dt>
-                <dd>One idea across screens, spaces and formats</dd>
+                <dd>Rules that keep the work recognisable</dd>
               </div>
               <div>
                 <dt>Delivery</dt>
@@ -278,8 +278,8 @@ export default function Home() {
           <p>Working principle</p>
           <h2 id="manifesto-title">Clarity before decoration.</h2>
           <p>
-            A strong system makes decisions easier, keeps teams aligned and gives the
-            final work a recognisable point of view.
+            The work should make sense before it tries to impress. Once the idea is clear,
+            the visual choices have something solid to do.
           </p>
         </section>
 
@@ -288,8 +288,8 @@ export default function Home() {
             <p>Selected case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
-              Brand systems, campaigns and physical experiences, shown through the
-              decisions, responsibility and craft behind them.
+              A few projects that show how I think, make decisions and carry an idea into
+              the finished work.
             </span>
           </header>
 
@@ -316,7 +316,7 @@ export default function Home() {
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
           <header className={`${styles.archiveHeader} brand-section-head`}>
             <p>Selected archive</p>
-            <h2 id="archive-title">A wider cut of the work.</h2>
+            <h2 id="archive-title">More of the work.</h2>
           </header>
 
           <div className={styles.archiveList}>
@@ -360,20 +360,20 @@ export default function Home() {
         <section id="about" className={styles.about} aria-labelledby="about-title">
           <div className={`${styles.aboutTitle} brand-section-head`}>
             <p>Experience</p>
-            <h2 id="about-title">I lead the work. I make it.</h2>
+            <h2 id="about-title">I lead the work and stay close to it.</h2>
           </div>
 
           <div className={`${styles.aboutStory} brand-about-story brand-about-story--focused`}>
             <div>
               <p>
-                I have worked across major agency networks, independent practice and
-                in-house teams, moving from hands-on designer to creative director and
-                studio co-founder.
+                I have worked in major agency networks, independent studios and in-house
+                teams. Along the way I moved from hands-on designer to creative director
+                and studio co-founder.
               </p>
               <p>
-                The scale has changed. The accountability has not. I stay close to the
-                brief, the team, the craft and the production details so the original
-                decision survives the route to delivery.
+                I still like making the thing. I stay close to the brief, the team and the
+                production details so the idea does not get polished into something bland
+                on its way out the door.
               </p>
             </div>
           </div>
@@ -399,21 +399,21 @@ export default function Home() {
           data-process-section
         >
           <header className="brand-section-head">
-            <p>How I build the work</p>
-            <h2 id="process-title">From brief to durable system.</h2>
+            <p>How the work gets made</p>
+            <h2 id="process-title">Start with the problem. Build what lasts.</h2>
           </header>
           <ol>
             <li data-reveal="process" data-reveal-delay="0" data-process-point>
-              <h3>Define the decision</h3>
-              <p>Clarify the audience, the problem and what the work must change.</p>
+              <h3>Get the brief straight</h3>
+              <p>Work out who it is for, what is getting in the way and what must change.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="1" data-process-point>
-              <h3>Set the visual logic</h3>
-              <p>Build a recognisable idea, hierarchy and set of rules for the team.</p>
+              <h3>Find the visual idea</h3>
+              <p>Choose one strong direction and give the team a clear set of rules.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="2" data-process-point>
-              <h3>Carry it into production</h3>
-              <p>Test the system across real formats and protect the idea through delivery.</p>
+              <h3>Make it work everywhere</h3>
+              <p>Test the idea across real formats and stay with it through production.</p>
             </li>
           </ol>
         </section>
@@ -422,7 +422,7 @@ export default function Home() {
       <footer id="contact" className={styles.footer}>
         <div data-reveal="contact" data-reveal-delay="0">
           <p>Selected roles and collaborations</p>
-          <h2>Bring me the brief.</h2>
+          <h2>Got a brief that needs sorting out?</h2>
         </div>
         <div className={`${styles.contactLinks} brand-contact-links`}>
           <a
@@ -440,8 +440,8 @@ export default function Home() {
             data-reveal="contact"
             data-reveal-delay="1"
           >
-            <span>Leadership CV</span>
-            <small>Experience, capabilities and role fit</small>
+            <span>View my CV</span>
+            <small>Experience, skills and selected roles</small>
           </Link>
           <a
             href="https://www.linkedin.com/in/gerard-teo-0b106429/"
@@ -452,7 +452,7 @@ export default function Home() {
             data-reveal-delay="2"
           >
             <span>LinkedIn</span>
-            <small>Connect professionally</small>
+            <small>Connect with me there</small>
           </a>
         </div>
         <div className={`${styles.footerLine} brand-footer-line`}>

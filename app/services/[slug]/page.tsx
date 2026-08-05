@@ -108,30 +108,30 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </header>
 
         <section className={`${styles.serviceIntro} brand-service-intro`}>
-          <h2>Where I add value</h2>
+          <h2>Where I can help</h2>
           <p>{service.intro}</p>
         </section>
 
         <div className={`${styles.serviceGrid} brand-service-grid`}>
           <section className={`${styles.serviceBlock} brand-service-block`}>
-            <h2>Problems I help solve</h2>
+            <h2>Common problems</h2>
             <ul>{service.problems.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
           <section className={`${styles.serviceBlock} brand-service-block`}>
-            <h2>What I can produce</h2>
+            <h2>What I can make</h2>
             <ul>{service.scope.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
         </div>
 
         <section className={`${styles.approach} brand-service-approach`}>
-          <h2>Working method</h2>
+          <h2>How I work</h2>
           <p>{service.approach}</p>
         </section>
 
         <section className={`${styles.proof} brand-proof`} aria-labelledby="proof-title">
           <div className={`${styles.sectionHead} brand-section-head`}>
-            <h2 id="proof-title">Relevant proof</h2>
-            <p>Selected case studies connected to this capability.</p>
+            <h2 id="proof-title">Relevant work</h2>
+            <p>Projects that show this kind of thinking in practice.</p>
           </div>
           <div className={`${styles.proofGrid} brand-proof-grid`}>
             {proofProjects.map((project) => (
@@ -150,9 +150,9 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </section>
 
         <section className={`${styles.cta} brand-cta`}>
-          <p>Have a project in this area?</p>
-          <h2>Let’s turn the requirement into a usable system.</h2>
-          <a href="mailto:g@doesdesignwork.com">Discuss the project</a>
+          <p>Working on something similar?</p>
+          <h2>Tell me what you are trying to make clearer, stronger or easier to use.</h2>
+          <a href="mailto:g@doesdesignwork.com">Start a conversation</a>
         </section>
       </main>
       <script

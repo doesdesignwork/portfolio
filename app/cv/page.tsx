@@ -7,7 +7,7 @@ import styles from "@/app/editorial-pages.module.css";
 export const metadata: Metadata = {
   title: "CV | Art Director & Senior Brand Designer Singapore",
   description:
-    "Gerard Teo's CV: 26+ years across art direction, brand identity, campaigns, exhibitions, packaging, 3D visualisation and creative production in Singapore.",
+    "Gerard Teo is a Singapore-based art director and senior brand designer with 26+ years across identity, campaigns, exhibitions, packaging, 3D visualisation and production.",
   keywords: [
     "Gerard Teo CV",
     "art director Singapore",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: "/cv/",
     title: "Gerard Teo CV | Art Director & Senior Brand Designer",
     description:
-      "26+ years across art direction, brand identity, campaigns, exhibitions, packaging and creative production.",
+      "26+ years making brand identities, campaigns, exhibitions, packaging and creative production work clearly across different formats.",
   },
 };
 
@@ -33,14 +33,14 @@ const currentRoles = [
     title: "Graphic Designer",
     company: "C Square Creative Communications / C2 Global Exhibitions, Singapore",
     description:
-      "Design key visuals and campaign materials for exhibitions, conferences, corporate events and experiential projects.",
+      "Create key visuals and campaign materials for exhibitions, conferences, corporate events and experiential projects.",
   },
   {
     dates: "Jan 2014 — Present",
     title: "Independent Creative Lead / Designer",
     company: "The Fat Oracle (TFO) — Independent practice",
     description:
-      "Direct client work across brand identity, packaging, campaigns and 3D visualisation, from concept definition through production.",
+      "Work directly with clients on brand identity, packaging, campaigns and 3D visualisation, from the first idea through to production.",
   },
 ];
 
@@ -50,14 +50,14 @@ const selectedExperience = [
     title: "Freelance Designer",
     company: "Northstar Travel Media, Singapore",
     description:
-      "Designed responsive email campaigns, taking approved concepts and wireframes through to final templates and production assets.",
+      "Turned approved concepts and wireframes into responsive email campaigns, final templates and production-ready assets.",
   },
   {
     dates: "Sep 2021 — Nov 2022",
     title: "Content Designer — Apple Account",
     company: "Hogarth Worldwide, Singapore",
     description:
-      "Adapted and checked Apple retail and digital campaign assets against detailed global brand and production standards.",
+      "Adapted and checked Apple retail and digital campaign materials against detailed global brand and production standards.",
   },
   {
     dates: "Sep 2013 — Nov 2014",
@@ -78,14 +78,14 @@ const selectedExperience = [
     title: "Co-Founder / Creative Director",
     company: "Blacksheep Communications Pte Ltd, Singapore",
     description:
-      "Co-founded the studio, grew the design team from three to 15 people and stayed involved in the work, clients and production.",
+      "Co-founded the studio, grew the design team from three to 15 people and remained closely involved with the work, clients and production.",
   },
   {
     dates: "Jan 2001 — Jan 2009",
     title: "Creative Designer to Creative Director",
     company: "CP&GD Design Communications Pte Ltd, Singapore",
     description:
-      "Progressed from hands-on designer to creative lead across integrated print, outdoor and digital campaigns.",
+      "Progressed from hands-on designer to creative lead across print, outdoor and digital campaigns.",
   },
 ];
 
@@ -170,12 +170,12 @@ export default function CvPage() {
           <h1>Gerard Teo</h1>
           <p className={`${styles.cvTitle} brand-cv-title`}>
             Art Director and Senior Brand Designer
-            <span>Creative Lead / Hands-on maker</span>
+            <span>Creative lead / Hands-on maker</span>
           </p>
           <p className={`${styles.deck} brand-deck`}>
-            Creative lead with 26+ years across agency networks, independent practice
-            and in-house teams. I clarify the decision, build the visual system and stay
-            close through production.
+            I have spent 26+ years working across agency networks, independent practice
+            and in-house teams. I help make the brief clearer, set the visual direction
+            and stay close enough to production that the original idea survives.
           </p>
           <div className={`${styles.cvActions} brand-action-row`}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
@@ -224,10 +224,10 @@ export default function CvPage() {
             </section>
 
             <section>
-              <h2>Direction, systems & delivery</h2>
+              <h2>What I bring</h2>
               <ul>
-                <li>Creative direction and brief clarification</li>
-                <li>Brand identity and campaign systems</li>
+                <li>Creative direction and clearer briefs</li>
+                <li>Brand identities and campaign systems</li>
                 <li>Events, exhibitions and spatial communication</li>
                 <li>Packaging, print and production</li>
                 <li>Pitches and stakeholder presentations</li>
@@ -245,7 +245,7 @@ export default function CvPage() {
               </p>
               <p>
                 Course projects included a HealthHub caregiver and
-                medical-translation flow, and an OCBC subscription-management
+                medical-translation flow, plus an OCBC subscription-management
                 sprint.
               </p>
               <p>
@@ -278,8 +278,8 @@ export default function CvPage() {
         </div>
 
         <section className={`${styles.cta} brand-cta`}>
-          <p>Considering a senior creative hire?</p>
-          <h2>Review the work, then start the conversation.</h2>
+          <p>Looking for a senior creative who still likes making the work?</p>
+          <h2>Take a look at the projects, then let’s talk.</h2>
           <a href="mailto:g@doesdesignwork.com">Get in touch</a>
         </section>
       </main>
