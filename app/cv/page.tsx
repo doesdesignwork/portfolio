@@ -78,7 +78,7 @@ const selectedExperience = [
     title: "Co-Founder / Creative Director",
     company: "Blacksheep Communications Pte Ltd, Singapore",
     description:
-      "Co-founded the studio, grew the design team from three to 15 people and remained closely involved with the work, clients and production.",
+      "Co-founded the studio, grew the design team from 3 to 15 people and remained closely involved with the work, clients and production.",
   },
   {
     dates: "Jan 2001 — Jan 2009",

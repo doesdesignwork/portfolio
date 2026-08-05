@@ -231,7 +231,7 @@ export default function Home() {
             </div>
             <div>
               <dt>3 → 15</dt>
-              <dd>Grew the Blacksheep creative team from three to 15</dd>
+              <dd>Grew the Blacksheep creative team from 3 to 15</dd>
             </div>
             <div>
               <dt>6</dt>
