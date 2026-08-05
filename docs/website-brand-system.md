@@ -23,7 +23,7 @@ The practice is presented as **Does Design Work**, not as a generic studio label
    Every page needs one obvious reading path. Typography, spacing and motion should support that path rather than compete with it.
 
 2. **One system, different content roles**
-   Homepage, case studies, services and CV use the same visual language. Their copy differs because each page has a different job.
+   Homepage, case studies, services, online CV and PDF CV use the same visual language. Their copy differs because each format has a different job.
 
 3. **Evidence over adjectives**
    Use responsibilities, decisions, outputs and observable outcomes. Avoid unsupported performance claims and generic statements about passion or creativity.
@@ -38,14 +38,17 @@ The practice is presented as **Does Design Work**, not as a generic studio label
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Ink | `#151515` | Primary text, dark sections and navigation |
-| Graphite | `#2c2c29` | Secondary dark detail |
-| Warm paper | `#f2f0eb` | Main page background |
+| Gunmetal ink | `#252a2e` | Primary text, headers, footers and dark CTA fields |
+| Graphite | `#343a3f` | Secondary dark detail and elevated dark surfaces |
+| Warm paper | `#f2f0eb` | Main page and CV background |
 | Bright paper | `#faf9f6` | Reversed text and elevated paper sections |
-| Signal orange | `#e34832` | Active states, emphasis and selected CTA fields |
-| Muted grey | `#666660` | Supporting copy, labels and captions |
+| Signal green | `#067032` | Text, borders, focus states and emphasis on white or paper |
+| Bright neon lime | `#b6f500` | Text, links and indicators on gunmetal surfaces |
+| Muted grey | `#626866` | Supporting copy, labels and captions |
 
-Orange is a signal, not wallpaper. Aim for roughly **8–12% of a typical screen**. Use it for active navigation, key statements, proof figures, selected headings and primary calls to action. Text on a solid orange field is always bright paper white.
+The neon signal uses two coordinated values because one green cannot remain vivid and readable on both light and dark backgrounds. Signal green has WCAG AA contrast on warm paper and white. Bright neon lime has high contrast on gunmetal.
+
+Green is a signal, not wallpaper. Use it for active navigation, key statements, proof figures, selected headings and calls to action. Avoid large bright-lime fields on light backgrounds.
 
 ## Typography
 
@@ -63,26 +66,29 @@ Orange is a signal, not wallpaper. Aim for roughly **8–12% of a typical screen
 - Font token: `--brand-font-text`
 - Current implementation: Inter
 - Uses: body copy, navigation, labels, facts, captions, metadata and CV content
+- Body copy begins at 18px on the website
 - Body line-height: approximately 1.5–1.58
 
-### Labels
+### Labels and interface text
 
-- 11–12px
-- Uppercase
-- 0.08–0.09em letter spacing
-- Used for section names, metadata and structural guidance
+- Minimum rendered size: 16px
+- Homepage desktop side-menu navigation: deliberate 14px exception
+- Uppercase only where the label acts as structural guidance
+- Moderate tracking rather than wide decorative spacing
 
 Do not introduce a third display family, decorative serif or synthetic italic treatment without revising the entire system.
+
+The PDF CV follows the same hierarchy and palette using standard PDF-safe sans-serif fonts so the file remains searchable, portable and reliable.
 
 ## Layout system
 
 - Header height: `72px`, `68px` on mobile
-- Desktop side index: `112px`
+- Desktop side index: `128px`
 - Maximum content width: `1320px`
 - Reading width: approximately `760px`
 - Section spacing: `84–160px`, responsive
 - Main gutter: `22–84px`, responsive
-- Borders: 1px rules using ink at 18% or bright paper at 24%
+- Borders: 1px rules using gunmetal at 18% or bright paper at 24%
 - Corner radius: none by default
 
 Every grid child must be allowed to shrink. Long titles, client names and metadata wrap at natural word boundaries without entering adjacent columns.
@@ -141,41 +147,41 @@ Sequence:
 
 The metadata description, visible introduction and working method must add different information rather than paraphrasing one another. Software belongs in the CV, not in the service proposition.
 
-### CV
+### Online and PDF CV
 
-**Job:** Provide detailed chronology, responsibilities, education and tools.
+**Job:** Provide detailed chronology, responsibilities, education, tools and direct contact routes.
 
-The CV may repeat factual names, dates and roles from the homepage, but it should not reuse the homepage positioning paragraphs verbatim.
+Both CV formats use the same human, factual voice. They may repeat names, dates and roles from the homepage, but should not reuse homepage positioning paragraphs verbatim.
 
 Current work is described plainly:
 - C Square Creative Communications / C2 Global Exhibitions: current in-house design role
 - The Fat Oracle: independent creative practice
 
-Do not inflate the independent practice into an unsupported corporate title.
+Do not inflate the independent practice into an unsupported corporate title. Keep the PDF to two searchable A4 pages with clickable contact and portfolio links.
 
 ## Shared components
 
 ### Header
 
-- Black field with bright paper navigation
-- Signal-orange underline on hover
+- Gunmetal field with bright paper navigation
+- Signal-green underline or text on hover
 - Same wordmark size and navigation order on every page
 
 ### Side index
 
-- Active section is indicated by orange text and stronger weight
+- Active section is indicated by signal-green text and stronger weight
 - No boxes, brackets, moving bars or background pills
 
 ### Section heading
 
-- Small uppercase label
+- Small structural label
 - Large display heading
 - Optional short supporting sentence
 
 ### Hero proof strip
 
 - Three evidence points only
-- Display figures in orange
+- Display figures in signal green
 - Text descriptions in accessible muted grey
 - Three columns on wide desktop
 - Full-width rows on tablet and landscape phone
@@ -191,15 +197,16 @@ Do not inflate the independent practice into an unsupported corporate title.
 
 ### CTA
 
-- Ink or signal-orange field
-- Bright paper text only
+- Gunmetal field with bright neon-lime action text, or a signal-green field with bright-paper text
+- On paper, action text and borders use signal green
 - One contextual prompt and one action
 - CTA wording reflects the page context rather than repeating the same sentence site-wide
+- The online CV closing label and action are neon lime on gunmetal
 
 ### Cards
 
 - Strong hierarchy: client, role or discipline, and a distinct project proposition
-- Orange may identify selected cards, but a page should not become a checkerboard of unrelated colours
+- Green may identify selected cards, but a page should not become a checkerboard of unrelated colours
 
 ## Motion
 
@@ -221,12 +228,15 @@ Before deployment:
 - Verify current employer, independent-practice and project-credit language
 - Avoid measurable-impact language unless a verified metric is available
 - Keep tools separate from capability and value propositions
+- Confirm the online CV and PDF CV carry the same factual role descriptions
 
 ## Accessibility and quality checks
 
 Before deployment:
 
-- Verify white text on every solid orange panel
+- Verify signal green reaches WCAG AA contrast on warm paper and white
+- Verify bright neon lime reaches WCAG AA contrast on gunmetal
+- Confirm no visible orange or black interface colours remain
 - Check all headings at 320px, 390px, 430px, 768px, 912px, 1180px, 1440px and 1920px
 - Confirm no horizontal overflow
 - Confirm active navigation uses colour and weight only
@@ -236,3 +246,5 @@ Before deployment:
 - Verify only the display and reading type families are visible
 - Check hero proof and capability groups for collisions, narrow columns and duplicate dividers
 - Review repeated claims, especially experience, role, process and CTA language
+- Render and inspect both PDF CV pages before publishing
+- Verify PDF text extraction and clickable links

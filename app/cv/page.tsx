@@ -29,59 +29,59 @@ export const metadata: Metadata = {
 
 const currentRoles = [
   {
-    dates: "Jan 2026 — Present",
+    dates: "Jan 2026 – Present",
     title: "Graphic Designer",
     company: "C Square Creative Communications / C2 Global Exhibitions, Singapore",
     description:
-      "Create key visuals and campaign materials for exhibitions, conferences, corporate events and experiential projects.",
+      "I design brand, event and exhibition work from early concept through artwork and production.",
   },
   {
-    dates: "Jan 2014 — Present",
+    dates: "Jan 2014 – Present",
     title: "Independent Creative Lead / Designer",
-    company: "The Fat Oracle (TFO) — Independent practice",
+    company: "The Fat Oracle (TFO) – Independent practice",
     description:
-      "Work directly with clients on brand identity, packaging, campaigns and 3D visualisation, from the first idea through to production.",
+      "I take on selected identity, campaign, packaging and visualisation projects, working directly with clients and production partners.",
   },
 ];
 
 const selectedExperience = [
   {
-    dates: "Sep 2020 — Apr 2024",
+    dates: "Sep 2020 – Apr 2024",
     title: "Freelance Designer",
     company: "Northstar Travel Media, Singapore",
     description:
       "Turned approved concepts and wireframes into responsive email campaigns, final templates and production-ready assets.",
   },
   {
-    dates: "Sep 2021 — Nov 2022",
-    title: "Content Designer — Apple Account",
+    dates: "Sep 2021 – Nov 2022",
+    title: "Content Designer – Apple Account",
     company: "Hogarth Worldwide, Singapore",
     description:
       "Adapted and checked Apple retail and digital campaign materials against detailed global brand and production standards.",
   },
   {
-    dates: "Sep 2013 — Nov 2014",
+    dates: "Sep 2013 – Nov 2014",
     title: "Senior Designer & 3D Visualisation Lead",
     company: "Crepuscule Asia, Singapore",
     description:
       "Combined design direction with hands-on brand, packaging and 3D visualisation work for Unilever and L'Oréal.",
   },
   {
-    dates: "May 2011 — Nov 2011",
+    dates: "May 2011 – Nov 2011",
     title: "Design Director",
     company: "Orbital Group Pte Ltd, Singapore",
     description:
       "Led pitch and campaign design for BlackBerry, Munich Automobiles and Pacific Healthcare.",
   },
   {
-    dates: "Jan 2004 — Jul 2009",
+    dates: "Jan 2004 – Jul 2009",
     title: "Co-Founder / Creative Director",
     company: "Blacksheep Communications Pte Ltd, Singapore",
     description:
-      "Co-founded the studio, grew the design team from 3 to 15 people and remained closely involved with the work, clients and production.",
+      "Co-founded the studio, grew the design team from 3 to 15 people and stayed closely involved with the work, clients and production.",
   },
   {
-    dates: "Jan 2001 — Jan 2009",
+    dates: "Jan 2001 – Jan 2009",
     title: "Creative Designer to Creative Director",
     company: "CP&GD Design Communications Pte Ltd, Singapore",
     description:
@@ -173,9 +173,10 @@ export default function CvPage() {
             <span>Creative lead / Hands-on maker</span>
           </p>
           <p className={`${styles.deck} brand-deck`}>
-            I have spent 26+ years working across agency networks, independent practice
-            and in-house teams. I help make the brief clearer, set the visual direction
-            and stay close enough to production that the original idea survives.
+            I have spent 26+ years making brands, campaigns, packaging and
+            experiences across agency, independent and in-house teams. I clarify
+            the brief, set the direction and stay close to the making so the idea
+            does not get lost.
           </p>
           <div className={`${styles.cvActions} brand-action-row`}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
@@ -240,13 +241,12 @@ export default function CvPage() {
               <p>
                 <strong>NTU PaCE, 2026</strong>
                 <br />
-                Advanced Professional Certificate in UX Design & Digital
-                Product Management.
+                Advanced Professional Certificate in UX Design & Digital Product
+                Management.
               </p>
               <p>
-                Course projects included a HealthHub caregiver and
-                medical-translation flow, plus an OCBC subscription-management
-                sprint.
+                Course work included a HealthHub caregiver and medical-translation
+                flow, plus an OCBC subscription-management sprint.
               </p>
               <p>
                 <strong>(SCTP) Associate Data Analyst</strong>
@@ -278,9 +278,9 @@ export default function CvPage() {
         </div>
 
         <section className={`${styles.cta} brand-cta`}>
-          <p>Looking for a senior creative who still likes making the work?</p>
-          <h2>Take a look at the projects, then let’s talk.</h2>
-          <a href="mailto:g@doesdesignwork.com">Get in touch</a>
+          <p>Get in touch</p>
+          <h2>Need a senior creative who still makes the work?</h2>
+          <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
         </section>
       </main>
       <script
