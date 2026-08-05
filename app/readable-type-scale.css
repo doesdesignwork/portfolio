@@ -2,8 +2,9 @@
  * READABLE TYPE SCALE
  *
  * Final brand-system layer. No visible interface or supporting copy should
- * render below 16px. Body copy starts at 18px, while display typography keeps
- * its existing responsive hierarchy.
+ * render below 16px, except the homepage side-menu navigation at 14px. Body
+ * copy starts at 18px, while display typography keeps its existing responsive
+ * hierarchy.
  */
 
 :root {
@@ -32,7 +33,6 @@
 
 /* Homepage utility text and supporting information. */
 .site-page--home aside[data-side-index] > div,
-.site-page--home aside[data-side-index] nav a,
 .site-page--home aside[data-side-index] > p,
 .site-page--home aside[data-side-index] [data-availability-link],
 .site-page--home #top > div:first-of-type p,
@@ -51,6 +51,12 @@
 .site-page--home .brand-home-process li p {
   font-size: var(--brand-readable-min) !important;
   line-height: 1.5 !important;
+}
+
+/* Deliberate compact scale for the desktop side-menu navigation only. */
+.site-page--home aside[data-side-index] nav a {
+  font-size: 14px !important;
+  line-height: 1.45 !important;
 }
 
 .site-page--home .brand-home-manifesto > p:first-child,
