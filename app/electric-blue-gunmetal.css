@@ -1,9 +1,9 @@
 /*
- * DOES DESIGN WORK / NEON GREEN + GUNMETAL PALETTE
+ * DOES DESIGN WORK / ELECTRIC COBALT + GUNMETAL PALETTE
  *
- * Final sitewide brand layer. The signal family uses a deep neon green on
- * paper and white, plus a bright neon lime on gunmetal. This preserves the
- * same visual identity while meeting readable contrast in both directions.
+ * Final sitewide brand layer. Electric cobalt carries the visual signal on
+ * warm paper and white. Bright cyan-blue carries the same energy on gunmetal.
+ * The pair restores the punch of the former orange while remaining readable.
  */
 
 :root {
@@ -11,8 +11,8 @@
   --brand-graphite: #343a3f;
   --brand-paper: #f2f0eb;
   --brand-paper-bright: #faf9f6;
-  --brand-signal: #067032;
-  --brand-signal-bright: #b6f500;
+  --brand-signal: #0057ff;
+  --brand-signal-bright: #4dd8ff;
   --brand-muted: #626866;
   --brand-silver: #9da19e;
   --brand-line: rgba(37, 42, 46, 0.18);
@@ -51,7 +51,7 @@ body,
   background-color: var(--brand-ink) !important;
 }
 
-/* Active and editorial signals on light paper use the readable green. */
+/* Active and editorial signals on light paper use electric cobalt. */
 .site-page--home #top h1 em,
 aside[data-side-index] nav a[aria-current="location"],
 aside[data-side-index] nav a:hover,
@@ -67,7 +67,7 @@ aside[data-side-index] nav a:focus-visible,
   color: var(--brand-signal) !important;
 }
 
-/* Homepage actions remain visibly green before interaction. */
+/* Homepage actions remain visibly blue before interaction. */
 .site-page--home [class*="heroActions"] a,
 .site-page--home [data-availability-link],
 .site-page--home [data-contact-link] {
@@ -90,23 +90,79 @@ aside[data-side-index] [data-availability-link]:focus-visible {
   color: var(--brand-signal) !important;
 }
 
-/* Online CV and shared action rows. */
+/* Online CV action chips mirror the downloadable CV. */
 .site-page--cv .brand-action-row a {
-  border-color: var(--brand-signal) !important;
+  min-height: 46px !important;
+  padding: 12px 17px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: color-mix(in srgb, var(--brand-signal) 9%, var(--brand-paper-bright)) !important;
   color: var(--brand-signal) !important;
 }
 
 .site-page--cv .brand-action-row a:first-child {
-  border-color: var(--brand-ink) !important;
-  background: var(--brand-ink) !important;
-  color: var(--brand-signal-bright) !important;
+  background: var(--brand-signal) !important;
+  color: var(--brand-paper-bright) !important;
 }
 
 .site-page--cv .brand-action-row a:hover,
 .site-page--cv .brand-action-row a:focus-visible {
-  border-color: var(--brand-ink) !important;
   background: var(--brand-ink) !important;
   color: var(--brand-signal-bright) !important;
+}
+
+/*
+ * CV hierarchy is carried by spacing, colour and typography, not stacked rules.
+ * This removes double lines and every decorative line around CV headings,
+ * subheadings, roles and sidebar items.
+ */
+.site-page--cv .brand-interior-hero,
+.site-page--cv .brand-cv-section,
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-role,
+.site-page--cv .brand-cv-sidebar,
+.site-page--cv .brand-cv-sidebar section,
+.site-page--cv .brand-cv-sidebar h2,
+.site-page--cv .brand-cv-sidebar a,
+.site-page--cv .brand-cv-sidebar li {
+  border: 0 !important;
+}
+
+.site-page--cv .brand-interior-hero {
+  padding-bottom: clamp(36px, 5vw, 66px) !important;
+}
+
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-sidebar h2 {
+  padding-bottom: 0 !important;
+  margin-bottom: 22px !important;
+}
+
+.site-page--cv .brand-cv-role {
+  padding: 14px 0 24px !important;
+}
+
+.site-page--cv .brand-cv-role + .brand-cv-role {
+  margin-top: 12px !important;
+}
+
+.site-page--cv .brand-cv-sidebar {
+  padding: clamp(26px, 3.2vw, 42px) !important;
+  border-radius: 14px !important;
+  background: var(--brand-paper-bright) !important;
+}
+
+.site-page--cv .brand-cv-sidebar section + section {
+  margin-top: 46px !important;
+}
+
+.site-page--cv .brand-cv-sidebar a,
+.site-page--cv .brand-cv-sidebar li {
+  padding: 7px 0 !important;
+}
+
+.site-page--cv .brand-cta {
+  border-radius: 14px !important;
 }
 
 /* Shared CTA system. */
@@ -120,21 +176,24 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 }
 
 .brand-cta > p,
-.brand-cta > a,
-.site-page--cv .brand-cta > p,
-.site-page--cv .brand-cta > a {
+.site-page--cv .brand-cta > p {
   color: var(--brand-signal-bright) !important;
 }
 
 .brand-cta > a,
 .site-page--cv .brand-cta > a {
-  border-bottom-color: var(--brand-signal-bright) !important;
+  margin-top: 32px !important;
+  padding: 12px 17px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--brand-signal-bright) !important;
+  color: var(--brand-ink) !important;
 }
 
 .brand-cta > a:hover,
 .brand-cta > a:focus-visible {
-  color: var(--brand-paper-bright) !important;
-  border-bottom-color: var(--brand-paper-bright) !important;
+  background: var(--brand-paper-bright) !important;
+  color: var(--brand-ink) !important;
   opacity: 1 !important;
 }
 
@@ -161,4 +220,10 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 .site-page--service .brand-proof-card:hover,
 .site-page--service .brand-proof-card:focus-visible {
   color: var(--brand-signal) !important;
+}
+
+@media (max-width: 760px) {
+  .site-page--cv .brand-cv-sidebar {
+    padding: 26px 22px !important;
+  }
 }
