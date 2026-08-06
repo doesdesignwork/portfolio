@@ -1,9 +1,8 @@
 /*
  * DOES DESIGN WORK / VIOLET + LIME + GUNMETAL PALETTE
  *
- * #5A4FCF is the primary visual signal on warm and bright paper.
- * #C4CF4F is reserved for typography, controls and details sitting directly
- * on gunmetal, where it provides stronger contrast and a distinct night mode.
+ * #5A4FCF is the primary signal on warm and bright paper.
+ * #C4CF4F is reserved for accents sitting directly on gunmetal.
  */
 
 :root {
@@ -44,7 +43,7 @@ body,
   outline-color: var(--brand-signal) !important;
 }
 
-/* Gunmetal replaces black throughout shared dark surfaces. */
+/* Shared gunmetal surfaces. */
 .brand-header,
 .interior-header,
 .brand-cta,
@@ -55,31 +54,54 @@ body,
 .brand-header :focus-visible,
 .interior-header :focus-visible,
 .brand-cta :focus-visible,
-.site-page--home > footer :focus-visible,
-aside[data-side-index] :focus-visible {
+.site-page--home > footer :focus-visible {
   outline-color: var(--brand-signal-on-dark) !important;
 }
 
-/* Primary violet signals on warm and bright paper. */
-.site-page--home #top h1 em,
-.site-page--home [data-hero-proof] dt,
-.site-page--home .brand-capability-matrix h3,
-.site-page--project .brand-project-story h2,
-.site-page--project .brand-project-gallery h2,
-.site-page--service .brand-service-block h2,
-.site-page--service .brand-service-approach h2,
-.site-page--cv .brand-cv-section > h2,
-.site-page--cv .brand-cv-sidebar h2 {
-  color: var(--brand-signal) !important;
+/* Header accents sit on gunmetal. */
+.brand-header nav a::after,
+.interior-header nav a::after {
+  background: var(--brand-signal-on-dark) !important;
 }
 
-/* Lime is used only when the signal sits on gunmetal. */
+.brand-header nav a:hover,
+.brand-header nav a:focus-visible,
+.interior-header nav a:hover,
+.interior-header nav a:focus-visible {
+  color: var(--brand-signal-on-dark) !important;
+}
+
+/* Primary violet signals on warm or bright paper. */
+.site-page--home #top h1 em,
+.site-page--home [data-hero-proof] dt,
+.site-page--home [data-intro-facts] dt,
 aside[data-side-index] nav a[aria-current="location"],
 aside[data-side-index] nav a:hover,
 aside[data-side-index] nav a:focus-visible,
 aside[data-side-index] [data-right-work],
 aside[data-side-index] [data-availability-link]:hover,
 aside[data-side-index] [data-availability-link]:focus-visible,
+.site-page--project .brand-project-gallery h2,
+.site-page--service .brand-service-approach h2,
+.site-page--cv .brand-cv-title,
+.site-page--cv .brand-cv-section > h2,
+.site-page--cv .brand-cv-sidebar h2 {
+  color: var(--brand-signal) !important;
+}
+
+aside[data-side-index] :focus-visible {
+  outline-color: var(--brand-signal) !important;
+}
+
+.site-page--home [data-availability-link] {
+  border-color: var(--brand-signal) !important;
+}
+
+/* Lime signals on gunmetal homepage sections. */
+.site-page--home .brand-home-manifesto h2,
+.site-page--home .brand-home-manifesto > p:first-child,
+.site-page--home #about h2,
+.site-page--home #about .brand-capability-matrix h3,
 .site-page--home > footer [data-contact-link] > span,
 .site-page--home > footer [data-contact-link]:hover > span,
 .site-page--home > footer [data-contact-link]:focus-visible > span,
@@ -87,22 +109,54 @@ aside[data-side-index] [data-availability-link]:focus-visible,
   color: var(--brand-signal-on-dark) !important;
 }
 
-/* Homepage actions on paper use violet. */
-.site-page--home [class*="heroActions"] a {
-  border-color: var(--brand-signal) !important;
-  color: var(--brand-signal) !important;
+.site-page--home > footer [data-contact-link] {
+  border-color: var(--brand-signal-on-dark) !important;
 }
 
+/* Homepage actions on paper use violet. */
+.site-page--home [class*="heroActions"] a,
 .site-page--home [class*="heroActions"] a:hover,
 .site-page--home [class*="heroActions"] a:focus-visible {
   border-color: var(--brand-signal) !important;
   color: var(--brand-signal) !important;
 }
 
-/* Gunmetal rail and footer actions use lime. */
-.site-page--home [data-availability-link],
-.site-page--home > footer [data-contact-link] {
+/* Project pages: violet on paper, lime inside gunmetal story/navigation. */
+.site-page--project .brand-project-story h2,
+.site-page--project .brand-project-story h3,
+.site-page--project .brand-project-nav small,
+.site-page--project .brand-project-nav a:hover strong,
+.site-page--project .brand-project-nav a:focus-visible strong {
+  color: var(--brand-signal-on-dark) !important;
+}
+
+.site-page--project .brand-related-services a,
+.site-page--project .brand-project-gallery a {
+  border-color: var(--brand-signal) !important;
+}
+
+.site-page--project .brand-related-services a:hover,
+.site-page--project .brand-related-services a:focus-visible {
+  color: var(--brand-signal) !important;
+}
+
+/* Service pages: lime only on gunmetal cards, white on violet cards. */
+.site-page--service .brand-service-block:not(:nth-child(2)) h2,
+.site-page--service .brand-proof-card:not(:nth-child(3n + 2)) small {
+  color: var(--brand-signal-on-dark) !important;
+}
+
+.site-page--service .brand-service-block:nth-child(2) h2,
+.site-page--service .brand-proof-card:nth-child(3n + 2) small {
+  color: var(--brand-paper-bright) !important;
+}
+
+.site-page--service .brand-proof-card:not(:nth-child(3n + 2)) {
   border-color: var(--brand-signal-on-dark) !important;
+}
+
+.site-page--service .brand-proof-card:nth-child(3n + 2) {
+  border-color: var(--brand-paper-bright) !important;
 }
 
 /* Online CV action chips mirror the downloadable CV. */
@@ -180,7 +234,7 @@ aside[data-side-index] [data-availability-link]:focus-visible,
   border-radius: 14px !important;
 }
 
-/* Violet signal panels live on paper; their text remains bright and readable. */
+/* Violet signal panels retain bright text, rather than using lime. */
 .brand-cta--signal {
   background: var(--brand-signal) !important;
   color: var(--brand-paper-bright) !important;
@@ -211,23 +265,6 @@ aside[data-side-index] [data-availability-link]:focus-visible,
   background: var(--brand-paper-bright) !important;
   color: var(--brand-ink) !important;
   opacity: 1 !important;
-}
-
-/* Project and service call-to-action links on paper. */
-.site-page--project .brand-project-nav a,
-.site-page--project .brand-related-services a,
-.site-page--service .brand-proof-card,
-.site-page--service .brand-cta + a {
-  border-color: var(--brand-signal) !important;
-}
-
-.site-page--project .brand-project-nav a:hover,
-.site-page--project .brand-project-nav a:focus-visible,
-.site-page--project .brand-related-services a:hover,
-.site-page--project .brand-related-services a:focus-visible,
-.site-page--service .brand-proof-card:hover,
-.site-page--service .brand-proof-card:focus-visible {
-  color: var(--brand-signal) !important;
 }
 
 @media (max-width: 760px) {

@@ -128,11 +128,21 @@ for (const route of routes) {
         };
 
         if (currentRoute === "/") {
-          checkColour("#top h1 em", expectedColours.violet, "hero accent");
+          checkColour("#top h1 em", expectedColours.violet, "hero paper accent");
           checkColour(
             'aside[data-side-index] nav a[aria-current="location"]',
+            expectedColours.violet,
+            "paper side-index accent",
+          );
+          checkColour(
+            ".brand-home-manifesto h2",
             expectedColours.lime,
-            "gunmetal rail accent",
+            "gunmetal manifesto accent",
+          );
+          checkColour(
+            "#about .brand-capability-matrix h3",
+            expectedColours.lime,
+            "gunmetal capability accent",
           );
           checkColour(
             'footer [data-contact-link] > span',
@@ -142,8 +152,21 @@ for (const route of routes) {
         }
 
         if (currentRoute === "/cv/") {
-          checkColour(".brand-cv-section > h2", expectedColours.violet, "CV heading");
+          checkColour(".brand-cv-section > h2", expectedColours.violet, "CV paper heading");
           checkColour(".brand-cta > p", expectedColours.lime, "CV gunmetal CTA label");
+        }
+
+        if (currentRoute.startsWith("/work/")) {
+          checkColour(
+            ".brand-project-story h2",
+            expectedColours.lime,
+            "project gunmetal story heading",
+          );
+          checkColour(
+            ".brand-project-gallery h2",
+            expectedColours.violet,
+            "project paper gallery heading",
+          );
         }
 
         return problems;
