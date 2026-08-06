@@ -37,7 +37,7 @@ const methods = [
 
 function HealthHubVisual() {
   return (
-    <div className={`${styles.productVisual} ${styles.healthVisual}`} aria-hidden="true">
+    <div className={styles.productVisual} aria-hidden="true">
       <div className={styles.phone}>
         <div className={styles.phoneTop}>
           <span>HealthHub</span>
