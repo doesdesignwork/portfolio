@@ -1,0 +1,25 @@
+@import "./electric-blue-gunmetal.css";
+
+/*
+ * DOES DESIGN WORK / AMBER + GUNMETAL PALETTE
+ *
+ * Final sitewide palette override. Amber #FFBF00 replaces the former cobalt
+ * and cyan-blue signal colours across the portfolio, online CV and shared CTA
+ * system while retaining the existing gunmetal and warm-paper foundations.
+ */
+
+:root {
+  --brand-signal: #ffbf00;
+  --brand-signal-bright: #ffbf00;
+
+  /* Compatibility aliases used by older page modules. */
+  --palette-cobalt: var(--brand-signal);
+  --palette-lime: var(--brand-signal-bright);
+}
+
+/* Amber fields use gunmetal text for stronger legibility. */
+.site-page--cv .brand-action-row a:first-child,
+.brand-cta--signal,
+.brand-cta--signal :where(h1, h2, h3, p, span, strong, small) {
+  color: var(--brand-ink) !important;
+}
