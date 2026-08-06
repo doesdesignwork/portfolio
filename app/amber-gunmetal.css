@@ -1,9 +1,9 @@
 /*
- * DOES DESIGN WORK / AMBER + GUNMETAL PALETTE
+ * DOES DESIGN WORK / VIOLET + LIME + GUNMETAL PALETTE
  *
- * Final sitewide brand layer. Amber #FFBF00 carries the visual signal across
- * warm paper, bright paper and gunmetal surfaces. Gunmetal text is used on
- * amber-filled actions to preserve clear legibility.
+ * #5A4FCF is the primary visual signal on warm and bright paper.
+ * #C4CF4F is reserved for typography, controls and details sitting directly
+ * on gunmetal, where it provides stronger contrast and a distinct night mode.
  */
 
 :root {
@@ -11,8 +11,9 @@
   --brand-graphite: #343a3f;
   --brand-paper: #f2f0eb;
   --brand-paper-bright: #faf9f6;
-  --brand-signal: #ffbf00;
-  --brand-signal-bright: #ffbf00;
+  --brand-signal: #5a4fcf;
+  --brand-signal-on-dark: #c4cf4f;
+  --brand-signal-bright: var(--brand-signal-on-dark);
   --brand-muted: #626866;
   --brand-silver: #9da19e;
   --brand-line: rgba(37, 42, 46, 0.18);
@@ -24,7 +25,7 @@
   --palette-ink: var(--brand-ink);
   --palette-ivory: var(--brand-paper);
   --palette-cobalt: var(--brand-signal);
-  --palette-lime: var(--brand-signal-bright);
+  --palette-lime: var(--brand-signal-on-dark);
 }
 
 html,
@@ -36,7 +37,7 @@ body,
 
 ::selection {
   background: var(--brand-signal) !important;
-  color: var(--brand-ink) !important;
+  color: var(--brand-paper-bright) !important;
 }
 
 :focus-visible {
@@ -51,11 +52,16 @@ body,
   background-color: var(--brand-ink) !important;
 }
 
-/* Active and editorial signals use amber. */
+.brand-header :focus-visible,
+.interior-header :focus-visible,
+.brand-cta :focus-visible,
+.site-page--home > footer :focus-visible,
+aside[data-side-index] :focus-visible {
+  outline-color: var(--brand-signal-on-dark) !important;
+}
+
+/* Primary violet signals on warm and bright paper. */
 .site-page--home #top h1 em,
-aside[data-side-index] nav a[aria-current="location"],
-aside[data-side-index] nav a:hover,
-aside[data-side-index] nav a:focus-visible,
 .site-page--home [data-hero-proof] dt,
 .site-page--home .brand-capability-matrix h3,
 .site-page--project .brand-project-story h2,
@@ -67,14 +73,23 @@ aside[data-side-index] nav a:focus-visible,
   color: var(--brand-signal) !important;
 }
 
-/* Homepage actions remain visibly amber before interaction. */
-.site-page--home [class*="heroActions"] a,
-.site-page--home [data-availability-link],
-.site-page--home [data-contact-link] {
-  border-color: var(--brand-signal) !important;
+/* Lime is used only when the signal sits on gunmetal. */
+aside[data-side-index] nav a[aria-current="location"],
+aside[data-side-index] nav a:hover,
+aside[data-side-index] nav a:focus-visible,
+aside[data-side-index] [data-right-work],
+aside[data-side-index] [data-availability-link]:hover,
+aside[data-side-index] [data-availability-link]:focus-visible,
+.site-page--home > footer [data-contact-link] > span,
+.site-page--home > footer [data-contact-link]:hover > span,
+.site-page--home > footer [data-contact-link]:focus-visible > span,
+.site-page--home > footer [class*="footerLine"] > a {
+  color: var(--brand-signal-on-dark) !important;
 }
 
+/* Homepage actions on paper use violet. */
 .site-page--home [class*="heroActions"] a {
+  border-color: var(--brand-signal) !important;
   color: var(--brand-signal) !important;
 }
 
@@ -84,10 +99,10 @@ aside[data-side-index] nav a:focus-visible,
   color: var(--brand-signal) !important;
 }
 
-aside[data-side-index] [data-right-work],
-aside[data-side-index] [data-availability-link]:hover,
-aside[data-side-index] [data-availability-link]:focus-visible {
-  color: var(--brand-signal) !important;
+/* Gunmetal rail and footer actions use lime. */
+.site-page--home [data-availability-link],
+.site-page--home > footer [data-contact-link] {
+  border-color: var(--brand-signal-on-dark) !important;
 }
 
 /* Online CV action chips mirror the downloadable CV. */
@@ -102,13 +117,13 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 
 .site-page--cv .brand-action-row a:first-child {
   background: var(--brand-signal) !important;
-  color: var(--brand-ink) !important;
+  color: var(--brand-paper-bright) !important;
 }
 
 .site-page--cv .brand-action-row a:hover,
 .site-page--cv .brand-action-row a:focus-visible {
   background: var(--brand-ink) !important;
-  color: var(--brand-signal) !important;
+  color: var(--brand-signal-on-dark) !important;
 }
 
 /*
@@ -165,19 +180,20 @@ aside[data-side-index] [data-availability-link]:focus-visible {
   border-radius: 14px !important;
 }
 
-/* Shared CTA system. */
+/* Violet signal panels live on paper; their text remains bright and readable. */
 .brand-cta--signal {
   background: var(--brand-signal) !important;
-  color: var(--brand-ink) !important;
+  color: var(--brand-paper-bright) !important;
 }
 
 .brand-cta--signal :where(h1, h2, h3, p, span, strong, small) {
-  color: var(--brand-ink) !important;
+  color: var(--brand-paper-bright) !important;
 }
 
+/* Shared gunmetal CTA system. */
 .brand-cta > p,
 .site-page--cv .brand-cta > p {
-  color: var(--brand-signal) !important;
+  color: var(--brand-signal-on-dark) !important;
 }
 
 .brand-cta > a,
@@ -186,7 +202,7 @@ aside[data-side-index] [data-availability-link]:focus-visible {
   padding: 12px 17px !important;
   border: 0 !important;
   border-radius: 8px !important;
-  background: var(--brand-signal) !important;
+  background: var(--brand-signal-on-dark) !important;
   color: var(--brand-ink) !important;
 }
 
@@ -195,14 +211,6 @@ aside[data-side-index] [data-availability-link]:focus-visible {
   background: var(--brand-paper-bright) !important;
   color: var(--brand-ink) !important;
   opacity: 1 !important;
-}
-
-/* Contact actions on the gunmetal homepage footer. */
-.site-page--home > footer [data-contact-link] > span,
-.site-page--home > footer [data-contact-link]:hover > span,
-.site-page--home > footer [data-contact-link]:focus-visible > span,
-.site-page--home > footer [class*="footerLine"] > a {
-  color: var(--brand-signal) !important;
 }
 
 /* Project and service call-to-action links on paper. */

@@ -26,20 +26,29 @@ if (linkCount < 9) {
   problems.push(`expected at least 9 clickable links, found ${linkCount}`);
 }
 
-const amberFill = "1 0.74902 0 rg";
-if (!content.includes(amberFill)) {
-  problems.push("#FFBF00 amber colour command is missing");
+const requiredColours = [
+  ["#5A4FCF violet", "0.352941 0.309804 0.811765 rg"],
+  ["#C4CF4F lime", "0.768627 0.811765 0.309804 rg"],
+];
+
+for (const [name, command] of requiredColours) {
+  if (!content.includes(command)) {
+    problems.push(`${name} colour command is missing`);
+  }
 }
 
 const retiredColourCommands = [
+  "1 0.74902 0 rg",
+  "1 0.74902 0 RG",
   "0 0.341176 1 rg",
   "0.301961 0.847059 1 rg",
   "0 0.341176 1 RG",
   "0.301961 0.847059 1 RG",
 ];
+
 for (const command of retiredColourCommands) {
   if (content.includes(command)) {
-    problems.push(`retired electric-blue colour remains: ${command}`);
+    problems.push(`retired colour remains: ${command}`);
   }
 }
 
@@ -49,10 +58,16 @@ const requiredText = [
   "GET IN TOUCH",
   "Email Gerard",
 ];
+
 for (const phrase of requiredText) {
   if (!content.includes(`(${phrase})`)) {
     problems.push(`required CV text is missing: ${phrase}`);
   }
+}
+
+const xrefOffset = Number(content.match(/startxref\n(\d+)/)?.[1]);
+if (!Number.isInteger(xrefOffset) || content.slice(xrefOffset, xrefOffset + 5) !== "xref\n") {
+  problems.push("cross-reference offset is invalid");
 }
 
 if (problems.length) {
@@ -61,4 +76,6 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`CV PDF audit passed: 2 pages, ${linkCount} links, ${bytes.length} bytes, #FFBF00 palette.`);
+console.log(
+  `CV PDF audit passed: 2 pages, ${linkCount} links, ${bytes.length} bytes, #5A4FCF + #C4CF4F palette.`,
+);
