@@ -5,15 +5,15 @@ import { lastModified, siteUrl } from "@/lib/site";
 import styles from "@/app/editorial-pages.module.css";
 
 export const metadata: Metadata = {
-  title: "CV | Art Director & Senior Brand Designer Singapore",
+  title: "CV | Art Director, Senior Brand Designer & UX/UI",
   description:
-    "Gerard Teo is a Singapore-based art director and senior brand designer with 26+ years across identity, campaigns, exhibitions, packaging, 3D visualisation and production.",
+    "Gerard Teo is a Singapore-based art director and senior brand designer with 26+ years across identity, campaigns, exhibitions, packaging, UX/UI, 3D visualisation and production.",
   keywords: [
     "Gerard Teo CV",
     "art director Singapore",
     "senior brand designer Singapore",
+    "UX UI designer Singapore",
     "creative lead Singapore",
-    "creative director Singapore",
   ],
   alternates: {
     canonical: "/cv/",
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "profile",
     url: "/cv/",
-    title: "Gerard Teo CV | Art Director & Senior Brand Designer",
+    title: "Gerard Teo CV | Art Director, Senior Brand Designer & UX/UI",
     description:
-      "26+ years making brand identities, campaigns, exhibitions, packaging and creative production work clearly across different formats.",
+      "26+ years making brand identities, campaigns, exhibitions, packaging, digital-product studies and creative production work clearly across different formats.",
   },
 };
 
@@ -123,7 +123,7 @@ const structuredData = {
   "@type": "ProfilePage",
   "@id": `${siteUrl}/cv/#profile-page`,
   url: `${siteUrl}/cv/`,
-  name: "Gerard Teo CV - Art Director and Senior Brand Designer",
+  name: "Gerard Teo CV - Art Director, Senior Brand Designer and UX/UI",
   dateModified: lastModified,
   inLanguage: "en-SG",
   mainEntity: {
@@ -148,8 +148,11 @@ const structuredData = {
       "Experiential design",
       "Exhibition design",
       "Packaging design",
+      "UX research",
+      "User flows",
+      "Wireframing",
+      "Interactive prototyping",
       "3D visualisation",
-      "UX design",
     ],
   },
 };
@@ -170,13 +173,13 @@ export default function CvPage() {
           <h1>Gerard Teo</h1>
           <p className={`${styles.cvTitle} brand-cv-title`}>
             Art Director and Senior Brand Designer
-            <span>Creative lead / Hands-on maker</span>
+            <span>Creative lead / Hands-on maker / UX-minded problem solver</span>
           </p>
           <p className={`${styles.deck} brand-deck`}>
-            I have spent 26+ years making brands, campaigns, packaging and
-            experiences across agency, independent and in-house teams. I clarify
-            the brief, set the direction and stay close to the making so the idea
-            does not get lost.
+            I have spent 26+ years making brands, campaigns, packaging, experiences
+            and digital-product concepts across agency, independent and in-house teams.
+            I clarify the brief, set the direction and stay close to the making so the
+            idea does not get lost.
           </p>
           <div className={`${styles.cvActions} brand-action-row`}>
             <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
@@ -187,6 +190,7 @@ export default function CvPage() {
             >
               Download CV (PDF)
             </a>
+            <Link href="/ux-ui/">View UX/UI work</Link>
             <Link href="/#work">View selected work</Link>
             <a
               href="https://www.linkedin.com/in/gerard-teo-0b106429/"
@@ -232,8 +236,26 @@ export default function CvPage() {
                 <li>Events, exhibitions and spatial communication</li>
                 <li>Packaging, print and production</li>
                 <li>Pitches and stakeholder presentations</li>
-                <li>3D visualisation, UX and digital design</li>
+                <li>UX research, user flows, wireframes and prototypes</li>
+                <li>3D visualisation and digital design</li>
               </ul>
+            </section>
+
+            <section>
+              <h2>UX/UI studies</h2>
+              <p>
+                <strong>HealthHub medical-literacy flow</strong>
+                <br />
+                Caregiver research, contextual definitions, user flow, Figma prototype
+                and usability testing.
+              </p>
+              <p>
+                <strong>OCBC subscription-management sprint</strong>
+                <br />
+                Product framing, journey mapping, information hierarchy and prototype
+                storytelling.
+              </p>
+              <Link href="/ux-ui/">View the UX/UI case studies</Link>
             </section>
 
             <section>
@@ -243,10 +265,6 @@ export default function CvPage() {
                 <br />
                 Advanced Professional Certificate in UX Design & Digital Product
                 Management.
-              </p>
-              <p>
-                Course work included a HealthHub caregiver and medical-translation
-                flow, plus an OCBC subscription-management sprint.
               </p>
               <p>
                 <strong>(SCTP) Associate Data Analyst</strong>
@@ -270,7 +288,7 @@ export default function CvPage() {
 
             <section>
               <h2>Tools</h2>
-              <p>Photoshop, Illustrator, InDesign, After Effects and Figma.</p>
+              <p>Figma, Maze, Photoshop, Illustrator, InDesign and After Effects.</p>
               <p>Blender, Cinema 4D, Spline and Webflow.</p>
               <p>ChatGPT, Firefly, Midjourney and Runway.</p>
             </section>
@@ -279,7 +297,7 @@ export default function CvPage() {
 
         <section className={`${styles.cta} brand-cta`}>
           <p>Get in touch</p>
-          <h2>Need a senior creative who still makes the work?</h2>
+          <h2>Need a senior creative who can clarify the flow and make the work?</h2>
           <a href="mailto:g@doesdesignwork.com">Email Gerard</a>
         </section>
       </main>

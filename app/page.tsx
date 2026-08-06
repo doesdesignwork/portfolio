@@ -4,6 +4,7 @@ import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./numberless-layout.css";
+import "./ux-ui-preview.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -33,7 +34,7 @@ const capabilityGroups = [
     description: "Find the idea worth backing, then make the brief clearer for everyone.",
     items: [
       "Creative direction",
-      "Brief clarification",
+      "Problem framing",
       "Concept development",
       "Team leadership",
     ],
@@ -45,7 +46,7 @@ const capabilityGroups = [
       "Brand identity",
       "Campaign systems",
       "Packaging systems",
-      "Visual language",
+      "UX/UI flows",
     ],
   },
   {
@@ -55,6 +56,7 @@ const capabilityGroups = [
       "Campaign rollout",
       "Exhibition production",
       "Artwork and adaptation",
+      "Prototyping and testing",
       "3D visualisation",
     ],
   },
@@ -63,6 +65,7 @@ const capabilityGroups = [
 const sideSections = [
   ["top", "Introduction"],
   ["work", "Selected work"],
+  ["ux-ui", "UX/UI"],
   ["archive", "Archive"],
   ["about", "Experience"],
   ["contact", "Contact"],
@@ -149,6 +152,7 @@ export default function Home() {
         </Link>
         <nav aria-label="Primary navigation">
           <Link href="#work">Work</Link>
+          <Link href="#ux-ui">UX/UI</Link>
           <Link href="#about">About</Link>
           <Link href="#contact">Contact</Link>
           <Link href="/cv/">CV</Link>
@@ -165,7 +169,7 @@ export default function Home() {
           <span>GT</span>
           <span data-section-counter aria-live="polite">
             <b data-section-counter-current>01</b>
-            <span> / 05</span>
+            <span> / 06</span>
           </span>
         </div>
         <nav>
@@ -215,10 +219,12 @@ export default function Home() {
             <div>
               <p>
                 I make complex briefs easier to understand, then turn them into brands,
-                campaigns and experiences that hold together in the real world.
+                campaigns, experiences and digital products that hold together in the real
+                world.
               </p>
               <div className={styles.heroActions}>
                 <Link href="#work">View selected work</Link>
+                <Link href="/ux-ui/">View UX/UI work</Link>
                 <Link href="/cv/">View my CV</Link>
               </div>
             </div>
@@ -234,8 +240,8 @@ export default function Home() {
               <dd>Grew the Blacksheep creative team from 3 to 15</dd>
             </div>
             <div>
-              <dt>6</dt>
-              <dd>Major agency networks, plus independent and in-house roles</dd>
+              <dt>UX</dt>
+              <dd>Research, flows, wireframes and interactive prototypes</dd>
             </div>
           </dl>
 
@@ -265,7 +271,7 @@ export default function Home() {
               </div>
               <div>
                 <dt>Delivery</dt>
-                <dd>Hands-on through artwork and production</dd>
+                <dd>Hands-on through prototype or production</dd>
               </div>
             </dl>
           </div>
@@ -311,6 +317,65 @@ export default function Home() {
               revealIndex={2}
             />
           </div>
+        </section>
+
+        <section id="ux-ui" className="ux-preview-home" aria-labelledby="ux-preview-title">
+          <header className="ux-preview-home__header">
+            <p>UX/UI &amp; product studies</p>
+            <div>
+              <h2 id="ux-preview-title">The screen comes after the problem.</h2>
+              <p>
+                Two academic studies showing how I frame user needs, organise a flow and
+                turn it into a prototype that people can understand and use.
+              </p>
+            </div>
+          </header>
+
+          <div className="ux-preview-home__grid">
+            <Link className="ux-preview-card" href="/ux-ui/#healthhub">
+              <span className="ux-preview-card__visual" aria-hidden="true">
+                <span className="ux-preview-card__device">
+                  <span>HEALTHHUB STUDY</span>
+                  <strong>Blood glucose result</strong>
+                  <small>Keep the result visible while explaining an unfamiliar term.</small>
+                  <span className="ux-preview-card__panel">
+                    <span>PLAIN-LANGUAGE DEFINITION</span>
+                    <strong>Understand the term without leaving the page.</strong>
+                    <small>Contextual, source-aware and clearly educational.</small>
+                  </span>
+                </span>
+              </span>
+              <span className="ux-preview-card__copy">
+                <span>Caregiver experience</span>
+                <h3>Medical results, explained in context.</h3>
+                <p>Research, user flow, wireframes, Figma prototype and usability testing.</p>
+              </span>
+            </Link>
+
+            <Link className="ux-preview-card ux-preview-card--finance" href="/ux-ui/#ocbc">
+              <span className="ux-preview-card__visual" aria-hidden="true">
+                <span className="ux-preview-card__device">
+                  <span>OCBC SPRINT CONCEPT</span>
+                  <strong>Subscriptions</strong>
+                  <small>Bring recurring charges together before the next renewal.</small>
+                  <span className="ux-preview-card__panel">
+                    <span>POTENTIAL MONTHLY SAVING</span>
+                    <strong>S$31.97</strong>
+                    <small>Review, keep or set a reminder.</small>
+                  </span>
+                </span>
+              </span>
+              <span className="ux-preview-card__copy">
+                <span>Personal finance</span>
+                <h3>Recurring spending, turned into decisions.</h3>
+                <p>Problem framing, journey mapping, interface hierarchy and prototype story.</p>
+              </span>
+            </Link>
+          </div>
+
+          <Link className="ux-preview-home__action" href="/ux-ui/">
+            Explore the UX/UI case studies <span aria-hidden="true">↗</span>
+          </Link>
         </section>
 
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
@@ -413,7 +478,7 @@ export default function Home() {
             </li>
             <li data-reveal="process" data-reveal-delay="2" data-process-point>
               <h3>Make it work everywhere</h3>
-              <p>Test the idea across real formats and stay with it through production.</p>
+              <p>Test the idea across real formats and stay with it through prototype or production.</p>
             </li>
           </ol>
         </section>
@@ -435,10 +500,19 @@ export default function Home() {
             <small>g@doesdesignwork.com</small>
           </a>
           <Link
-            href="/cv/"
+            href="/ux-ui/"
             data-contact-link
             data-reveal="contact"
             data-reveal-delay="1"
+          >
+            <span>View UX/UI work</span>
+            <small>Academic product studies and prototype thinking</small>
+          </Link>
+          <Link
+            href="/cv/"
+            data-contact-link
+            data-reveal="contact"
+            data-reveal-delay="2"
           >
             <span>View my CV</span>
             <small>Experience, skills and selected roles</small>
@@ -449,7 +523,7 @@ export default function Home() {
             rel="noopener noreferrer"
             data-contact-link
             data-reveal="contact"
-            data-reveal-delay="2"
+            data-reveal-delay="3"
           >
             <span>LinkedIn</span>
             <small>Connect with me there</small>

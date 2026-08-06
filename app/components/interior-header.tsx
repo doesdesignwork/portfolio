@@ -20,6 +20,7 @@ export function InteriorHeader() {
       </Link>
       <nav aria-label="Primary navigation">
         <Link href="/#work">Work</Link>
+        <Link href="/ux-ui/">UX/UI</Link>
         <Link href="/#about">About</Link>
         <Link href="/#contact">Contact</Link>
         <Link href="/cv/">CV</Link>
