@@ -67,8 +67,8 @@ jobs:
       - name: Audit brand and content consistency
         run: node scripts/brand-consistency-audit.mjs
 
-      - name: Audit neon green and gunmetal palette
-        run: node scripts/palette-audit.mjs
+      - name: Audit amber and gunmetal palette
+        run: node scripts/amber-palette-audit.mjs
 
       - name: Audit image motion quality and numbering
         run: node scripts/image-motion-audit.mjs
