@@ -1,9 +1,9 @@
 /*
- * DOES DESIGN WORK / ELECTRIC COBALT + GUNMETAL PALETTE
+ * DOES DESIGN WORK / AMBER + GUNMETAL PALETTE
  *
- * Final sitewide brand layer. Electric cobalt carries the visual signal on
- * warm paper and white. Bright cyan-blue carries the same energy on gunmetal.
- * The pair restores the punch of the former orange while remaining readable.
+ * Final sitewide brand layer. Amber #FFBF00 carries the visual signal across
+ * warm paper, bright paper and gunmetal surfaces. Gunmetal text is used on
+ * amber-filled actions to preserve clear legibility.
  */
 
 :root {
@@ -11,8 +11,8 @@
   --brand-graphite: #343a3f;
   --brand-paper: #f2f0eb;
   --brand-paper-bright: #faf9f6;
-  --brand-signal: #0057ff;
-  --brand-signal-bright: #4dd8ff;
+  --brand-signal: #ffbf00;
+  --brand-signal-bright: #ffbf00;
   --brand-muted: #626866;
   --brand-silver: #9da19e;
   --brand-line: rgba(37, 42, 46, 0.18);
@@ -35,7 +35,7 @@ body,
 }
 
 ::selection {
-  background: var(--brand-signal-bright) !important;
+  background: var(--brand-signal) !important;
   color: var(--brand-ink) !important;
 }
 
@@ -51,7 +51,7 @@ body,
   background-color: var(--brand-ink) !important;
 }
 
-/* Active and editorial signals on light paper use electric cobalt. */
+/* Active and editorial signals use amber. */
 .site-page--home #top h1 em,
 aside[data-side-index] nav a[aria-current="location"],
 aside[data-side-index] nav a:hover,
@@ -67,7 +67,7 @@ aside[data-side-index] nav a:focus-visible,
   color: var(--brand-signal) !important;
 }
 
-/* Homepage actions remain visibly blue before interaction. */
+/* Homepage actions remain visibly amber before interaction. */
 .site-page--home [class*="heroActions"] a,
 .site-page--home [data-availability-link],
 .site-page--home [data-contact-link] {
@@ -102,19 +102,19 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 
 .site-page--cv .brand-action-row a:first-child {
   background: var(--brand-signal) !important;
-  color: var(--brand-paper-bright) !important;
+  color: var(--brand-ink) !important;
 }
 
 .site-page--cv .brand-action-row a:hover,
 .site-page--cv .brand-action-row a:focus-visible {
   background: var(--brand-ink) !important;
-  color: var(--brand-signal-bright) !important;
+  color: var(--brand-signal) !important;
 }
 
 /*
  * CV hierarchy is carried by spacing, colour and typography, not stacked rules.
- * This removes double lines and every decorative line around CV headings,
- * subheadings, roles and sidebar items.
+ * This removes double lines and decorative rules around CV headings, roles and
+ * sidebar items.
  */
 .site-page--cv .brand-interior-hero,
 .site-page--cv .brand-cv-section,
@@ -168,16 +168,16 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 /* Shared CTA system. */
 .brand-cta--signal {
   background: var(--brand-signal) !important;
+  color: var(--brand-ink) !important;
 }
 
-.brand-cta--signal,
 .brand-cta--signal :where(h1, h2, h3, p, span, strong, small) {
-  color: var(--brand-paper-bright) !important;
+  color: var(--brand-ink) !important;
 }
 
 .brand-cta > p,
 .site-page--cv .brand-cta > p {
-  color: var(--brand-signal-bright) !important;
+  color: var(--brand-signal) !important;
 }
 
 .brand-cta > a,
@@ -186,7 +186,7 @@ aside[data-side-index] [data-availability-link]:focus-visible {
   padding: 12px 17px !important;
   border: 0 !important;
   border-radius: 8px !important;
-  background: var(--brand-signal-bright) !important;
+  background: var(--brand-signal) !important;
   color: var(--brand-ink) !important;
 }
 
@@ -202,7 +202,7 @@ aside[data-side-index] [data-availability-link]:focus-visible {
 .site-page--home > footer [data-contact-link]:hover > span,
 .site-page--home > footer [data-contact-link]:focus-visible > span,
 .site-page--home > footer [class*="footerLine"] > a {
-  color: var(--brand-signal-bright) !important;
+  color: var(--brand-signal) !important;
 }
 
 /* Project and service call-to-action links on paper. */

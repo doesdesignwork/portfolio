@@ -37,6 +37,9 @@ jobs:
       - name: Build production site
         run: npm run build
 
+      - name: Audit generated CV PDF
+        run: node scripts/cv-pdf-audit.mjs
+
       - name: Start production server
         run: |
           npm start -- -p 3000 > /tmp/portfolio-server.log 2>&1 &
@@ -67,8 +70,8 @@ jobs:
       - name: Audit brand and content consistency
         run: node scripts/brand-consistency-audit.mjs
 
-      - name: Audit neon green and gunmetal palette
-        run: node scripts/palette-audit.mjs
+      - name: Audit amber and gunmetal palette
+        run: node scripts/amber-palette-audit.mjs
 
       - name: Audit image motion quality and numbering
         run: node scripts/image-motion-audit.mjs
