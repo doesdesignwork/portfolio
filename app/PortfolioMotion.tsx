@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(Math.max(value, minimum), maximum);
 
-const sectionOrder = ["top", "work", "archive", "about", "contact"] as const;
+const sectionOrder = ["top", "work", "ux-ui", "archive", "about", "contact"] as const;
 
 export default function PortfolioMotion() {
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
     const root = document.documentElement;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -134,44 +138,187 @@ export default function PortfolioMotion() {
     }
 
     const cleanups: Array<() => void> = [];
+    let animationContext: gsap.Context | null = null;
+
+    if (!reduceMotion.matches) {
+      animationContext = gsap.context(() => {
+        const heroChars = gsap.utils.toArray<HTMLElement>("[data-hero-char]");
+
+        if (heroChars.length) {
+          gsap.set(heroChars, {
+            yPercent: 145,
+            rotateZ: 4,
+            scaleY: 0.72,
+            opacity: 0,
+          });
+
+          gsap.to(heroChars, {
+            yPercent: 0,
+            rotateZ: 0,
+            scaleY: 1,
+            opacity: 1,
+            duration: 1.02,
+            stagger: {
+              each: 0.018,
+              from: "start",
+            },
+            ease: "elastic.out(1.3, 0.34)",
+            delay: 0.08,
+            force3D: true,
+          });
+        }
+
+        const tickerSection = document.querySelector<HTMLElement>("[data-scroll-ticker]");
+        const tickerTrack = tickerSection?.querySelector<HTMLElement>("[data-ticker-track]");
+        const tickerLetters = gsap.utils.toArray<HTMLElement>("[data-ticker-letter]");
+
+        if (tickerTrack && tickerSection) {
+          const tickerTween = gsap.to(tickerTrack, {
+            xPercent: -50,
+            duration: 26,
+            repeat: -1,
+            ease: "none",
+          });
+
+          const tickerState = { speed: 1 };
+          let tickerSpeedTween: gsap.core.Tween | null = null;
+
+          const applyTickerSpeed = () => {
+            tickerTween.timeScale(tickerState.speed);
+          };
+
+          ScrollTrigger.create({
+            start: 0,
+            end: "max",
+            onUpdate: (self) => {
+              const downwardVelocity = Math.max(0, self.getVelocity());
+              const targetSpeed = clamp(1 + downwardVelocity / 850, 1, 5.2);
+
+              tickerSpeedTween?.kill();
+              tickerSpeedTween = gsap.to(tickerState, {
+                speed: targetSpeed,
+                duration: 0.08,
+                ease: "power2.out",
+                overwrite: true,
+                onUpdate: applyTickerSpeed,
+                onComplete: () => {
+                  tickerSpeedTween = gsap.to(tickerState, {
+                    speed: 1,
+                    duration: 0.72,
+                    delay: 0.04,
+                    ease: "power3.out",
+                    overwrite: true,
+                    onUpdate: applyTickerSpeed,
+                  });
+                },
+              });
+            },
+          });
+
+          if (tickerLetters.length) {
+            gsap.fromTo(
+              tickerLetters,
+              {
+                yPercent: 125,
+                rotateZ: 3,
+                opacity: 0,
+              },
+              {
+                yPercent: 0,
+                rotateZ: 0,
+                opacity: 1,
+                duration: 0.58,
+                stagger: 0.004,
+                ease: "power4.out",
+                scrollTrigger: {
+                  trigger: tickerSection,
+                  start: "top 88%",
+                  once: true,
+                },
+              },
+            );
+          }
+        }
+      }, document.body);
+    }
 
     if (!reduceMotion.matches && finePointer.matches) {
       const magneticItems = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-magnetic]"),
+        document.querySelectorAll<HTMLElement>("[data-project-link]"),
       );
 
       magneticItems.forEach((item) => {
+        const xTo = gsap.quickTo(item, "x", {
+          duration: 0.16,
+          ease: "power3.out",
+        });
+        const yTo = gsap.quickTo(item, "y", {
+          duration: 0.16,
+          ease: "power3.out",
+        });
+        const stretchTargets = Array.from(
+          item.querySelectorAll<HTMLElement>("[data-project-stretch]"),
+        );
+
         const handleMove = (event: PointerEvent) => {
           const bounds = item.getBoundingClientRect();
           const relativeX = event.clientX - (bounds.left + bounds.width / 2);
           const relativeY = event.clientY - (bounds.top + bounds.height / 2);
-          const x = clamp((relativeX / bounds.width) * 30, -15, 15);
-          const y = clamp((relativeY / bounds.height) * 30, -15, 15);
+          const x = clamp((relativeX / bounds.width) * 18, -9, 9);
+          const y = clamp((relativeY / bounds.height) * 18, -9, 9);
 
-          item.style.setProperty("--mag-x", `${x.toFixed(2)}px`);
-          item.style.setProperty("--mag-y", `${y.toFixed(2)}px`);
+          xTo(x);
+          yTo(y);
           item.setAttribute("data-magnetic-active", "true");
         };
 
-        const handleLeave = () => {
-          item.style.setProperty("--mag-x", "0px");
-          item.style.setProperty("--mag-y", "0px");
-          item.removeAttribute("data-magnetic-active");
+        const stretchIn = () => {
+          if (!stretchTargets.length) return;
+          gsap.to(stretchTargets, {
+            fontVariationSettings: '"wdth" 138',
+            fontStretch: "138%",
+            scaleX: 1.075,
+            duration: 0.28,
+            ease: "power3.out",
+            overwrite: true,
+          });
         };
 
+        const reset = () => {
+          xTo(0);
+          yTo(0);
+          item.removeAttribute("data-magnetic-active");
+          if (stretchTargets.length) {
+            gsap.to(stretchTargets, {
+              fontVariationSettings: '"wdth" 100',
+              fontStretch: "100%",
+              scaleX: 1,
+              duration: 0.34,
+              ease: "power3.out",
+              overwrite: true,
+            });
+          }
+        };
+
+        item.addEventListener("pointerenter", stretchIn);
         item.addEventListener("pointermove", handleMove);
-        item.addEventListener("pointerleave", handleLeave);
-        item.addEventListener("blur", handleLeave, true);
+        item.addEventListener("pointerleave", reset);
+        item.addEventListener("focus", stretchIn);
+        item.addEventListener("blur", reset);
 
         cleanups.push(() => {
+          item.removeEventListener("pointerenter", stretchIn);
           item.removeEventListener("pointermove", handleMove);
-          item.removeEventListener("pointerleave", handleLeave);
-          item.removeEventListener("blur", handleLeave, true);
+          item.removeEventListener("pointerleave", reset);
+          item.removeEventListener("focus", stretchIn);
+          item.removeEventListener("blur", reset);
         });
       });
     }
 
     return () => {
+      animationContext?.revert();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       revealObserver?.disconnect();
       cleanups.forEach((cleanup) => cleanup());
       window.removeEventListener("scroll", queueSectionUpdate);
