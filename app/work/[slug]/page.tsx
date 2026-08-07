@@ -92,37 +92,65 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    "@id": `${canonicalUrl}#creative-work`,
-    url: canonicalUrl,
-    name: project.seoTitle,
-    headline: project.title,
-    description: project.summary,
-    image: project.images.map((image, imageIndex) => ({
-      "@type": "ImageObject",
-      contentUrl: `${siteUrl}${image}`,
-      url: `${siteUrl}${image}`,
-      name: project.imageAlts[imageIndex] ?? project.alt,
-      caption: project.imageAlts[imageIndex] ?? project.alt,
-      representativeOfPage: imageIndex === 0,
-      creator: {
-        "@type": "Person",
-        "@id": `${siteUrl}/#person`,
-        name: "Gerard Teo",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${canonicalUrl}#creative-work`,
+        url: canonicalUrl,
+        name: project.seoTitle,
+        headline: project.title,
+        description: project.summary,
+        image: project.images.map((image, imageIndex) => ({
+          "@type": "ImageObject",
+          contentUrl: `${siteUrl}${image}`,
+          url: `${siteUrl}${image}`,
+          name: project.imageAlts[imageIndex] ?? project.alt,
+          caption: project.imageAlts[imageIndex] ?? project.alt,
+          representativeOfPage: imageIndex === 0,
+          creator: {
+            "@type": "Person",
+            "@id": `${siteUrl}/#person`,
+            name: "Gerard Teo",
+          },
+          creditText: project.credit ?? "Gerard Teo portfolio",
+          copyrightNotice: "Copyright Gerard Teo and respective project owners",
+        })),
+        keywords: [project.primaryKeyword, ...project.discipline.split(" · ")],
+        contributor: {
+          "@type": "Person",
+          "@id": `${siteUrl}/#person`,
+          name: "Gerard Teo",
+        },
+        creditText: project.credit,
+        dateCreated: project.year,
+        dateModified: lastModified,
+        inLanguage: "en-SG",
       },
-      creditText: project.credit ?? "Gerard Teo portfolio",
-      copyrightNotice: "Copyright Gerard Teo and respective project owners",
-    })),
-    keywords: [project.primaryKeyword, ...project.discipline.split(" · ")],
-    contributor: {
-      "@type": "Person",
-      "@id": `${siteUrl}/#person`,
-      name: "Gerard Teo",
-    },
-    creditText: project.credit,
-    dateCreated: project.year,
-    dateModified: lastModified,
-    inLanguage: "en-SG",
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumbs`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${siteUrl}/`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Work",
+            item: `${siteUrl}/#work`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: project.client,
+            item: canonicalUrl,
+          },
+        ],
+      },
+    ],
   };
 
   return (
@@ -140,16 +168,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             alt=""
             width={640}
             height={640}
-            sizes="48px"
+            sizes="40px"
             priority
           />
-          <span>Gerard Teo</span>
+          <span>Gerard Teo / DDW</span>
         </Link>
         <nav aria-label="Primary navigation">
           <Link href="/#work">Work</Link>
           <Link href="/#about">About</Link>
-          <Link href="/#contact">Contact</Link>
           <Link href="/cv/">CV</Link>
+          <Link href="/#contact">Contact</Link>
         </nav>
       </header>
 
@@ -221,25 +249,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <section className={`${styles.story} brand-project-story`} aria-labelledby="case-thinking">
             <header>
-              <p>How the work came together</p>
-              <h2 id="case-thinking">What needed solving, and how I approached it.</h2>
+              <p>Case study</p>
+              <h2 id="case-thinking">The decisions behind the work.</h2>
             </header>
 
             <div className={`${styles.storyFields} brand-story-fields`}>
               <section>
-                <h3>The brief</h3>
+                <h3>The brief / problem</h3>
                 <p>{project.challenge}</p>
               </section>
               <section>
-                <h3>The idea</h3>
+                <h3>Core idea / strategic decision</h3>
                 <p>{project.approach}</p>
               </section>
               <section>
-                <h3>What I made</h3>
+                <h3>Design system / execution</h3>
                 <p>{project.deliverables}</p>
               </section>
               <section>
-                <h3>What it achieved</h3>
+                <h3>Outcome / what changed</h3>
                 <p>{project.outcome}</p>
               </section>
             </div>
@@ -248,7 +276,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {project.images.length > 1 && (
             <section className={`${styles.gallery} brand-project-gallery`} aria-labelledby="work-shown-title">
               <header>
-                <p>{project.images.length - 1} more view{project.images.length === 2 ? "" : "s"} from the project</p>
+                <p>Selected applications / {project.images.length - 1} more view{project.images.length === 2 ? "" : "s"}</p>
                 <h2 id="work-shown-title">See the idea in use.</h2>
               </header>
 
@@ -288,7 +316,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               className={`${styles.relatedServices} brand-related-services`}
               aria-label="Related expertise"
             >
-              <p>Related work</p>
+              <p>Related expertise</p>
               <div>
                 {relatedServices.map((service) => (
                   <Link key={service.href} href={service.href}>
@@ -315,8 +343,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </article>
 
         <section className={`${styles.cta} brand-cta brand-cta--signal`}>
-          <p>Got a project taking shape?</p>
-          <h2>Tell me what needs solving. We can work out the right way to build it.</h2>
+          <p>Contact</p>
+          <h2>Have a role? Or a brief worth solving?</h2>
           <a href="mailto:g@doesdesignwork.com">Email Gerard ↗</a>
         </section>
       </main>
