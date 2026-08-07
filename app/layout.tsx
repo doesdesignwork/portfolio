@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Krub } from "next/font/google";
-import SiteImageMotion from "./SiteImageMotion";
+import { Inter, Newsreader } from "next/font/google";
 import { projects } from "./data/projects";
 import { lastModified, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -10,21 +9,24 @@ import "./sitewide-motion-quality.css";
 import "./brand-refinement.css";
 import "./readable-type-scale.css";
 import "./amber-gunmetal.css";
+import "./editorial-refinement-preview.css";
 
 const siteTitle =
-  "Gerard Teo | Art Director and Senior Brand Designer in Singapore";
+  "Gerard Teo | Art Director & Senior Brand Designer Singapore";
 const siteDescription =
-  "Singapore-based art director and senior brand designer with 26+ years making brand identities, campaigns, packaging and exhibitions work clearly across every format.";
+  "Gerard Teo is a Singapore-based Art Director, Senior Brand Designer and hands-on Creative Lead working across brand systems, campaigns, packaging, experiential design and visual communication.";
 
-const bodyFont = Krub({
+const bodyFont = Inter({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const headingFont = Inter({
-  variable: "--font-heading",
+const editorialFont = Newsreader({
+  variable: "--font-editorial",
   subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -45,7 +47,7 @@ export const metadata: Metadata = {
     "campaign design",
     "experiential design",
     "packaging design",
-    "visual identity",
+    "visual communication",
     "creative portfolio",
   ],
   authors: [{ name: "Gerard Teo", url: siteUrl }],
@@ -86,10 +88,10 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/assets/modajar-identity-final.webp",
-        width: 1026,
-        height: 716,
-        alt: "Gerard Teo portfolio, Modajar fashion brand identity",
+        url: "/assets/sginnovate-identity.webp",
+        width: 1053,
+        height: 746,
+        alt: "SGInnovate identity system from Gerard Teo's selected portfolio work",
       },
     ],
   },
@@ -97,7 +99,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/assets/modajar-identity-final.webp"],
+    images: ["/assets/sginnovate-identity.webp"],
   },
   manifest: "/manifest.webmanifest",
   icons: {
@@ -129,7 +131,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   colorScheme: "light",
-  themeColor: "#252A2E",
+  themeColor: "#191816",
 };
 
 const structuredData = {
@@ -141,8 +143,8 @@ const structuredData = {
       name: "Gerard Teo",
       url: siteUrl,
       email: "mailto:g@doesdesignwork.com",
-      jobTitle: "Art Director and Senior Brand Designer",
-      alternateName: "Creative Lead",
+      jobTitle: "Art Director, Senior Brand Designer and Creative Lead",
+      alternateName: "Gerard Teo / DDW",
       sameAs: ["https://www.linkedin.com/in/gerard-teo-0b106429/"],
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
       worksFor: [
@@ -171,6 +173,7 @@ const structuredData = {
         "Campaign systems",
         "Experiential design",
         "Packaging design",
+        "Visual communication",
         "Motion storytelling",
       ],
     },
@@ -267,10 +270,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${bodyFont.variable} ${headingFont.variable} antialiased`}
-      >
-        <SiteImageMotion />
+      <body className={`${bodyFont.variable} ${editorialFont.variable} antialiased`}>
         {children}
       </body>
     </html>
