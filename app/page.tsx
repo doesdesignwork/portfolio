@@ -1,10 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Roboto_Flex } from "next/font/google";
 import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./numberless-layout.css";
 import "./ux-ui-preview.css";
+import "./brutalist-motion-preview.css";
+
+const brutalFont = Roboto_Flex({
+  variable: "--font-brutal",
+  subsets: ["latin"],
+  axes: ["wdth"],
+  display: "swap",
+});
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -16,6 +25,7 @@ const byNumber = (number: string) => {
 
 const featuredProjects = ["13", "04", "01"].map(byNumber);
 const archiveProjects = ["03", "08", "06", "09", "14", "10", "11", "15"].map(byNumber);
+const tickerProjects = ["13", "04", "01", "08", "03", "14", "11"].map(byNumber);
 
 const archiveNotes: Record<string, string> = {
   "03": "Four premium card ideas, including two DBS co-branded directions.",
@@ -71,6 +81,30 @@ const sideSections = [
   ["contact", "Contact"],
 ] as const;
 
+function CharacterLine({ text, accent = false }: { text: string; accent?: boolean }) {
+  return (
+    <span data-hero-line={accent ? "accent" : "base"} aria-hidden="true">
+      {Array.from(text).map((character, index) => (
+        <span data-hero-char key={`${character}-${index}`}>
+          {character === " " ? "\u00A0" : character}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function TickerTitle({ text }: { text: string }) {
+  return (
+    <span className="brutal-ticker__word">
+      {Array.from(text).map((character, index) => (
+        <span data-ticker-letter key={`${character}-${index}`}>
+          {character === " " ? "\u00A0" : character}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function ProjectLink({
   project,
   priority = false,
@@ -89,6 +123,7 @@ function ProjectLink({
       aria-label={`View ${project.client} case study: ${project.title}`}
       data-reveal="case-study"
       data-reveal-delay={revealIndex}
+      data-project-link
       data-magnetic="true"
     >
       <span className={styles.projectMedia}>
@@ -105,10 +140,14 @@ function ProjectLink({
       </span>
       <span className={styles.projectCaption} data-project-caption>
         <span>
-          <strong>{project.client}</strong>
+          <strong data-project-stretch>{project.client}</strong>
           <small>{project.discipline}</small>
         </span>
-        <span className={styles.projectTitle} data-project-title>
+        <span
+          className={styles.projectTitle}
+          data-project-title
+          data-project-stretch
+        >
           {project.title}
         </span>
         <span
@@ -128,7 +167,7 @@ export default function Home() {
   const [sgInnovate, sunsilk, modajar] = featuredProjects;
 
   return (
-    <div className={`${styles.page} site-page site-page--home`}>
+    <div className={`${styles.page} site-page site-page--home ${brutalFont.variable}`}>
       <PortfolioMotion />
 
       <a className={styles.skipLink} href="#work">
@@ -199,24 +238,23 @@ export default function Home() {
       </aside>
 
       <main>
-        <section id="top" className={styles.hero} aria-labelledby="hero-title">
-          <div className={styles.heroIdentity}>
+        <section
+          id="top"
+          className={styles.hero}
+          aria-labelledby="hero-title"
+          data-brutal-hero
+        >
+          <div className={styles.heroIdentity} data-hero-identity>
             <p>Gerard Teo</p>
-            <p>Art Director / Senior Brand Designer</p>
+            <p>Art Director / Senior Brand Designer / UX-minded Creative</p>
           </div>
 
-          <div className={styles.heroStatement}>
-            <h1 id="hero-title">
-              <span data-hero-line>
-                <span>Clear thinking.</span>
-              </span>
-              <span data-hero-line>
-                <span>
-                  <em>Properly made.</em>
-                </span>
-              </span>
+          <div className={styles.heroStatement} data-hero-statement>
+            <h1 id="hero-title" data-hero-title aria-label="Clear thinking. Properly made.">
+              <CharacterLine text="Clear thinking." />
+              <CharacterLine text="Properly made." accent />
             </h1>
-            <div>
+            <div data-hero-copy>
               <p>
                 I make complex briefs easier to understand, then turn them into brands,
                 campaigns, experiences and digital products that hold together in the real
@@ -277,6 +315,20 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="brutal-ticker" data-scroll-ticker aria-label="Selected project ticker">
+          <div className="brutal-ticker__track" data-ticker-track aria-hidden="true">
+            {[0, 1].map((groupIndex) => (
+              <div className="brutal-ticker__group" key={groupIndex}>
+                {tickerProjects.map((project) => (
+                  <span className="brutal-ticker__item" key={`${groupIndex}-${project.number}`}>
+                    <TickerTitle text={project.client} />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section
           className={`${styles.manifesto} brand-home-manifesto`}
           aria-labelledby="manifesto-title"
@@ -332,7 +384,12 @@ export default function Home() {
           </header>
 
           <div className="ux-preview-home__grid">
-            <Link className="ux-preview-card" href="/ux-ui/#healthhub">
+            <Link
+              className="ux-preview-card"
+              href="/ux-ui/#healthhub"
+              data-project-link
+              data-magnetic="true"
+            >
               <span className="ux-preview-card__visual" aria-hidden="true">
                 <span className="ux-preview-card__device">
                   <span>HEALTHHUB STUDY</span>
@@ -347,12 +404,17 @@ export default function Home() {
               </span>
               <span className="ux-preview-card__copy">
                 <span>Caregiver experience</span>
-                <h3>Medical results, explained in context.</h3>
+                <h3 data-project-stretch>Medical results, explained in context.</h3>
                 <p>Research, user flow, wireframes, Figma prototype and usability testing.</p>
               </span>
             </Link>
 
-            <Link className="ux-preview-card ux-preview-card--finance" href="/ux-ui/#ocbc">
+            <Link
+              className="ux-preview-card ux-preview-card--finance"
+              href="/ux-ui/#ocbc"
+              data-project-link
+              data-magnetic="true"
+            >
               <span className="ux-preview-card__visual" aria-hidden="true">
                 <span className="ux-preview-card__device">
                   <span>OCBC SPRINT CONCEPT</span>
@@ -367,7 +429,7 @@ export default function Home() {
               </span>
               <span className="ux-preview-card__copy">
                 <span>Personal finance</span>
-                <h3>Recurring spending, turned into decisions.</h3>
+                <h3 data-project-stretch>Recurring spending, turned into decisions.</h3>
                 <p>Problem framing, journey mapping, interface hierarchy and prototype story.</p>
               </span>
             </Link>
@@ -391,9 +453,11 @@ export default function Home() {
                 className={styles.archiveItem}
                 href={`/work/${project.slug}/`}
                 data-archive-item
+                data-project-link
+                data-magnetic="true"
               >
                 <span className={styles.archiveName} data-archive-name>
-                  <strong>{project.client}</strong>
+                  <strong data-project-stretch>{project.client}</strong>
                   <small>{archiveNotes[project.number] ?? project.title}</small>
                 </span>
                 <span className={styles.archiveDiscipline} data-archive-discipline>
