@@ -1,19 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Roboto_Flex } from "next/font/google";
 import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
-import "./numberless-layout.css";
 import "./ux-ui-preview.css";
-import "./brutalist-motion-preview.css";
-
-const brutalFont = Roboto_Flex({
-  variable: "--font-brutal",
-  subsets: ["latin"],
-  axes: ["wdth"],
-  display: "swap",
-});
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -23,13 +13,12 @@ const byNumber = (number: string) => {
   return project;
 };
 
-const featuredProjects = ["13", "04", "01"].map(byNumber);
-const archiveProjects = ["03", "08", "06", "09", "14", "10", "11", "15"].map(byNumber);
-const tickerProjects = ["13", "04", "01", "08", "03", "14", "11"].map(byNumber);
+const featuredProjects = ["13", "08", "03"].map(byNumber);
+const archiveProjects = ["04", "01", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const archiveNotes: Record<string, string> = {
-  "03": "Four premium card ideas, including two DBS co-branded directions.",
-  "08": "A busy technical booth broken into clear, easy-to-find zones.",
+  "04": "A familiar global haircare brand made clearer across pack, label and campaign.",
+  "01": "A fashion identity built from naming through digital retail and packaging.",
   "06": "A property identity drawn directly from the building.",
   "09": "A more consistent identity without erasing the school’s history.",
   "14": "Licensed characters worked into the shoes, not simply printed on top.",
@@ -72,39 +61,6 @@ const capabilityGroups = [
   },
 ] as const;
 
-const sideSections = [
-  ["top", "Introduction"],
-  ["work", "Selected work"],
-  ["ux-ui", "UX/UI"],
-  ["archive", "Archive"],
-  ["about", "Experience"],
-  ["contact", "Contact"],
-] as const;
-
-function CharacterLine({ text, accent = false }: { text: string; accent?: boolean }) {
-  return (
-    <span data-hero-line={accent ? "accent" : "base"} aria-hidden="true">
-      {Array.from(text).map((character, index) => (
-        <span data-hero-char key={`${character}-${index}`}>
-          {character === " " ? "\u00A0" : character}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-function TickerTitle({ text }: { text: string }) {
-  return (
-    <span className="brutal-ticker__word">
-      {Array.from(text).map((character, index) => (
-        <span data-ticker-letter key={`${character}-${index}`}>
-          {character === " " ? "\u00A0" : character}
-        </span>
-      ))}
-    </span>
-  );
-}
-
 function ProjectLink({
   project,
   priority = false,
@@ -124,38 +80,33 @@ function ProjectLink({
       data-reveal="case-study"
       data-reveal-delay={revealIndex}
       data-project-link
-      data-magnetic="true"
     >
-      <span className={styles.projectMedia}>
+      <span className={styles.projectMedia} data-project-preview>
         <Image
           src={project.images[0]}
           alt={project.imageAlts[0] ?? project.alt}
           width={1800}
           height={1400}
-          sizes="(max-width: 760px) 100vw, 70vw"
+          sizes="(max-width: 760px) 100vw, (max-width: 1180px) 86vw, 78vw"
           priority={priority}
           unoptimized
           data-sharp-image="true"
         />
       </span>
       <span className={styles.projectCaption} data-project-caption>
-        <span>
-          <strong data-project-stretch>{project.client}</strong>
+        <span data-project-number>{project.number}</span>
+        <span data-project-client>
+          <strong>{project.client}</strong>
           <small>{project.discipline}</small>
         </span>
-        <span
-          className={styles.projectTitle}
-          data-project-title
-          data-project-stretch
-        >
+        <span className={styles.projectTitle} data-project-title>
           {project.title}
         </span>
-        <span
-          className={styles.projectArrow}
-          aria-hidden="true"
-          data-magnetic-indicator
-          data-project-arrow
-        >
+        <span data-project-role>
+          <small>Role</small>
+          <span>{project.role}</span>
+        </span>
+        <span className={styles.projectArrow} aria-hidden="true" data-project-arrow>
           ↗
         </span>
       </span>
@@ -164,17 +115,17 @@ function ProjectLink({
 }
 
 export default function Home() {
-  const [sgInnovate, sunsilk, modajar] = featuredProjects;
+  const [sgInnovate, dow, americanExpress] = featuredProjects;
 
   return (
-    <div className={`${styles.page} site-page site-page--home ${brutalFont.variable}`}>
+    <div className={`${styles.page} site-page site-page--home`}>
       <PortfolioMotion />
 
       <a className={styles.skipLink} href="#work">
         Skip to selected work
       </a>
 
-      <header className={`${styles.header} brand-header`}>
+      <header className={`${styles.header} brand-header`} data-site-header>
         <Link
           className={`${styles.wordmark} brand-wordmark`}
           href="#top"
@@ -185,84 +136,51 @@ export default function Home() {
             alt=""
             width={640}
             height={640}
-            sizes="48px"
+            sizes="40px"
             priority
           />
+          <span data-nav-name>Gerard Teo / DDW</span>
         </Link>
         <nav aria-label="Primary navigation">
           <Link href="#work">Work</Link>
-          <Link href="#ux-ui">UX/UI</Link>
           <Link href="#about">About</Link>
-          <Link href="#contact">Contact</Link>
           <Link href="/cv/">CV</Link>
+          <Link href="#contact">Contact</Link>
         </nav>
       </header>
-
-      <aside
-        className={styles.marginRail}
-        aria-label="Page index"
-        data-side-index
-        data-active-section="top"
-      >
-        <div>
-          <span>GT</span>
-          <span data-section-counter aria-live="polite">
-            <b data-section-counter-current>01</b>
-            <span> / 06</span>
-          </span>
-        </div>
-        <nav>
-          {sideSections.map(([id, label], index) => (
-            <Link
-              key={id}
-              href={`#${id}`}
-              data-section-link={id}
-              aria-current={index === 0 ? "location" : undefined}
-            >
-              <span>{label}</span>
-            </Link>
-          ))}
-        </nav>
-        <p data-availability>
-          <a
-            href="mailto:g@doesdesignwork.com"
-            aria-label="Email Gerard about the right work"
-            data-availability-link
-          >
-            <span>Available for the </span>
-            <strong data-right-work>right</strong>
-            <span> work</span>
-            <i aria-hidden="true" />
-          </a>
-        </p>
-      </aside>
 
       <main>
         <section
           id="top"
           className={styles.hero}
           aria-labelledby="hero-title"
-          data-brutal-hero
+          data-editorial-hero
         >
           <div className={styles.heroIdentity} data-hero-identity>
-            <p>Gerard Teo</p>
-            <p>Art Director / Senior Brand Designer / UX-minded Creative</p>
+            <p>Gerard Teo / Singapore</p>
+            <p>Art Director / Senior Brand Designer / Creative Lead</p>
           </div>
 
-          <div className={styles.heroStatement} data-hero-statement>
-            <h1 id="hero-title" data-hero-title aria-label="Clear thinking. Properly made.">
-              <CharacterLine text="Clear thinking." />
-              <CharacterLine text="Properly made." accent />
-            </h1>
+          <div className={styles.heroStatement} data-hero-stage>
+            <div data-hero-heading-wrap>
+              <p data-hero-kicker>Think clearly. Build completely.</p>
+              <h1 id="hero-title" data-hero-title>
+                <span data-hero-primary>Clear thinking.</span>
+                <span data-hero-secondary>Properly made.</span>
+              </h1>
+            </div>
+
             <div data-hero-copy>
               <p>
-                I make complex briefs easier to understand, then turn them into brands,
-                campaigns, experiences and digital products that hold together in the real
-                world.
+                I make complex briefs easier to understand, then turn them into brand
+                systems, campaigns, packaging, experiences and visual communication that
+                hold together in the real world.
+              </p>
+              <p data-hero-proofline>
+                Brand systems / Campaigns / Packaging / Experiential / Visual communication
               </p>
               <div className={styles.heroActions}>
-                <Link href="#work">View selected work</Link>
-                <Link href="/ux-ui/">View UX/UI work</Link>
+                <Link href="#work">View selected work <span aria-hidden="true">↓</span></Link>
                 <Link href="/cv/">View my CV</Link>
               </div>
             </div>
@@ -271,15 +189,15 @@ export default function Home() {
           <dl className="brand-hero-proof" data-hero-proof aria-label="Experience highlights">
             <div>
               <dt>26+</dt>
-              <dd>Years designing, directing and producing work</dd>
+              <dd>Years across design, direction and production</dd>
             </div>
             <div>
               <dt>3 → 15</dt>
-              <dd>Grew the Blacksheep creative team from 3 to 15</dd>
+              <dd>Creative team growth at Blacksheep</dd>
             </div>
             <div>
-              <dt>UX</dt>
-              <dd>Research, flows, wireframes and interactive prototypes</dd>
+              <dt>6</dt>
+              <dd>Major agency networks, plus independent and in-house roles</dd>
             </div>
           </dl>
 
@@ -315,43 +233,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="brutal-ticker" data-scroll-ticker aria-label="Selected project ticker">
-          <div className="brutal-ticker__track" data-ticker-track aria-hidden="true">
-            {[0, 1].map((groupIndex) => (
-              <div className="brutal-ticker__group" key={groupIndex}>
-                {tickerProjects.map((project) => (
-                  <span className="brutal-ticker__item" key={`${groupIndex}-${project.number}`}>
-                    <TickerTitle text={project.client} />
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section
-          className={`${styles.manifesto} brand-home-manifesto`}
-          aria-labelledby="manifesto-title"
-        >
-          <p>Working principle</p>
-          <h2 id="manifesto-title">Clarity before decoration.</h2>
-          <p>
-            The work should make sense before it tries to impress. Once the idea is clear,
-            the visual choices have something solid to do.
-          </p>
-        </section>
-
         <section id="work" className={styles.selectedWork} aria-labelledby="work-title">
-          <header className={`${styles.sectionHeader} brand-section-head`}>
-            <p>Selected case studies</p>
-            <h2 id="work-title">Work with a point.</h2>
+          <header className={`${styles.sectionHeader} brand-section-head`} data-section-header>
+            <p>Featured work</p>
+            <h2 id="work-title" data-section-heading>Work with a point.</h2>
             <span>
-              A few projects that show how I think, make decisions and carry an idea into
-              the finished work.
+              Three projects showing the range from identity systems to physical experience
+              and product thinking.
             </span>
           </header>
 
-          <div className={styles.featuredStack}>
+          <div className={styles.featuredStack} data-featured-stack>
             <ProjectLink
               project={sgInnovate}
               priority
@@ -359,12 +251,12 @@ export default function Home() {
               revealIndex={0}
             />
             <ProjectLink
-              project={sunsilk}
+              project={dow}
               className={styles.featureOffset}
               revealIndex={1}
             />
             <ProjectLink
-              project={modajar}
+              project={americanExpress}
               className={styles.featureNarrow}
               revealIndex={2}
             />
@@ -372,10 +264,10 @@ export default function Home() {
         </section>
 
         <section id="ux-ui" className="ux-preview-home" aria-labelledby="ux-preview-title">
-          <header className="ux-preview-home__header">
-            <p>UX/UI &amp; product studies</p>
+          <header className="ux-preview-home__header" data-section-header>
+            <p>Digital product studies</p>
             <div>
-              <h2 id="ux-preview-title">The screen comes after the problem.</h2>
+              <h2 id="ux-preview-title" data-section-heading>The screen comes after the problem.</h2>
               <p>
                 Two academic studies showing how I frame user needs, organise a flow and
                 turn it into a prototype that people can understand and use.
@@ -384,12 +276,7 @@ export default function Home() {
           </header>
 
           <div className="ux-preview-home__grid">
-            <Link
-              className="ux-preview-card"
-              href="/ux-ui/#healthhub"
-              data-project-link
-              data-magnetic="true"
-            >
+            <Link className="ux-preview-card" href="/ux-ui/#healthhub" data-project-link>
               <span className="ux-preview-card__visual" aria-hidden="true">
                 <span className="ux-preview-card__device">
                   <span>HEALTHHUB STUDY</span>
@@ -404,17 +291,12 @@ export default function Home() {
               </span>
               <span className="ux-preview-card__copy">
                 <span>Caregiver experience</span>
-                <h3 data-project-stretch>Medical results, explained in context.</h3>
+                <h3>Medical results, explained in context.</h3>
                 <p>Research, user flow, wireframes, Figma prototype and usability testing.</p>
               </span>
             </Link>
 
-            <Link
-              className="ux-preview-card ux-preview-card--finance"
-              href="/ux-ui/#ocbc"
-              data-project-link
-              data-magnetic="true"
-            >
+            <Link className="ux-preview-card ux-preview-card--finance" href="/ux-ui/#ocbc" data-project-link>
               <span className="ux-preview-card__visual" aria-hidden="true">
                 <span className="ux-preview-card__device">
                   <span>OCBC SPRINT CONCEPT</span>
@@ -429,7 +311,7 @@ export default function Home() {
               </span>
               <span className="ux-preview-card__copy">
                 <span>Personal finance</span>
-                <h3 data-project-stretch>Recurring spending, turned into decisions.</h3>
+                <h3>Recurring spending, turned into decisions.</h3>
                 <p>Problem framing, journey mapping, interface hierarchy and prototype story.</p>
               </span>
             </Link>
@@ -440,10 +322,23 @@ export default function Home() {
           </Link>
         </section>
 
+        <section
+          className={`${styles.manifesto} brand-home-manifesto`}
+          aria-labelledby="manifesto-title"
+          data-principle-section
+        >
+          <p>Working principle</p>
+          <h2 id="manifesto-title" data-section-heading>Clarity before decoration.</h2>
+          <p>
+            The work should make sense before it tries to impress. Once the idea is clear,
+            the visual choices have something solid to do.
+          </p>
+        </section>
+
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
-          <header className={`${styles.archiveHeader} brand-section-head`}>
-            <p>Selected archive</p>
-            <h2 id="archive-title">More of the work.</h2>
+          <header className={`${styles.archiveHeader} brand-section-head`} data-section-header>
+            <p>Archive / 8 projects</p>
+            <h2 id="archive-title" data-section-heading>A wider cut of the work.</h2>
           </header>
 
           <div className={styles.archiveList}>
@@ -454,10 +349,10 @@ export default function Home() {
                 href={`/work/${project.slug}/`}
                 data-archive-item
                 data-project-link
-                data-magnetic="true"
               >
+                <span data-archive-number>{project.number}</span>
                 <span className={styles.archiveName} data-archive-name>
-                  <strong data-project-stretch>{project.client}</strong>
+                  <strong>{project.client}</strong>
                   <small>{archiveNotes[project.number] ?? project.title}</small>
                 </span>
                 <span className={styles.archiveDiscipline} data-archive-discipline>
@@ -469,16 +364,12 @@ export default function Home() {
                     alt={project.imageAlts[0] ?? project.alt}
                     width={900}
                     height={650}
-                    sizes="(max-width: 760px) 100vw, 32vw"
+                    sizes="(max-width: 760px) 100vw, 28vw"
                     unoptimized
                     data-sharp-image="true"
                   />
                 </span>
-                <span
-                  className={styles.archiveArrow}
-                  aria-hidden="true"
-                  data-archive-arrow
-                >
+                <span className={styles.archiveArrow} aria-hidden="true" data-archive-arrow>
                   ↗
                 </span>
               </Link>
@@ -487,9 +378,9 @@ export default function Home() {
         </section>
 
         <section id="about" className={styles.about} aria-labelledby="about-title">
-          <div className={`${styles.aboutTitle} brand-section-head`}>
-            <p>Experience</p>
-            <h2 id="about-title">I lead the work and stay close to it.</h2>
+          <div className={`${styles.aboutTitle} brand-section-head`} data-section-header>
+            <p>About / Experience</p>
+            <h2 id="about-title" data-section-heading>I lead the work. I still make it.</h2>
           </div>
 
           <div className={`${styles.aboutStory} brand-about-story brand-about-story--focused`}>
@@ -500,12 +391,26 @@ export default function Home() {
                 and studio co-founder.
               </p>
               <p>
-                I still like making the thing. I stay close to the brief, the team and the
-                production details so the idea does not get polished into something bland
-                on its way out the door.
+                I stay close to the brief, the team and the production details so the idea
+                does not get polished into something bland on its way out the door.
               </p>
             </div>
           </div>
+
+          <dl data-about-proof aria-label="Experience evidence">
+            <div>
+              <dt>26+</dt>
+              <dd>Years of design, direction and production experience</dd>
+            </div>
+            <div>
+              <dt>3 → 15</dt>
+              <dd>Grew the Blacksheep creative team from three to 15</dd>
+            </div>
+            <div>
+              <dt>Across</dt>
+              <dd>Brand, campaigns, packaging, experiential, 3D and digital product studies</dd>
+            </div>
+          </dl>
 
           <div className="brand-capability-matrix" aria-label="Creative capabilities">
             {capabilityGroups.map((group) => (
@@ -527,9 +432,9 @@ export default function Home() {
           aria-labelledby="process-title"
           data-process-section
         >
-          <header className="brand-section-head">
-            <p>How the work gets made</p>
-            <h2 id="process-title">Start with the problem. Build what lasts.</h2>
+          <header className="brand-section-head" data-section-header>
+            <p>Approach</p>
+            <h2 id="process-title" data-section-heading>Start with the problem. Build what lasts.</h2>
           </header>
           <ol>
             <li data-reveal="process" data-reveal-delay="0" data-process-point>
@@ -550,8 +455,8 @@ export default function Home() {
 
       <footer id="contact" className={styles.footer}>
         <div data-reveal="contact" data-reveal-delay="0">
-          <p>Selected roles and collaborations</p>
-          <h2>Got a brief that needs sorting out?</h2>
+          <p>Contact</p>
+          <h2>Have a role? Or a brief worth solving?</h2>
         </div>
         <div className={`${styles.contactLinks} brand-contact-links`}>
           <a
