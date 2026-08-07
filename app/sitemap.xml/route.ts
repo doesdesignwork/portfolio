@@ -13,15 +13,14 @@ const escapeXml = (value: string) =>
 const imageEntries = (images: string[]) =>
   images
     .map(
-      (image) => `    <image:image>
-      <image:loc>${escapeXml(`${siteUrl}${image}`)}</image:loc>
-    </image:image>`,
+      (image) => `    <image:image>\n      <image:loc>${escapeXml(`${siteUrl}${image}`)}</image:loc>\n    </image:image>`,
     )
     .join("\n");
 
 const staticUrls = [
   { path: "/", priority: "1.0", changefreq: "monthly" },
   { path: "/cv/", priority: "0.9", changefreq: "monthly" },
+  { path: "/ux-ui/", priority: "0.8", changefreq: "monthly" },
   ...services.map((service) => ({
     path: `/services/${service.slug}/`,
     priority: "0.8",
@@ -31,33 +30,17 @@ const staticUrls = [
 
 const staticEntries = staticUrls
   .map(
-    (entry) => `  <url>
-    <loc>${escapeXml(`${siteUrl}${entry.path}`)}</loc>
-    <lastmod>${lastModified}</lastmod>
-    <changefreq>${entry.changefreq}</changefreq>
-    <priority>${entry.priority}</priority>
-  </url>`,
+    (entry) => `  <url>\n    <loc>${escapeXml(`${siteUrl}${entry.path}`)}</loc>\n    <lastmod>${lastModified}</lastmod>\n    <changefreq>${entry.changefreq}</changefreq>\n    <priority>${entry.priority}</priority>\n  </url>`,
   )
   .join("\n");
 
 const projectEntries = projects
   .map(
-    (project) => `  <url>
-    <loc>${escapeXml(`${siteUrl}/work/${project.slug}/`)}</loc>
-    <lastmod>${lastModified}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>${project.featured ? "0.9" : "0.7"}</priority>
-${imageEntries(project.images)}
-  </url>`,
+    (project) => `  <url>\n    <loc>${escapeXml(`${siteUrl}/work/${project.slug}/`)}</loc>\n    <lastmod>${lastModified}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${project.featured ? "0.9" : "0.7"}</priority>\n${imageEntries(project.images)}\n  </url>`,
   )
   .join("\n");
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${staticEntries}
-${projectEntries}
-</urlset>`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${staticEntries}\n${projectEntries}\n</urlset>`;
 
 export function GET() {
   return new Response(sitemap, {
