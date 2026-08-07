@@ -5,15 +5,15 @@ import { lastModified, siteUrl } from "@/lib/site";
 import styles from "@/app/editorial-pages.module.css";
 
 export const metadata: Metadata = {
-  title: "CV | Art Director, Senior Brand Designer & UX/UI",
+  title: "CV | Art Director & Senior Brand Designer Singapore",
   description:
-    "Gerard Teo is a Singapore-based art director and senior brand designer with 26+ years across identity, campaigns, exhibitions, packaging, UX/UI, 3D visualisation and production.",
+    "Gerard Teo is a Singapore-based Art Director, Senior Brand Designer and hands-on Creative Lead with 26+ years across identity, campaigns, exhibitions, packaging, digital product studies, 3D visualisation and production.",
   keywords: [
     "Gerard Teo CV",
     "art director Singapore",
     "senior brand designer Singapore",
-    "UX UI designer Singapore",
     "creative lead Singapore",
+    "UX UI designer Singapore",
   ],
   alternates: {
     canonical: "/cv/",
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "profile",
     url: "/cv/",
-    title: "Gerard Teo CV | Art Director, Senior Brand Designer & UX/UI",
+    title: "Gerard Teo CV | Art Director & Senior Brand Designer Singapore",
     description:
-      "26+ years making brand identities, campaigns, exhibitions, packaging, digital-product studies and creative production work clearly across different formats.",
+      "26+ years across creative direction, brand systems, campaigns, exhibitions, packaging, digital-product studies and hands-on production.",
   },
 };
 
@@ -123,15 +123,15 @@ const structuredData = {
   "@type": "ProfilePage",
   "@id": `${siteUrl}/cv/#profile-page`,
   url: `${siteUrl}/cv/`,
-  name: "Gerard Teo CV - Art Director, Senior Brand Designer and UX/UI",
+  name: "Gerard Teo CV - Art Director and Senior Brand Designer",
   dateModified: lastModified,
   inLanguage: "en-SG",
   mainEntity: {
     "@type": "Person",
     "@id": `${siteUrl}/#person`,
     name: "Gerard Teo",
-    jobTitle: "Art Director and Senior Brand Designer",
-    alternateName: "Creative Lead",
+    jobTitle: "Art Director, Senior Brand Designer and Creative Lead",
+    alternateName: "Gerard Teo / DDW",
     email: "mailto:g@doesdesignwork.com",
     telephone: "+65 9878 2541",
     url: siteUrl,
@@ -172,8 +172,8 @@ export default function CvPage() {
           <p>Gerard Teo / CV / Singapore / Updated August 2026</p>
           <h1>Gerard Teo</h1>
           <p className={`${styles.cvTitle} brand-cv-title`}>
-            Art Director and Senior Brand Designer
-            <span>Creative lead / Hands-on maker / UX-minded problem solver</span>
+            Art Director / Senior Brand Designer / Creative Lead
+            <span>Clear thinking / Hands-on maker / UX-minded problem solver</span>
           </p>
           <p className={`${styles.deck} brand-deck`}>
             I have spent 26+ years making brands, campaigns, packaging, experiences
