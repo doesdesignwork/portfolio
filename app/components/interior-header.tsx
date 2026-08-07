@@ -14,16 +14,16 @@ export function InteriorHeader() {
           alt=""
           width={640}
           height={640}
-          sizes="48px"
+          sizes="40px"
           priority
         />
+        <span>Gerard Teo / DDW</span>
       </Link>
       <nav aria-label="Primary navigation">
         <Link href="/#work">Work</Link>
-        <Link href="/ux-ui/">UX/UI</Link>
         <Link href="/#about">About</Link>
-        <Link href="/#contact">Contact</Link>
         <Link href="/cv/">CV</Link>
+        <Link href="/#contact">Contact</Link>
       </nav>
     </header>
   );
