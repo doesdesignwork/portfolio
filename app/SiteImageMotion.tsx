@@ -80,10 +80,13 @@ export default function SiteImageMotion() {
           1,
         );
         const eased = easeOutCubic(progress);
-        const y = roundToDevicePixel((1 - eased) * 48 - eased * 4);
-        const tilt = (1 - eased) * 2.2;
+
+        // Kinetic scale is the hero of the motion. Keep positional drift neutral-to-upward
+        // so transformed display type can never invade the content block below it.
+        const y = roundToDevicePixel(-4 * eased);
+        const tilt = (1 - eased) * 1.25;
         const scale = kineticHeadingScale(progress);
-        const opacity = 0.12 + eased * 0.88;
+        const opacity = 0.28 + eased * 0.72;
 
         heading.style.setProperty("--scroll-heading-y", `${y}px`);
         heading.style.setProperty("--scroll-heading-tilt", `${tilt.toFixed(3)}deg`);
@@ -136,10 +139,10 @@ export default function SiteImageMotion() {
       headings.add(heading);
       heading.dataset.scrollHeadingMotion = "true";
       heading.dataset.scrollHeadingKinetic = "scale";
-      heading.style.setProperty("--scroll-heading-y", "48px");
-      heading.style.setProperty("--scroll-heading-tilt", "2.2deg");
+      heading.style.setProperty("--scroll-heading-y", "0px");
+      heading.style.setProperty("--scroll-heading-tilt", "1.25deg");
       heading.style.setProperty("--scroll-heading-scale", "0.9");
-      heading.style.setProperty("--scroll-heading-opacity", "0.12");
+      heading.style.setProperty("--scroll-heading-opacity", "0.28");
 
       const textAlign = window.getComputedStyle(heading).textAlign;
       heading.style.transformOrigin = textAlign === "right" ? "100% 62%" : textAlign === "center" ? "50% 62%" : "0 62%";
@@ -258,13 +261,11 @@ export default function SiteImageMotion() {
           ".site-page main h1, .site-page main h2, .site-page main h3, .site-page article h1, .site-page article h2, .site-page article h3, .site-page footer h2, .site-page footer h3",
         ),
       );
-
-      headingCandidates
-        .filter((heading) => {
-          const size = Number.parseFloat(window.getComputedStyle(heading).fontSize);
-          return heading.tagName !== "H3" || size >= 24;
-        })
-        .forEach(registerHeading);
+      const largeHeadings = headingCandidates.filter((heading) => {
+        const fontSize = Number.parseFloat(window.getComputedStyle(heading).fontSize);
+        return heading.tagName !== "H3" || fontSize >= 24;
+      });
+      largeHeadings.forEach(registerHeading);
 
       const counters = Array.from(
         document.querySelectorAll<HTMLElement>(
