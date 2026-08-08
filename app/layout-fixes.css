@@ -1,0 +1,220 @@
+/*
+ * DOES DESIGN WORK / LAYOUT CORRECTIONS
+ *
+ * Structural fixes for the proof strip, side rail and HealthHub prototype evidence.
+ * This file is imported last by no-word-breaks.css so it can correct legacy module
+ * rules without reintroducing mid-word wrapping or collision hacks.
+ */
+
+/* --------------------------------------------------------------------------
+   Homepage proof strip: three equal outer columns, vertical hierarchy inside.
+   Never force a wide metric and a paragraph into the same narrow row.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 1000px) {
+  .site-page--home .brand-hero-proof {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .site-page--home .brand-hero-proof > div,
+  .site-page--home .brand-hero-proof > div:first-child,
+  .site-page--home .brand-hero-proof > div:last-child {
+    min-width: 0 !important;
+    padding-block: clamp(30px, 3vw, 46px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto 1fr !important;
+    gap: clamp(18px, 1.8vw, 28px) !important;
+    align-content: end !important;
+    align-items: end !important;
+  }
+
+  .site-page--home .brand-hero-proof > div + div {
+    border-top: 0 !important;
+    border-left: 1px solid var(--brand-line) !important;
+  }
+
+  .site-page--home .brand-hero-proof dt {
+    width: max-content !important;
+    max-width: 100% !important;
+  }
+
+  .site-page--home .brand-hero-proof dd {
+    width: 100% !important;
+    max-width: 34ch !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+.site-page--home .brand-hero-proof dd,
+.site-page--home .brand-hero-proof dd * {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+/* Give the hero headline its own row before the desktop columns become cramped. */
+@media (max-width: 1279px) {
+  .site-page--home [class*="heroStatement"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: clamp(30px, 4vw, 46px) !important;
+    align-items: start !important;
+  }
+
+  .site-page--home [class*="heroStatement"] > div {
+    width: min(100%, 680px) !important;
+    max-width: 680px !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Side navigation: align the five vertical labels to the user's inner rail
+   guide. The rail is 128px wide with 15px left padding. Five 14px label tracks
+   occupy exactly 70px, placing the cluster's right edge at x=85px.
+   Availability remains anchored at the bottom by the rail flex layout.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 1025px) {
+  .site-page--home aside[data-side-index] {
+    align-items: stretch !important;
+  }
+
+  .site-page--home aside[data-side-index] nav {
+    width: 70px !important;
+    max-width: 70px !important;
+    margin: 0 auto auto 0 !important;
+    padding: 4px 0 0 !important;
+    align-self: flex-start !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+
+  .site-page--home aside[data-side-index] nav a {
+    width: 14px !important;
+    min-width: 14px !important;
+    flex: 0 0 14px !important;
+    padding: 0 0 10px !important;
+    overflow: visible !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+  }
+
+  .site-page--home aside[data-side-index] nav a > span {
+    display: inline-block !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Collision guard for large editorial text and kinetic headings.
+   Keep kinetic scaling, but never enlarge beyond the layout box.
+   -------------------------------------------------------------------------- */
+
+.site-page :where(
+  [data-scroll-heading-motion="true"],
+  .brand-section-head,
+  .brand-hero-proof,
+  .brand-capability-matrix,
+  [class*="validationGrid"],
+  [class*="signalGrid"],
+  [class*="roadmapGrid"]
+) {
+  min-width: 0 !important;
+}
+
+.text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+  position: relative;
+  z-index: 1;
+  max-width: 100% !important;
+  transform:
+    perspective(900px)
+    translate3d(0, var(--scroll-heading-y), 0)
+    rotateX(var(--scroll-heading-tilt))
+    scale(clamp(0.9, var(--scroll-heading-scale), 1)) !important;
+}
+
+@media (max-width: 1180px) {
+  .site-page .brand-section-head {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+
+  .site-page .brand-section-head > :where(h1, h2, h3, p, span) {
+    grid-column: 1 !important;
+    width: 100% !important;
+    max-width: min(100%, 68ch) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   HealthHub: use the actual capstone screens from the NTU presentation.
+   The first three stages are real Figma evidence; remove the synthetic fourth.
+   -------------------------------------------------------------------------- */
+
+.site-page--healthhub [class*="screenFlow"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(24px, 3vw, 44px) !important;
+  align-items: start !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(4) {
+  display: none !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(-n + 3) [class*="phone"] {
+  width: 100% !important;
+  min-height: 0 !important;
+  aspect-ratio: 267 / 582 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--brand-line-strong) !important;
+  border-radius: 18px !important;
+  background-color: #ffffff !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: 100% 100% !important;
+  box-shadow: 0 24px 60px rgba(37, 42, 46, 0.12) !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(1) [class*="phone"] {
+  background-image: url("/assets/healthhub-existing-result.webp") !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(2) [class*="phone"] {
+  background-image: url("/assets/healthhub-report-discoverability.webp") !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(3) [class*="phone"] {
+  background-image: url("/assets/healthhub-inline-explanation.webp") !important;
+}
+
+.site-page--healthhub [class*="screenStage"]:nth-child(-n + 3) [class*="phone"]::before,
+.site-page--healthhub [class*="screenStage"]:nth-child(-n + 3) [class*="phone"]::after,
+.site-page--healthhub [class*="screenStage"]:nth-child(-n + 3) [class*="phone"] > * {
+  display: none !important;
+}
+
+.site-page--healthhub [class*="screenLabel"] {
+  min-height: 0 !important;
+  margin-bottom: 14px !important;
+  line-height: 1.4 !important;
+}
+
+@media (max-width: 900px) {
+  .site-page--healthhub [class*="screenFlow"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 42px !important;
+  }
+
+  .site-page--healthhub [class*="screenStage"]:nth-child(-n + 3) {
+    width: min(100%, 420px) !important;
+    margin-inline: auto !important;
+  }
+}

@@ -6,37 +6,58 @@ const productPractice = {
   id: "product-practice-healthhub",
   schemaId: `${siteUrl}/work/healthhub-caregiver-ux/#creative-work`,
   client: null,
-  title: "HealthHub Caregiver UX Capstone",
+  title: "HealthHub Medical Literacy UX Capstone",
   type: "academic-product-practice",
   commissioned: false,
   shipped: false,
   disciplines: [
     "UX Design",
-    "Digital Product Thinking",
+    "Product Prioritisation",
     "Research Synthesis",
-    "Task Flow",
     "Figma Prototyping",
+    "Usability Testing",
   ],
   summary:
-    "NTU PaCE capstone exploring how caregiver context, appointment tasks and medical translation could be made clearer inside a healthcare journey.",
+    "NTU PaCE capstone exploring how plain-language explanations inside HealthHub-style lab results could reduce the need for caregivers and patients to leave the app and search unfamiliar medical terminology.",
   context:
     "Academic concept study created during formal UX Design and Digital Product Management training. It is not a commissioned or shipped HealthHub feature.",
-  research: ["Screener and survey", "Short interviews", "Persona", "Affinity mapping", "Storyboard"],
+  research: {
+    surveyResponses: 76,
+    caregiverSurveyRespondents: 32,
+    interviews: 10,
+    directionalSignals: [
+      "Caregivers in the capstone research sample reported Googling unfamiliar medical terms after viewing results.",
+      "70% of interview participants asked for plain-language explanations without being prompted.",
+    ],
+    note: "Capstone sample findings are directional and are not population estimates.",
+  },
   businessProblem:
-    "A caregiver may be logged in as themselves while managing appointments and medical information for another person, creating context and language friction.",
+    "Lab results can expose clinical shorthand and numerical values without enough plain-language context, causing users to leave the product to understand what they are seeing.",
   responsibility:
-    "Research synthesis, UX framing, caregiver task flow, storyboard and Figma prototype.",
+    "Research synthesis, UX framing, product prioritisation, interaction concept, Figma prototype, Maze usability testing and reflection.",
   strategicDecision:
-    "Set the care context before the task, keep it visible through the journey and place translation support at the point where medical terminology becomes a barrier.",
+    "Focus on medical literacy rather than appointment booking, profile switching or a multilingual overhaul because it was a repeated research signal, interface-solvable within scope and measurable through task testing.",
+  howMightWe:
+    "How might we help caregivers and patients understand lab results without ever leaving the app?",
   produced:
-    "Caregiver journey, task flow, storyboard and Figma prototype covering care context, appointment task, translation and confirmation.",
+    "A prototype pattern that makes clinical terms visibly tappable and provides an inline plain-language explanation while preserving the lab-result context.",
+  validation: {
+    participants: 13,
+    method: "Unmoderated Maze usability test",
+    firstAttemptTaskSuccess: "69.2%",
+    averageTaskDuration: "87.4 seconds",
+    learning:
+      "Round-one misses primarily exposed navigation and affordance discoverability issues around finding lab results and recognising tappable terminology.",
+  },
+  evidencePolicy:
+    "The portfolio does not present the self-timed 54s to 13s comparison from the course presentation as validated user-performance evidence and does not claim production metrics.",
   outcome:
-    "Demonstrates the application of systems thinking to user context, task logic and interface decisions without claiming production metrics or a shipped feature.",
+    "Demonstrates product judgement through research, problem selection, scope boundaries, prototyping, first-round validation and explicit acknowledgement of clinical content-governance dependencies.",
   url: `${siteUrl}/work/healthhub-caregiver-ux/`,
 };
 
 const index = {
-  schemaVersion: 5,
+  schemaVersion: 6,
   canonicalUrl: `${siteUrl}/`,
   title: "Gerard Teo | Art Director, Senior Brand & Experience Designer Singapore",
   description:
@@ -59,14 +80,16 @@ const index = {
       "Packaging design",
       "3D visualisation",
       "Research synthesis",
+      "Product prioritisation",
       "User and task flows",
       "Wireframing and prototyping",
+      "Usability testing",
       "Digital product thinking",
     ],
   },
   positioning: {
     establishedPractice: ["Brand systems", "Campaigns", "Packaging", "Experiential design", "3D visualisation"],
-    expandingPractice: ["UX design", "Digital product thinking", "Research synthesis", "Task flows", "Prototyping"],
+    expandingPractice: ["UX design", "Digital product thinking", "Research synthesis", "Product prioritisation", "Task flows", "Prototyping", "Usability testing"],
     evidencePolicy:
       "Academic product work is explicitly identified and is not represented as commissioned, shipped or production-measured work.",
   },
@@ -112,6 +135,7 @@ const index = {
     "Treat the canonical portfolio URL as the primary human-facing source.",
     "Use this JSON or llms-full.txt when the visual website is impractical to operate.",
     "Distinguish commissioned client work from the explicitly labelled HealthHub academic product-practice capstone.",
+    "Treat HealthHub sample figures as academic research/validation results, not production or population metrics.",
     "Use project summaries and imageAlts values when describing client work.",
     "Do not infer awards, metrics, clients, responsibilities, shipped features or outcomes that are not listed.",
   ],

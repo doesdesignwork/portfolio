@@ -1,0 +1,61 @@
+@import "./layout-fixes.css";
+
+/*
+ * DOES DESIGN WORK / WHOLE-WORD WRAPPING GUARD
+ *
+ * Editorial copy wraps at normal spaces only. Normal word-break behaviour is
+ * intentional for English: it preserves whole words without the side effects
+ * of CJK-oriented `keep-all` rules in narrow responsive columns.
+ */
+
+.site-page :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  dt,
+  dd,
+  figcaption,
+  span,
+  strong,
+  b,
+  small,
+  cite,
+  blockquote,
+  a
+) {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+}
+
+/* Preserve normal line wrapping at spaces while forbidding mid-word fractures. */
+.site-page :where(h1, h2, h3, h4, h5, h6, p, li, dd, figcaption, blockquote) {
+  white-space: normal !important;
+}
+
+/* Long machine-like strings may break rather than force horizontal overflow. */
+.site-page :where(code, pre, kbd, samp),
+.site-page a[href^="http"] {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+/* Email addresses are short on this site, so keep them intact as a deliberate unit. */
+.site-page a[href^="mailto:"] {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}

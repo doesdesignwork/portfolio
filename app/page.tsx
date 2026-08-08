@@ -73,7 +73,7 @@ const capabilityGroups = [
 
 const sideSections = [
   ["top", "Introduction"],
-  ["work", "Selected work"],
+  ["work", "Featured work"],
   ["archive", "Archive"],
   ["about", "Experience"],
   ["contact", "Contact"],
@@ -143,7 +143,7 @@ export default function Home() {
       <PortfolioMotion />
 
       <a className={styles.skipLink} href="#work">
-        Skip to selected work
+        Skip to featured work
       </a>
 
       <header className={`${styles.header} brand-header`}>
@@ -175,13 +175,6 @@ export default function Home() {
         data-side-index
         data-active-section="top"
       >
-        <div>
-          <span>GT</span>
-          <span data-section-counter aria-live="polite">
-            <b data-section-counter-current>01</b>
-            <span> / 05</span>
-          </span>
-        </div>
         <nav>
           {sideSections.map(([id, label], index) => (
             <Link
@@ -232,7 +225,7 @@ export default function Home() {
                 products, campaigns and experiences that hold together in the real world.
               </p>
               <div className={styles.heroActions}>
-                <Link href="#work">View selected work</Link>
+                <Link href="#work">View Work</Link>
                 <Link href="/cv/">View my CV</Link>
               </div>
             </div>
@@ -307,7 +300,7 @@ export default function Home() {
 
         <section id="work" className={styles.selectedWork} aria-labelledby="work-title">
           <header className={`${styles.sectionHeader} brand-section-head`}>
-            <p>Selected case studies</p>
+            <p>Featured case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
               Brand systems, product thinking, spatial experience and consumer craft. The
@@ -327,44 +320,44 @@ export default function Home() {
             <Link
               className="product-study-card"
               href="/work/healthhub-caregiver-ux/"
-              aria-label="View HealthHub caregiver UX capstone case study"
+              aria-label="View HealthHub medical literacy UX capstone case study"
               data-reveal="case-study"
               data-reveal-delay="1"
             >
               <span className="product-study-visual">
                 <span className="product-study-copy">
-                  <span className="product-study-kicker">Product practice / NTU PaCE capstone</span>
-                  <h3>Design for the person doing the caring.</h3>
+                  <span className="product-study-kicker">UX / Product capstone · NTU PaCE 2026</span>
+                  <h3>Put the explanation where the confusion is.</h3>
                   <span>
-                    A caregiver journey built around patient context, appointment tasks and
-                    translation at the point of need.
+                    A medical-literacy concept for HealthHub lab results, shaped by 76 survey
+                    responses, 10 interviews and first-round Maze usability testing.
                   </span>
                 </span>
                 <span className="product-study-flow" aria-hidden="true">
                   <span className="product-flow-step">
                     <b>01</b>
-                    <span>Care context</span>
+                    <span>Lab result</span>
                   </span>
                   <span className="product-flow-step">
                     <b>02</b>
-                    <span>Appointment task</span>
+                    <span>Unfamiliar term</span>
                   </span>
                   <span className="product-flow-step">
                     <b>03</b>
-                    <span>Translation layer</span>
+                    <span>Tap for plain language</span>
                   </span>
                   <span className="product-flow-step">
                     <b>04</b>
-                    <span>Confident confirmation</span>
+                    <span>Stay in the app</span>
                   </span>
                 </span>
               </span>
               <span className="product-study-caption">
                 <span>
-                  <strong>HealthHub caregiver UX</strong>
-                  <small>Research · Task Flow · Figma Prototype</small>
+                  <strong>HealthHub medical literacy</strong>
+                  <small>Research · Prioritisation · Prototype · Usability testing</small>
                 </span>
-                <span>Keeping the right patient context visible through the task.</span>
+                <span>A small UI intervention aimed at a specific comprehension and trust gap.</span>
                 <span aria-hidden="true">↗</span>
               </span>
             </Link>
@@ -386,7 +379,7 @@ export default function Home() {
 
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
           <header className={`${styles.archiveHeader} brand-section-head`}>
-            <p>Selected archive</p>
+            <p>Archive</p>
             <h2 id="archive-title">More of the work.</h2>
           </header>
 

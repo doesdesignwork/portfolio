@@ -58,6 +58,12 @@ jobs:
       - name: Audit product transition proof
         run: node scripts/transition-proof-audit.mjs
 
+      - name: Audit kinetic heading motion
+        run: node scripts/heading-motion-audit.mjs
+
+      - name: Audit whole-word wrapping
+        run: node scripts/word-break-audit.mjs
+
       - name: Audit minimum font size
         run: node scripts/font-size-audit.mjs
 

@@ -55,10 +55,22 @@
   line-height: 1.5 !important;
 }
 
-/* Deliberate compact scale for the desktop side-menu navigation only. */
+/*
+ * Deliberate compact scale for the desktop side-menu navigation only.
+ * Five fixed 14px vertical labels occupy a 70px track. The track starts at
+ * the rail's 15px left padding, so its right edge lands at 85px, matching the
+ * intended inner alignment line rather than the 128px outer rail border.
+ */
+.site-page--home aside[data-side-index] nav {
+  width: 70px !important;
+  align-self: flex-start !important;
+  gap: 0 !important;
+}
+
 .site-page--home aside[data-side-index] nav a {
+  flex: 0 0 14px !important;
   font-size: 14px !important;
-  line-height: 1.45 !important;
+  line-height: 1 !important;
 }
 
 .site-page--home .brand-home-manifesto > p:first-child,

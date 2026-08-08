@@ -245,8 +245,9 @@ export default function CvPage() {
                 Management.
               </p>
               <p>
-                Course work included a HealthHub caregiver and medical-translation
-                flow, plus an OCBC subscription-management sprint.
+                Course work included a HealthHub medical-literacy capstone using
+                survey research, interviews, product prioritisation, prototyping and
+                Maze usability testing, plus an OCBC subscription-management sprint.
               </p>
               <p>
                 <strong>(SCTP) Associate Data Analyst</strong>
