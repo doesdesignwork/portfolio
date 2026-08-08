@@ -159,6 +159,14 @@ export default function SiteImageMotion() {
       root.classList.add("image-motion-enabled", "text-motion-enabled");
       if (reduceMotion.matches) root.classList.add("motion-reduced");
 
+      document
+        .querySelectorAll<HTMLElement>("aside[data-side-index] > div:first-child")
+        .forEach((marker) => {
+          if (marker.querySelector("[data-section-counter]") || marker.textContent?.includes("GT")) {
+            marker.remove();
+          }
+        });
+
       if (!reduceMotion.matches) {
         observer = new IntersectionObserver(
           (entries) => {
