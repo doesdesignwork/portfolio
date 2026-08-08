@@ -3,8 +3,9 @@
 /*
  * DOES DESIGN WORK / WHOLE-WORD WRAPPING GUARD
  *
- * Editorial copy should wrap only at natural spaces. Several display statements
- * are semantic <p> or <span> elements, so protecting headings alone is not enough.
+ * Editorial copy wraps at normal spaces only. Normal word-break behaviour is
+ * intentional for English: it preserves whole words without the side effects
+ * of CJK-oriented `keep-all` rules in narrow responsive columns.
  */
 
 .site-page :where(
@@ -28,7 +29,7 @@
   a
 ) {
   overflow-wrap: normal !important;
-  word-break: keep-all !important;
+  word-break: normal !important;
   hyphens: none !important;
   -webkit-hyphens: none !important;
 }
@@ -48,5 +49,5 @@
 /* Email addresses are short on this site, so keep them intact as a deliberate unit. */
 .site-page a[href^="mailto:"] {
   overflow-wrap: normal !important;
-  word-break: keep-all !important;
+  word-break: normal !important;
 }
