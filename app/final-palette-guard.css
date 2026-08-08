@@ -1,0 +1,38 @@
+/*
+ * Final palette guard.
+ * The portfolio's visual rule is deliberately simple:
+ * violet is the signal on paper; lime is the signal on gunmetal.
+ *
+ * Page-level CSS modules can be emitted after global styles by Next.js, so these
+ * selectors use enough specificity to preserve that rule across route chunks.
+ */
+
+/* Paper: violet signal. */
+.site-page.site-page--home main #top h1 em,
+.site-page.site-page--home aside[data-side-index] nav a[aria-current="location"],
+.site-page.site-page--home aside[data-side-index] nav a:hover,
+.site-page.site-page--home aside[data-side-index] nav a:focus-visible,
+.site-page.site-page--project main .brand-project-gallery h2,
+.site-page.site-page--cv main .brand-cv-section > h2,
+.site-page.site-page--cv main .brand-cv-title {
+  color: var(--brand-signal) !important;
+}
+
+/* Gunmetal: lime signal. */
+.site-page.site-page--home main .brand-home-manifesto h2,
+.site-page.site-page--home main .brand-home-manifesto > p:first-child,
+.site-page.site-page--home main #about h2,
+.site-page.site-page--home main #about .brand-capability-matrix h3,
+.site-page.site-page--home > footer#contact .brand-contact-links [data-contact-link] > span,
+.site-page.site-page--home > footer#contact .brand-contact-links [data-contact-link]:hover > span,
+.site-page.site-page--home > footer#contact .brand-contact-links [data-contact-link]:focus-visible > span,
+.site-page.site-page--home > footer#contact [class*="footerLine"] > a,
+.site-page.site-page--project main article .brand-project-story h2,
+.site-page.site-page--project main article .brand-project-story h3,
+.site-page.site-page--project main article .brand-project-nav small,
+.site-page.site-page--project main article .brand-project-nav a:hover strong,
+.site-page.site-page--project main article .brand-project-nav a:focus-visible strong,
+.site-page.site-page--cv .brand-cta > p,
+.site-page.site-page--healthhub > footer p {
+  color: var(--brand-signal-on-dark) !important;
+}
