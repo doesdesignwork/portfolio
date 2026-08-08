@@ -7,6 +7,14 @@ const clamp = (value: number, minimum: number, maximum: number) =>
 
 const sectionOrder = ["top", "work", "archive", "about", "contact"] as const;
 
+const labelReplacements = new Map([
+  ["Selected work", "Featured work"],
+  ["Skip to selected work", "Skip to featured work"],
+  ["View selected work", "View featured work"],
+  ["Selected case studies", "Featured case studies"],
+  ["Selected archive", "Archive"],
+]);
+
 export default function PortfolioMotion() {
   useEffect(() => {
     const root = document.documentElement;
@@ -25,6 +33,16 @@ export default function PortfolioMotion() {
     const counterCurrent = document.querySelector<HTMLElement>(
       "[data-section-counter-current]",
     );
+
+    const restoredLabels: Array<[HTMLElement, string]> = [];
+    document.querySelectorAll<HTMLElement>(".site-page *").forEach((element) => {
+      if (element.children.length > 0) return;
+      const current = element.textContent?.trim() ?? "";
+      const replacement = labelReplacements.get(current);
+      if (!replacement) return;
+      restoredLabels.push([element, element.textContent ?? current]);
+      element.textContent = replacement;
+    });
 
     root.classList.add("motion-enabled");
 
@@ -180,6 +198,9 @@ export default function PortfolioMotion() {
       window.clearTimeout(counterTimer);
       sectionLinks.forEach((link) => {
         link.removeAttribute("data-section-ready");
+      });
+      restoredLabels.forEach(([element, original]) => {
+        element.textContent = original;
       });
       root.classList.remove("motion-enabled", "motion-reduced");
     };
