@@ -228,9 +228,9 @@ export default function SiteImageMotion() {
 
       const largeHeadings = Array.from(
         document.querySelectorAll<HTMLElement>(
-          ".site-page main h1, .site-page main h2, .site-page article h1, .site-page article h2, .site-page footer h2",
+          ".site-page main h1, .site-page main h2, .site-page main h3, .site-page article h1, .site-page article h2, .site-page article h3, .site-page footer h2, .site-page footer h3",
         ),
-      );
+      ).filter((heading) => Number.parseFloat(window.getComputedStyle(heading).fontSize) >= 30);
       largeHeadings.forEach(registerHeading);
 
       const counters = Array.from(
