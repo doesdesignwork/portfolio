@@ -47,11 +47,39 @@ export default function SiteImageMotion() {
     const headings = new Set<HTMLElement>();
     const loadListeners: Array<[HTMLImageElement, () => void]> = [];
     const counterFrames = new Set<number>();
+    const protectedTextNodes: Array<[Text, string]> = [];
     let observer: IntersectionObserver | null = null;
     let headingObserver: IntersectionObserver | null = null;
     let counterObserver: IntersectionObserver | null = null;
     let frame = 0;
     let setupFrame = 0;
+
+    const protectWholeWords = () => {
+      document.querySelectorAll<HTMLElement>(".site-page").forEach((pageRoot) => {
+        const walker = document.createTreeWalker(pageRoot, NodeFilter.SHOW_TEXT);
+        let node = walker.nextNode();
+
+        while (node) {
+          const textNode = node as Text;
+          const parent = textNode.parentElement;
+          const original = textNode.data;
+
+          if (
+            parent &&
+            !parent.closest("script, style, noscript, code, pre, kbd, samp, textarea") &&
+            /\p{L}-\p{L}/u.test(original)
+          ) {
+            const protectedText = original.replace(/(\p{L})-(?=\p{L})/gu, "$1‑");
+            if (protectedText !== original) {
+              protectedTextNodes.push([textNode, original]);
+              textNode.data = protectedText;
+            }
+          }
+
+          node = walker.nextNode();
+        }
+      });
+    };
 
     const update = () => {
       frame = 0;
@@ -180,6 +208,8 @@ export default function SiteImageMotion() {
     const setup = () => {
       root.classList.add("image-motion-enabled", "text-motion-enabled");
       if (reduceMotion.matches) root.classList.add("motion-reduced");
+
+      protectWholeWords();
 
       document
         .querySelectorAll<HTMLElement>("aside[data-side-index] > div:first-child")
@@ -320,6 +350,9 @@ export default function SiteImageMotion() {
         counter.removeAttribute("data-scroll-counter");
         counter.removeAttribute("data-counter-animated");
         counter.removeAttribute("data-counter-template");
+      });
+      protectedTextNodes.forEach(([textNode, original]) => {
+        if (textNode.isConnected) textNode.data = original;
       });
       root.classList.remove("image-motion-enabled", "text-motion-enabled", "motion-reduced");
     };
