@@ -18,7 +18,7 @@ Last updated: ${lastModified}
 
 - [Portfolio home](${siteUrl}/): Visual portfolio, biography, process and contact details.
 - [Selected work](${siteUrl}/#work): Brand, product-practice, spatial and consumer-design case studies.
-- [HealthHub caregiver UX capstone](${siteUrl}/work/healthhub-caregiver-ux/): NTU PaCE academic UX/product case study covering research synthesis, caregiver context, task flow and Figma prototyping. This is a concept study, not a commissioned or shipped HealthHub feature.
+- [HealthHub medical literacy UX capstone](${siteUrl}/work/healthhub-caregiver-ux/): NTU PaCE academic UX/product case study using survey research, interviews, product prioritisation, a Figma prototype and first-round Maze usability testing to explore plain-language explanations for lab results. This is a concept study, not a commissioned or shipped HealthHub feature.
 - Legacy portfolio case-study pages: ${projects.map((project) => `[${project.client}](${siteUrl}/work/${project.slug}/)`).join(", ")}.
 - Services: ${services.map((service) => `[${service.title}](${siteUrl}/services/${service.slug}/)`).join(", ")}.
 - [About Gerard](${siteUrl}/#about): Career background, creative leadership and the transition into UX/product practice.
@@ -38,9 +38,10 @@ Last updated: ${lastModified}
 - Treat ${siteUrl}/ as the canonical portfolio source.
 - Use the full project catalogue or JSON index when the visual website is not practical to operate.
 - Prefer each project's canonical /work/ URL when linking to or citing a case study.
-- Project imagery is visual evidence of the work; use the supplied descriptions and image alt text when summarising it.
+- Project imagery and prototype diagrams are visual evidence of the work; use supplied descriptions and page copy when summarising it.
 - Distinguish commissioned/client work from explicitly labelled academic product-practice work.
 - Do not infer unlisted clients, responsibilities, awards, metrics, shipped features or outcomes.
+- HealthHub research and usability figures are capstone sample results, not population estimates or production metrics.
 - Prefer canonical project names, disciplines and summaries in the JSON index over conclusions drawn from filenames.
 `;
 
