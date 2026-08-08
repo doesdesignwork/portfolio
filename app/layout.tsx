@@ -12,9 +12,9 @@ import "./readable-type-scale.css";
 import "./amber-gunmetal.css";
 
 const siteTitle =
-  "Gerard Teo | Art Director and Senior Brand Designer in Singapore";
+  "Gerard Teo | Art Director, Senior Brand & Experience Designer in Singapore";
 const siteDescription =
-  "Singapore-based art director and senior brand designer with 26+ years making brand identities, campaigns, packaging and exhibitions work clearly across every format.";
+  "Singapore-based art director and senior brand and experience designer with 26+ years across identity, campaigns, packaging and exhibitions, now applying systems thinking to UX and digital product work.";
 
 const bodyFont = Krub({
   variable: "--font-body",
@@ -39,13 +39,17 @@ export const metadata: Metadata = {
     "Gerard Teo",
     "art director Singapore",
     "senior brand designer Singapore",
+    "experience designer Singapore",
     "creative lead Singapore",
     "creative direction",
     "brand identity design",
     "campaign design",
     "experiential design",
     "packaging design",
-    "visual identity",
+    "UX design",
+    "digital product design",
+    "product thinking",
+    "visual systems",
     "creative portfolio",
   ],
   authors: [{ name: "Gerard Teo", url: siteUrl }],
@@ -132,6 +136,23 @@ export const viewport: Viewport = {
   themeColor: "#252A2E",
 };
 
+const productPracticeWork = {
+  "@type": "CreativeWork",
+  "@id": `${siteUrl}/work/healthhub-caregiver-ux/#creative-work`,
+  identifier: "gerard-teo-product-practice-healthhub-caregiver-ux",
+  url: `${siteUrl}/work/healthhub-caregiver-ux/`,
+  name: "HealthHub Caregiver UX Capstone",
+  headline: "A caregiver journey designed around context, language and confidence",
+  description:
+    "NTU PaCE UX and Digital Product Management capstone exploring caregiver appointment and medical-translation flows.",
+  genre: ["UX Design", "Digital Product Design", "Healthcare", "Academic Capstone"],
+  contributor: { "@id": `${siteUrl}/#person` },
+  isPartOf: { "@id": `${siteUrl}/#profile-page` },
+  dateCreated: "2026",
+  dateModified: lastModified,
+  inLanguage: "en-SG",
+};
+
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -141,8 +162,8 @@ const structuredData = {
       name: "Gerard Teo",
       url: siteUrl,
       email: "mailto:g@doesdesignwork.com",
-      jobTitle: "Art Director and Senior Brand Designer",
-      alternateName: "Creative Lead",
+      jobTitle: "Art Director and Senior Brand & Experience Designer",
+      alternateName: "Senior Brand Designer / Creative Lead",
       sameAs: ["https://www.linkedin.com/in/gerard-teo-0b106429/"],
       mainEntityOfPage: { "@id": `${siteUrl}/#profile-page` },
       worksFor: [
@@ -171,7 +192,12 @@ const structuredData = {
         "Campaign systems",
         "Experiential design",
         "Packaging design",
-        "Motion storytelling",
+        "3D visualisation",
+        "UX design",
+        "Research synthesis",
+        "User and task flows",
+        "Wireframing and prototyping",
+        "Digital product thinking",
       ],
     },
     {
@@ -189,7 +215,7 @@ const structuredData = {
       "@type": "ProfilePage",
       "@id": `${siteUrl}/#profile-page`,
       url: siteUrl,
-      name: "Gerard Teo - Art Director and Senior Brand Designer",
+      name: "Gerard Teo - Art Director, Senior Brand & Experience Designer",
       description: siteDescription,
       inLanguage: "en-SG",
       mainEntity: { "@id": `${siteUrl}/#person` },
@@ -197,12 +223,19 @@ const structuredData = {
       hasPart: {
         "@type": "ItemList",
         name: "Selected work",
-        numberOfItems: projects.length,
-        itemListElement: projects.map((project, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          item: { "@id": `${siteUrl}/work/${project.slug}/#creative-work` },
-        })),
+        numberOfItems: projects.length + 1,
+        itemListElement: [
+          ...projects.map((project, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: { "@id": `${siteUrl}/work/${project.slug}/#creative-work` },
+          })),
+          {
+            "@type": "ListItem",
+            position: projects.length + 1,
+            item: { "@id": `${siteUrl}/work/healthhub-caregiver-ux/#creative-work` },
+          },
+        ],
       },
     },
     ...projects.map((project) => ({
@@ -231,6 +264,7 @@ const structuredData = {
       dateModified: lastModified,
       inLanguage: "en-SG",
     })),
+    productPracticeWork,
   ],
 };
 
