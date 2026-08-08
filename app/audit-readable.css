@@ -1,4 +1,4 @@
-/* Keep all audit-led additions inside the portfolio's established readable type floor. */
+/* Keep audit-led additions inside the portfolio's established readable type floor. */
 
 .site-page--home .audit-product-signal > p,
 .site-page--home .audit-product-signal span,
@@ -16,13 +16,11 @@
   font-size: var(--brand-readable-min, 16px) !important;
 }
 
-.site-page--healthhub :where(p, span, small, b, strong, dt, dd, a) {
-  font-size: max(1em, var(--brand-readable-min, 16px)) !important;
-}
-
-.site-page--healthhub :where(p, dd, small) {
-  line-height: 1.5 !important;
-}
+/*
+ * HealthHub uses route-local typography rules so display statistics, quotes and
+ * prototype content can keep their intended hierarchy. The route stylesheet
+ * explicitly lifts utility copy and small interface labels to the 16px floor.
+ */
 
 @media (max-width: 640px) {
   .site-page.site-page--home header.brand-header nav {
