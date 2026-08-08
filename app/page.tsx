@@ -73,7 +73,7 @@ const capabilityGroups = [
 
 const sideSections = [
   ["top", "Introduction"],
-  ["work", "Selected work"],
+  ["work", "Featured work"],
   ["archive", "Archive"],
   ["about", "Experience"],
   ["contact", "Contact"],
@@ -143,7 +143,7 @@ export default function Home() {
       <PortfolioMotion />
 
       <a className={styles.skipLink} href="#work">
-        Skip to selected work
+        Skip to featured work
       </a>
 
       <header className={`${styles.header} brand-header`}>
@@ -225,7 +225,7 @@ export default function Home() {
                 products, campaigns and experiences that hold together in the real world.
               </p>
               <div className={styles.heroActions}>
-                <Link href="#work">View selected work</Link>
+                <Link href="#work">View Work</Link>
                 <Link href="/cv/">View my CV</Link>
               </div>
             </div>
@@ -300,7 +300,7 @@ export default function Home() {
 
         <section id="work" className={styles.selectedWork} aria-labelledby="work-title">
           <header className={`${styles.sectionHeader} brand-section-head`}>
-            <p>Selected case studies</p>
+            <p>Featured case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
               Brand systems, product thinking, spatial experience and consumer craft. The
@@ -379,7 +379,7 @@ export default function Home() {
 
         <section id="archive" className={styles.archive} aria-labelledby="archive-title">
           <header className={`${styles.archiveHeader} brand-section-head`}>
-            <p>Selected archive</p>
+            <p>Archive</p>
             <h2 id="archive-title">More of the work.</h2>
           </header>
 
