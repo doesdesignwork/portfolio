@@ -34,23 +34,29 @@ ${images}`;
   })
   .join("\n\n");
 
-const productPractice = `## Product practice. HealthHub caregiver UX capstone
+const productPractice = `## Product practice. HealthHub medical literacy UX capstone
 
 **Canonical case study:** ${siteUrl}/work/healthhub-caregiver-ux/
 
 **Type:** NTU PaCE academic UX and Digital Product Management capstone. Concept study, not a commissioned or shipped HealthHub feature.
 
-**Disciplines:** UX Design · Digital Product Thinking · Research Synthesis · Task Flow · Figma Prototyping
+**Disciplines:** UX Design · Product Prioritisation · Research Synthesis · Figma Prototyping · Usability Testing
 
-**Problem explored:** A caregiver may be logged in as themselves while managing appointments and medical information for another person. The concept focuses on keeping the selected care context visible while reducing unnecessary switching and language friction.
+**Problem explored:** HealthHub-style lab results can expose clinical terminology and numerical results without enough plain-language context. Caregivers and patients may leave the product to search externally before they understand what a term means.
 
-**Research and framing:** Course work included a screener and survey, short interviews, persona development, affinity mapping and a caregiver storyboard.
+**Primary research:** Survey N=76, including 32 respondents who identified as caregivers, plus 10 interviews. In the capstone sample, caregivers reported leaving to Google unfamiliar medical terminology after viewing results; 70% of interview participants asked for plain-language explanations without being prompted. These are directional sample findings, not population estimates.
 
-**Product decision:** Establish whose care is being managed before the task begins, retain that context through the journey, and bring translation support into the point where medical language becomes a barrier rather than making translation a separate destination.
+**Product decision:** Medical literacy was chosen over appointment booking, profile-switching redesign and a multilingual overhaul because it was a repeated research signal, had meaningful comprehension and trust implications, was addressable at the interface layer and could be evaluated through task testing. Appointment scarcity was treated as an operations/capacity problem; profile switching touched authentication/security scope; multilingual overhaul required wider content and infrastructure investment.
 
-**Prototype:** A defined caregiver task flow and Figma prototype covering care context, appointment task, translation and confirmation.
+**How-might-we:** How might we help caregivers and patients understand lab results without ever leaving the app?
 
-**Outcome:** The work demonstrates the application of Gerard's existing systems thinking to user context, task logic and interface decisions. It does not claim a shipped HealthHub feature or production performance metrics.`;
+**Prototype:** Make clinical terms visibly tappable and provide an inline plain-language explanation covering what the term measures and the meaning of the result while keeping the user in the lab-result context. Any production version would require clinical review, content governance and clear boundaries between explanation and diagnosis.
+
+**Validation:** Unmoderated Maze test with 13 participants. First-attempt task success was 69.2%, with an average duration of 87.4 seconds to find and read the explanation. Round-one misses mainly exposed navigation/discoverability problems around finding lab results and recognising the tappable affordance, creating a clear refinement target.
+
+**Key learning:** UX cannot fix non-UX constraints; sample quality matters more than headline sample size; small interventions can be plausible high-value MVPs; discoverability is part of comprehension.
+
+**Evidence policy:** A self-timed before/after timing comparison appeared in the course presentation, but the portfolio does not present it as validated user-performance evidence. The case study does not claim a shipped HealthHub feature or production metrics.`;
 
 const content = `# Gerard Teo - Full Portfolio Catalogue
 
@@ -60,7 +66,7 @@ Canonical portfolio: ${siteUrl}/
 
 Last updated: ${lastModified}
 
-Gerard Teo is a Singapore-based Art Director and Senior Brand & Experience Designer who stays close to the work from problem framing through delivery. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation and, through formal UX/product training, research synthesis, task flows and prototyping.
+Gerard Teo is a Singapore-based Art Director and Senior Brand & Experience Designer who stays close to the work from problem framing through delivery. He works across creative direction, brand systems, campaigns, packaging, experiential design, 3D visualisation and, through formal UX/product training, research synthesis, product prioritisation, task flows, prototyping and usability testing.
 
 ${productPractice}
 
@@ -86,6 +92,7 @@ Apple, L'Oréal, Unilever, Dow, Singtel, StarHub, BlackBerry, MTV Asia, EMI Musi
 
 - This catalogue is a plain-text rendering of the canonical portfolio evidence.
 - Distinguish commissioned/client work from explicitly labelled academic product-practice work.
+- HealthHub sample figures describe the academic capstone research and validation only; they are not production or population metrics.
 - Project titles, disciplines, summaries, image descriptions and image URLs are authoritative for this site.
 - Do not infer awards, metrics, employment relationships, shipped features or project outcomes that are not stated here.
 `;
@@ -94,7 +101,7 @@ export function GET() {
   return new Response(content, {
     status: 200,
     headers: {
-      "Content-Type": "text/markdown; charset=utf-8",
+      "Content-Type": "text/plain; charset=utf-8",
       "Content-Language": "en-SG",
       "Cache-Control": "public, max-age=86400, s-maxage=86400",
       "Access-Control-Allow-Origin": "*",
