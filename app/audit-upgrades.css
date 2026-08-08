@@ -1,0 +1,411 @@
+/*
+ * DOES DESIGN WORK / AUDIT-LED PORTFOLIO UPGRADES
+ *
+ * Adds product-transition proof, tighter hierarchy and better mobile information
+ * architecture without replacing the existing brand system.
+ */
+
+.site-page--home .audit-product-signal {
+  margin: clamp(30px, 4vw, 54px) 0 0;
+  padding: 18px 0 0;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 68px);
+  border-top: 1px solid var(--brand-line);
+}
+
+.site-page--home .audit-product-signal > p {
+  margin: 0;
+  color: var(--brand-muted);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-page--home .audit-product-signal > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 22px;
+}
+
+.site-page--home .audit-product-signal strong {
+  max-width: 42ch;
+  font-family: var(--brand-font-display);
+  font-size: clamp(22px, 2.1vw, 34px);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+.site-page--home .audit-product-signal span {
+  color: var(--brand-signal);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-page--home .project-evidence {
+  position: absolute;
+  z-index: 4;
+  left: 18px;
+  bottom: 18px;
+  max-width: calc(100% - 36px);
+  padding: 9px 11px;
+  background: color-mix(in srgb, var(--brand-ink) 90%, transparent);
+  color: var(--brand-paper-bright);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  transition: transform var(--brand-motion-standard), background var(--brand-motion-fast);
+}
+
+.site-page--home [class*="projectCard"]:hover .project-evidence,
+.site-page--home [class*="projectCard"]:focus-visible .project-evidence {
+  transform: translateY(-4px);
+  background: var(--brand-signal);
+}
+
+/* Product evidence is intentionally diagrammatic rather than a fake app mockup. */
+.site-page--home .product-study-card {
+  width: 84%;
+  margin-left: auto;
+  display: block;
+}
+
+.site-page--home .product-study-visual {
+  position: relative;
+  min-height: clamp(460px, 48vw, 700px);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(250px, 0.92fr);
+  gap: clamp(22px, 4vw, 60px);
+  padding: clamp(26px, 4vw, 62px);
+  background: var(--brand-ink);
+  color: var(--brand-paper-bright);
+  border: 1px solid color-mix(in srgb, var(--brand-signal-on-dark) 34%, transparent);
+}
+
+.site-page--home .product-study-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 49.85%, rgba(250, 249, 246, 0.09) 50%, transparent 50.15%),
+    linear-gradient(transparent 49.85%, rgba(250, 249, 246, 0.08) 50%, transparent 50.15%);
+  background-size: 76px 76px;
+  mask-image: linear-gradient(to bottom right, rgba(0,0,0,.72), transparent 76%);
+}
+
+.site-page--home .product-study-copy,
+.site-page--home .product-study-flow {
+  position: relative;
+  z-index: 2;
+}
+
+.site-page--home .product-study-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.site-page--home .product-study-kicker {
+  margin: 0;
+  color: var(--brand-signal-on-dark);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-page--home .product-study-copy h3 {
+  max-width: 8.8ch;
+  margin: clamp(48px, 8vw, 110px) 0 0;
+  color: var(--brand-paper-bright) !important;
+  font-family: var(--brand-font-display) !important;
+  font-size: clamp(48px, 6vw, 96px);
+  font-weight: 650;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+}
+
+.site-page--home .product-study-copy > span {
+  max-width: 42ch;
+  margin-top: 32px;
+  color: rgba(250, 249, 246, 0.7);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.5;
+}
+
+.site-page--home .product-study-flow {
+  align-self: center;
+  display: grid;
+  gap: 12px;
+}
+
+.site-page--home .product-flow-step {
+  position: relative;
+  min-height: 84px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(250, 249, 246, 0.2);
+  background: rgba(250, 249, 246, 0.055);
+  transition: transform var(--brand-motion-standard), border-color var(--brand-motion-fast), background var(--brand-motion-fast);
+}
+
+.site-page--home .product-flow-step + .product-flow-step::before {
+  content: "↓";
+  position: absolute;
+  top: -18px;
+  left: 26px;
+  color: var(--brand-signal-on-dark);
+  font-size: 12px;
+}
+
+.site-page--home .product-flow-step b {
+  color: var(--brand-signal-on-dark);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.site-page--home .product-flow-step span {
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.site-page--home .product-study-card:hover .product-flow-step:nth-child(2),
+.site-page--home .product-study-card:focus-visible .product-flow-step:nth-child(2) {
+  transform: translateX(-8px);
+  border-color: var(--brand-signal-on-dark);
+  background: rgba(196, 207, 79, 0.08);
+}
+
+.site-page--home .product-study-caption {
+  padding-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.72fr) minmax(220px, 1.2fr) 34px;
+  gap: 16px;
+  align-items: start;
+  border-top: 1px solid var(--brand-ink);
+}
+
+.site-page--home .product-study-caption strong {
+  display: block;
+  font-size: clamp(20px, 1.55vw, 28px);
+  line-height: 1.2;
+}
+
+.site-page--home .product-study-caption small {
+  display: block;
+  margin-top: 5px;
+  color: var(--brand-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.site-page--home .product-study-caption > span:nth-child(2) {
+  font-family: var(--brand-font-display);
+  font-size: clamp(25px, 2.35vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.site-page--home .product-study-caption > span:last-child {
+  justify-self: end;
+  font-size: 24px;
+  transition: transform var(--brand-motion-fast);
+}
+
+.site-page--home .product-study-card:hover .product-study-caption > span:last-child,
+.site-page--home .product-study-card:focus-visible .product-study-caption > span:last-child {
+  transform: translate(4px, -4px);
+}
+
+/* Four capabilities make the product transition explicit without pretending it replaced the brand practice. */
+.site-page--home .brand-capability-matrix {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.site-page--home .brand-capability-matrix > section {
+  padding-inline: clamp(18px, 2.4vw, 38px);
+}
+
+.site-page--home .brand-capability-matrix > section:first-child {
+  padding-left: 0;
+}
+
+.site-page--home .brand-capability-matrix > section:last-child {
+  padding-right: 0;
+}
+
+/* Secondary statements step back so the homepage has one dominant voice. */
+.site-page--home #work .brand-section-head h2,
+.site-page--home #archive .brand-section-head h2,
+.site-page--home #about .brand-section-head h2,
+.site-page--home .brand-home-process h2 {
+  font-size: clamp(48px, 5.45vw, 92px) !important;
+  line-height: 0.94 !important;
+}
+
+.site-page--home aside[data-side-index] nav a {
+  opacity: 0.48;
+}
+
+.site-page--home aside[data-side-index] nav a[aria-current="location"] {
+  opacity: 1;
+}
+
+.site-page--home .brand-contact-links {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.site-page--home .brand-contact-links a {
+  min-width: 0;
+}
+
+@media (max-width: 1279px) {
+  .site-page--home .brand-capability-matrix {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-page--home .brand-capability-matrix > section,
+  .site-page--home .brand-capability-matrix > section:first-child,
+  .site-page--home .brand-capability-matrix > section:last-child {
+    padding: 30px 26px;
+  }
+
+  .site-page--home .brand-capability-matrix > section:nth-child(odd) {
+    padding-left: 0;
+  }
+
+  .site-page--home .brand-capability-matrix > section:nth-child(even) {
+    padding-right: 0;
+    border-left: 1px solid var(--brand-line);
+  }
+
+  .site-page--home .brand-capability-matrix > section:nth-child(n + 3) {
+    border-top: 1px solid var(--brand-line);
+  }
+
+  .site-page--home .brand-contact-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-page--home .brand-contact-links a:nth-child(3) {
+    border-left: 0 !important;
+    border-top: 1px solid rgba(250, 249, 246, 0.22);
+  }
+
+  .site-page--home .brand-contact-links a:nth-child(4) {
+    border-top: 1px solid rgba(250, 249, 246, 0.22);
+  }
+}
+
+@media (max-width: 800px) {
+  .site-page--home .audit-product-signal {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .site-page--home .product-study-card {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .site-page--home .product-study-visual {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+  }
+
+  .site-page--home .product-study-copy h3 {
+    margin-top: 52px;
+    max-width: 10ch;
+    font-size: clamp(48px, 14vw, 76px);
+  }
+
+  .site-page--home .product-study-flow {
+    margin-top: 44px;
+  }
+
+  .site-page--home .product-study-caption {
+    grid-template-columns: minmax(0, 1fr) 28px;
+  }
+
+  .site-page--home .product-study-caption > span:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .site-page--home .product-study-caption > span:last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .site-page--home .brand-contact-links {
+    grid-template-columns: 1fr;
+  }
+
+  .site-page--home .brand-contact-links a,
+  .site-page--home .brand-contact-links a:nth-child(3),
+  .site-page--home .brand-contact-links a:nth-child(4) {
+    border-left: 0 !important;
+    border-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Keep About available. The previous rule removed it to solve header pressure. */
+  .site-page--home header.brand-header nav a:nth-child(2) {
+    display: inline-flex !important;
+  }
+
+  .site-page--home header.brand-header {
+    padding-inline: 10px 12px !important;
+  }
+
+  .site-page--home header.brand-header nav {
+    gap: 6px !important;
+  }
+
+  .site-page--home header.brand-header nav a {
+    min-width: auto !important;
+    padding-inline: 5px;
+    font-size: 9.5px !important;
+    letter-spacing: 0.055em !important;
+  }
+
+  .site-page--home .brand-capability-matrix {
+    grid-template-columns: 1fr;
+  }
+
+  .site-page--home .brand-capability-matrix > section,
+  .site-page--home .brand-capability-matrix > section:first-child,
+  .site-page--home .brand-capability-matrix > section:last-child,
+  .site-page--home .brand-capability-matrix > section:nth-child(odd),
+  .site-page--home .brand-capability-matrix > section:nth-child(even) {
+    padding: 28px 0;
+    border-left: 0;
+  }
+
+  .site-page--home .brand-capability-matrix > section + section {
+    border-top: 1px solid var(--brand-line);
+  }
+
+  .site-page--home .project-evidence {
+    left: 12px;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+  }
+}
