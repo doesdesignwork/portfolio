@@ -1,21 +1,44 @@
 /*
  * DOES DESIGN WORK / INTERACTION POLISH
  *
- * Final interaction layer for the persistent navigation and availability CTA.
- * Keeps the site editorial at rest, then adds a stronger response on intent.
+ * Final interaction layer for persistent navigation, the availability CTA,
+ * sitewide heading motion and scroll-triggered statistic counters.
  */
 
 /* --------------------------------------------------------------------------
-   Frosted translucent top navigation
+   White frosted translucent top navigation
    -------------------------------------------------------------------------- */
 
 .brand-header,
 .interior-header {
-  background: rgba(37, 42, 46, 0.62) !important;
-  border-bottom-color: rgba(250, 249, 246, 0.16) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(1.32) contrast(1.02) !important;
-  backdrop-filter: blur(22px) saturate(1.32) contrast(1.02) !important;
-  box-shadow: 0 10px 34px rgba(37, 42, 46, 0.08) !important;
+  background: rgba(250, 249, 246, 0.76) !important;
+  color: var(--brand-ink) !important;
+  border-bottom-color: rgba(21, 21, 21, 0.11) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.48) contrast(1.02) !important;
+  backdrop-filter: blur(24px) saturate(1.48) contrast(1.02) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.58) inset,
+    0 10px 34px rgba(21, 21, 21, 0.065) !important;
+}
+
+.brand-header nav a,
+.interior-header nav a {
+  color: rgba(21, 21, 21, 0.64) !important;
+}
+
+.brand-header nav a:hover,
+.brand-header nav a:focus-visible,
+.interior-header nav a:hover,
+.interior-header nav a:focus-visible {
+  color: var(--brand-ink) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Remove GT / 01–05 rail marker everywhere it can render
+   -------------------------------------------------------------------------- */
+
+aside[data-side-index] > div:first-child {
+  display: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -34,6 +57,15 @@
    Morphing availability CTA / desktop rail
    -------------------------------------------------------------------------- */
 
+/* Kill the older rectangular/orange flash layer. The organic blob remains. */
+aside[data-side-index] [data-availability]::before {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 @media (min-width: 961px) {
   aside[data-side-index] {
     overflow: visible !important;
@@ -46,6 +78,9 @@
     margin: 0 !important;
     overflow: visible !important;
     transform-origin: left bottom;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
   }
 
   aside[data-side-index] [data-availability-link] {
@@ -63,6 +98,9 @@
     line-height: 1.48 !important;
     letter-spacing: 0.035em !important;
     text-transform: uppercase;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
     transition:
       color 420ms ease,
       transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -210,6 +248,56 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   Scroll-linked motion for large headings, sitewide
+   -------------------------------------------------------------------------- */
+
+.text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+  --scroll-heading-y: 0px;
+  --scroll-heading-tilt: 0deg;
+  --scroll-heading-scale: 1;
+  --scroll-heading-opacity: 1;
+  opacity: var(--scroll-heading-opacity);
+  transform:
+    perspective(900px)
+    translate3d(0, var(--scroll-heading-y), 0)
+    rotateX(var(--scroll-heading-tilt))
+    scale(var(--scroll-heading-scale));
+  transform-origin: 0 62%;
+  backface-visibility: hidden;
+  transition: opacity 90ms linear;
+}
+
+.text-motion-enabled .site-page [data-scroll-heading-active="true"] {
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-in statistic counters
+   -------------------------------------------------------------------------- */
+
+.site-page--home .brand-hero-proof dt[data-scroll-counter="true"] {
+  font-variant-numeric: tabular-nums lining-nums;
+  transform-origin: left bottom;
+  will-change: contents, transform;
+}
+
+.site-page--home .brand-hero-proof dt[data-scroll-counter="true"].is-counter-complete {
+  animation: ddw-counter-settle 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes ddw-counter-settle {
+  0% {
+    transform: translate3d(0, 5px, 0) scale(0.975);
+  }
+  58% {
+    transform: translate3d(0, -2px, 0) scale(1.015);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 @keyframes ddw-availability-liquid {
   0% {
     border-radius: 58% 42% 54% 46% / 46% 60% 40% 54%;
@@ -260,12 +348,19 @@
   aside[data-side-index] [data-availability-link]::before,
   aside[data-side-index] [data-availability-link]::after,
   aside[data-side-index] [data-right-work],
-  aside[data-side-index] [data-availability-link] > i {
+  aside[data-side-index] [data-availability-link] > i,
+  .site-page--home .brand-hero-proof dt[data-scroll-counter="true"] {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
 
   aside[data-side-index] [data-right-work] {
     color: var(--brand-signal) !important;
+  }
+
+  .text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
   }
 }
