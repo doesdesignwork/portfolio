@@ -45,3 +45,12 @@
 .site-page.site-page--healthhub > footer p {
   color: var(--brand-signal-on-dark) !important;
 }
+
+/* Browser scroll motion must never leak into generated/printed documents. */
+@media print {
+  .text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
