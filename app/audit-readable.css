@@ -1,0 +1,38 @@
+/* Keep all audit-led additions inside the portfolio's established readable type floor. */
+
+.site-page--home .audit-product-signal > p,
+.site-page--home .audit-product-signal span,
+.site-page--home .project-evidence,
+.site-page--home .product-study-kicker,
+.site-page--home .product-study-copy > span,
+.site-page--home .product-flow-step b,
+.site-page--home .product-flow-step span,
+.site-page--home .product-study-caption small {
+  font-size: var(--brand-readable-min, 16px) !important;
+  line-height: 1.45 !important;
+}
+
+.site-page.site-page--home header.brand-header nav a {
+  font-size: var(--brand-readable-min, 16px) !important;
+}
+
+.site-page--healthhub :where(p, span, small, b, strong, dt, dd, a) {
+  font-size: max(1em, var(--brand-readable-min, 16px)) !important;
+}
+
+.site-page--healthhub :where(p, dd, small) {
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 640px) {
+  .site-page.site-page--home header.brand-header nav {
+    gap: 5px !important;
+  }
+
+  .site-page.site-page--home header.brand-header nav a {
+    min-width: auto !important;
+    padding-inline: 3px !important;
+    font-size: var(--brand-readable-min, 16px) !important;
+    letter-spacing: 0 !important;
+  }
+}

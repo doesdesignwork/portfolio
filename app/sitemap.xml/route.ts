@@ -22,6 +22,11 @@ const imageEntries = (images: string[]) =>
 const staticUrls = [
   { path: "/", priority: "1.0", changefreq: "monthly" },
   { path: "/cv/", priority: "0.9", changefreq: "monthly" },
+  {
+    path: "/work/healthhub-caregiver-ux/",
+    priority: "0.9",
+    changefreq: "monthly",
+  },
   ...services.map((service) => ({
     path: `/services/${service.slug}/`,
     priority: "0.8",

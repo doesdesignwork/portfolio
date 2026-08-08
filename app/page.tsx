@@ -4,6 +4,7 @@ import PortfolioMotion from "./PortfolioMotion";
 import { projects, type Project } from "./data/projects";
 import styles from "./home.module.css";
 import "./numberless-layout.css";
+import "./audit-upgrades.css";
 
 const byNumber = (number: string) => {
   const project = projects.find((item) => item.number === number);
@@ -13,12 +14,12 @@ const byNumber = (number: string) => {
   return project;
 };
 
-const featuredProjects = ["13", "04", "01"].map(byNumber);
-const archiveProjects = ["03", "08", "06", "09", "14", "10", "11", "15"].map(byNumber);
+const featuredProjects = ["13", "08", "04"].map(byNumber);
+const archiveProjects = ["01", "03", "06", "09", "14", "10", "11", "15"].map(byNumber);
 
 const archiveNotes: Record<string, string> = {
+  "01": "A fashion identity built from naming through digital retail and physical touchpoints.",
   "03": "Four premium card ideas, including two DBS co-branded directions.",
-  "08": "A busy technical booth broken into clear, easy-to-find zones.",
   "06": "A property identity drawn directly from the building.",
   "09": "A more consistent identity without erasing the school’s history.",
   "14": "Licensed characters worked into the shoes, not simply printed on top.",
@@ -49,6 +50,16 @@ const capabilityGroups = [
     ],
   },
   {
+    title: "Product",
+    description: "Use research, flows and prototypes to make a task clearer before polishing the interface.",
+    items: [
+      "Research synthesis",
+      "User and task flows",
+      "Wireframing and prototyping",
+      "Product thinking",
+    ],
+  },
+  {
     title: "Delivery",
     description: "Stay with the work through the details, formats and production decisions.",
     items: [
@@ -73,11 +84,13 @@ function ProjectLink({
   priority = false,
   className = "",
   revealIndex = 0,
+  signal,
 }: {
   project: Project;
   priority?: boolean;
   className?: string;
   revealIndex?: number;
+  signal?: string;
 }) {
   return (
     <Link
@@ -99,6 +112,7 @@ function ProjectLink({
           unoptimized
           data-sharp-image="true"
         />
+        {signal && <span className="project-evidence">{signal}</span>}
       </span>
       <span className={styles.projectCaption} data-project-caption>
         <span>
@@ -122,7 +136,7 @@ function ProjectLink({
 }
 
 export default function Home() {
-  const [sgInnovate, sunsilk, modajar] = featuredProjects;
+  const [sgInnovate, dow, sunsilk] = featuredProjects;
 
   return (
     <div className={`${styles.page} site-page site-page--home`}>
@@ -198,7 +212,7 @@ export default function Home() {
         <section id="top" className={styles.hero} aria-labelledby="hero-title">
           <div className={styles.heroIdentity}>
             <p>Gerard Teo</p>
-            <p>Art Director / Senior Brand Designer</p>
+            <p>Art Director / Senior Brand &amp; Experience Designer</p>
           </div>
 
           <div className={styles.heroStatement}>
@@ -215,7 +229,7 @@ export default function Home() {
             <div>
               <p>
                 I make complex briefs easier to understand, then turn them into brands,
-                campaigns and experiences that hold together in the real world.
+                products, campaigns and experiences that hold together in the real world.
               </p>
               <div className={styles.heroActions}>
                 <Link href="#work">View selected work</Link>
@@ -239,6 +253,14 @@ export default function Home() {
             </div>
           </dl>
 
+          <div className="audit-product-signal" data-reveal="intro">
+            <p>Expanding the system</p>
+            <div>
+              <strong>Applying senior visual craft to digital product problems.</strong>
+              <span>UX design · Product thinking · NTU PaCE 2026</span>
+            </div>
+          </div>
+
           <div data-intro-panel data-reveal="intro">
             <p data-intro-kicker>
               Good work gets weaker when thinking, design and production drift apart.
@@ -261,11 +283,11 @@ export default function Home() {
               </div>
               <div>
                 <dt>System</dt>
-                <dd>Rules that keep the work recognisable</dd>
+                <dd>Rules that keep the work recognisable and usable</dd>
               </div>
               <div>
                 <dt>Delivery</dt>
-                <dd>Hands-on through artwork and production</dd>
+                <dd>Hands-on through prototype, artwork and production</dd>
               </div>
             </dl>
           </div>
@@ -288,8 +310,8 @@ export default function Home() {
             <p>Selected case studies</p>
             <h2 id="work-title">Work with a point.</h2>
             <span>
-              A few projects that show how I think, make decisions and carry an idea into
-              the finished work.
+              Brand systems, product thinking, spatial experience and consumer craft. The
+              medium changes; the need for a clear idea does not.
             </span>
           </header>
 
@@ -299,16 +321,65 @@ export default function Home() {
               priority
               className={styles.featureWide}
               revealIndex={0}
+              signal="One identity system / multiple applications"
+            />
+
+            <Link
+              className="product-study-card"
+              href="/work/healthhub-caregiver-ux/"
+              aria-label="View HealthHub caregiver UX capstone case study"
+              data-reveal="case-study"
+              data-reveal-delay="1"
+            >
+              <span className="product-study-visual">
+                <span className="product-study-copy">
+                  <span className="product-study-kicker">Product practice / NTU PaCE capstone</span>
+                  <h3>Design for the person doing the caring.</h3>
+                  <span>
+                    A caregiver journey built around patient context, appointment tasks and
+                    translation at the point of need.
+                  </span>
+                </span>
+                <span className="product-study-flow" aria-hidden="true">
+                  <span className="product-flow-step">
+                    <b>01</b>
+                    <span>Care context</span>
+                  </span>
+                  <span className="product-flow-step">
+                    <b>02</b>
+                    <span>Appointment task</span>
+                  </span>
+                  <span className="product-flow-step">
+                    <b>03</b>
+                    <span>Translation layer</span>
+                  </span>
+                  <span className="product-flow-step">
+                    <b>04</b>
+                    <span>Confident confirmation</span>
+                  </span>
+                </span>
+              </span>
+              <span className="product-study-caption">
+                <span>
+                  <strong>HealthHub caregiver UX</strong>
+                  <small>Research · Task Flow · Figma Prototype</small>
+                </span>
+                <span>Keeping the right patient context visible through the task.</span>
+                <span aria-hidden="true">↗</span>
+              </span>
+            </Link>
+
+            <ProjectLink
+              project={dow}
+              className={styles.featureOffset}
+              revealIndex={2}
+              signal="Visitor flow / four application zones"
             />
             <ProjectLink
               project={sunsilk}
-              className={styles.featureOffset}
-              revealIndex={1}
-            />
-            <ProjectLink
-              project={modajar}
               className={styles.featureNarrow}
-              revealIndex={2}
+              revealIndex={3}
+              signal="Brand / label / pack form / campaign"
             />
           </div>
         </section>
@@ -371,6 +442,12 @@ export default function Home() {
                 and studio co-founder.
               </p>
               <p>
+                More recently I formalised my UX and digital product training. The useful
+                shift is not pretending brand experience makes me a finished product
+                designer; it is applying years of systems thinking to users, tasks, flows
+                and prototypes with more rigour.
+              </p>
+              <p>
                 I still like making the thing. I stay close to the brief, the team and the
                 production details so the idea does not get polished into something bland
                 on its way out the door.
@@ -404,16 +481,16 @@ export default function Home() {
           </header>
           <ol>
             <li data-reveal="process" data-reveal-delay="0" data-process-point>
-              <h3>Get the brief straight</h3>
-              <p>Work out who it is for, what is getting in the way and what must change.</p>
+              <h3>Get the problem straight</h3>
+              <p>Work out who it is for, what is getting in the way and what actually needs to change.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="1" data-process-point>
-              <h3>Find the visual idea</h3>
-              <p>Choose one strong direction and give the team a clear set of rules.</p>
+              <h3>Map the system and the task</h3>
+              <p>Find the relationships, hierarchy, flow and rules before adding visual polish.</p>
             </li>
             <li data-reveal="process" data-reveal-delay="2" data-process-point>
-              <h3>Make it work everywhere</h3>
-              <p>Test the idea across real formats and stay with it through production.</p>
+              <h3>Make, test and carry it through</h3>
+              <p>Prototype the idea across real situations, learn what breaks and stay close through delivery.</p>
             </li>
           </ol>
         </section>
@@ -421,24 +498,33 @@ export default function Home() {
 
       <footer id="contact" className={styles.footer}>
         <div data-reveal="contact" data-reveal-delay="0">
-          <p>Selected roles and collaborations</p>
-          <h2>Got a brief that needs sorting out?</h2>
+          <p>Roles, collaborations and selected projects</p>
+          <h2>Got something that needs sorting out?</h2>
         </div>
         <div className={`${styles.contactLinks} brand-contact-links`}>
           <a
-            href="mailto:g@doesdesignwork.com"
+            href="mailto:g@doesdesignwork.com?subject=Role%20opportunity"
             data-contact-link
             data-reveal="contact"
             data-reveal-delay="0"
           >
-            <span>Email Gerard</span>
-            <small>g@doesdesignwork.com</small>
+            <span>Discuss a role</span>
+            <small>Senior brand, experience, UI/UX or creative lead opportunities</small>
+          </a>
+          <a
+            href="mailto:g@doesdesignwork.com?subject=Project%20enquiry"
+            data-contact-link
+            data-reveal="contact"
+            data-reveal-delay="1"
+          >
+            <span>Discuss a project</span>
+            <small>Brand systems, campaigns, packaging and experience design</small>
           </a>
           <Link
             href="/cv/"
             data-contact-link
             data-reveal="contact"
-            data-reveal-delay="1"
+            data-reveal-delay="2"
           >
             <span>View my CV</span>
             <small>Experience, skills and selected roles</small>
@@ -449,7 +535,7 @@ export default function Home() {
             rel="noopener noreferrer"
             data-contact-link
             data-reveal="contact"
-            data-reveal-delay="2"
+            data-reveal-delay="3"
           >
             <span>LinkedIn</span>
             <small>Connect with me there</small>
@@ -457,7 +543,7 @@ export default function Home() {
         </div>
         <div className={`${styles.footerLine} brand-footer-line`}>
           <span>Gerard Teo</span>
-          <span>Art Director / Senior Brand Designer / Creative Lead</span>
+          <span>Art Director / Senior Brand &amp; Experience Designer</span>
           <Link href="#top">Back to top ↑</Link>
         </div>
       </footer>

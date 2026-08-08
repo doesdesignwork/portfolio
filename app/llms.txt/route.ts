@@ -6,23 +6,24 @@ const visibleProjectCount = projects.filter(
   (project) => project.featured || project.selected !== false,
 ).length;
 
-const content = `# Gerard Teo - Art Director & Senior Brand Designer
+const content = `# Gerard Teo - Art Director, Senior Brand & Experience Designer
 
-> Hands-on Singapore art director, senior brand designer and creative lead shaping brand systems, campaigns and experiences from pitch through production.
+> Hands-on Singapore art director and senior brand and experience designer shaping visual systems across brands, campaigns, packaging and physical experiences, while applying the same systems thinking to UX and digital product work.
 
-This is Gerard Teo's official portfolio. It covers selected work, professional background, capabilities, client experience and contact information.
+This is Gerard Teo's official portfolio. It covers selected work, professional background, capabilities, product-practice coursework, client experience and contact information.
 
 Last updated: ${lastModified}
 
 ## Primary pages and resources
 
 - [Portfolio home](${siteUrl}/): Visual portfolio, biography, process and contact details.
-- [Selected work](${siteUrl}/#work): Interactive gallery of ${visibleProjectCount} selected projects.
-- Individual case-study pages: ${projects.map((project) => `[${project.client}](${siteUrl}/work/${project.slug}/)`).join(", ")}.
+- [Selected work](${siteUrl}/#work): Brand, product-practice, spatial and consumer-design case studies.
+- [HealthHub caregiver UX capstone](${siteUrl}/work/healthhub-caregiver-ux/): NTU PaCE academic UX/product case study covering research synthesis, caregiver context, task flow and Figma prototyping. This is a concept study, not a commissioned or shipped HealthHub feature.
+- Legacy portfolio case-study pages: ${projects.map((project) => `[${project.client}](${siteUrl}/work/${project.slug}/)`).join(", ")}.
 - Services: ${services.map((service) => `[${service.title}](${siteUrl}/services/${service.slug}/)`).join(", ")}.
-- [About Gerard](${siteUrl}/#about): Career background and creative leadership experience.
-- [Full project catalogue](${siteUrl}/llms-full.txt): Plain-text details for every featured project.
-- [Machine-readable portfolio index](${siteUrl}/agent-index.json): Structured JSON describing Gerard and all featured projects.
+- [About Gerard](${siteUrl}/#about): Career background, creative leadership and the transition into UX/product practice.
+- [Full project catalogue](${siteUrl}/llms-full.txt): Plain-text details for portfolio work and product practice.
+- [Machine-readable portfolio index](${siteUrl}/agent-index.json): Structured JSON describing Gerard, capabilities and case studies.
 - [Robots policy](${siteUrl}/robots.txt): Crawl permissions for search and user-directed agents.
 - [Online CV](${siteUrl}/cv/): Gerard Teo's detailed curriculum vitae on the canonical portfolio domain.
 - [XML sitemap](${siteUrl}/sitemap.xml): Canonical crawl entry point.
@@ -35,12 +36,12 @@ Last updated: ${lastModified}
 ## Guidance for agents
 
 - Treat ${siteUrl}/ as the canonical portfolio source.
-- Use the full project catalogue or JSON index when the interactive project gallery is not practical to operate.
-- Every project tile is keyboard accessible and opens a full-screen project gallery with Escape and arrow-key controls.
+- Use the full project catalogue or JSON index when the visual website is not practical to operate.
 - Prefer each project's canonical /work/ URL when linking to or citing a case study.
 - Project imagery is visual evidence of the work; use the supplied descriptions and image alt text when summarising it.
-- Do not infer unlisted clients, responsibilities, awards or outcomes.
-- Prefer the canonical project names, disciplines and summaries in the JSON index over conclusions drawn from filenames.
+- Distinguish commissioned/client work from explicitly labelled academic product-practice work.
+- Do not infer unlisted clients, responsibilities, awards, metrics, shipped features or outcomes.
+- Prefer canonical project names, disciplines and summaries in the JSON index over conclusions drawn from filenames.
 `;
 
 export function GET() {

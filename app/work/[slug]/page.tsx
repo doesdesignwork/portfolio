@@ -12,6 +12,16 @@ type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+type StoryLanguage = {
+  kicker: string;
+  title: string;
+  challenge: string;
+  approach: string;
+  deliverables: string;
+  outcome: string;
+  gallery: string;
+};
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -20,6 +30,92 @@ export function generateStaticParams() {
 
 const getProject = (slug: string) =>
   projects.find((project) => project.slug === slug);
+
+const getStoryLanguage = (discipline: string): StoryLanguage => {
+  if (
+    discipline.includes("Experiential") ||
+    discipline.includes("Exhibition") ||
+    discipline.includes("Environmental")
+  ) {
+    return {
+      kicker: "Experience logic",
+      title: "How the space was organised around the visitor.",
+      challenge: "The visitor problem",
+      approach: "Journey and hierarchy",
+      deliverables: "What shaped the environment",
+      outcome: "What the design changed",
+      gallery: "See the experience in use.",
+    };
+  }
+
+  if (
+    discipline.includes("Packaging") ||
+    discipline.includes("FMCG") ||
+    discipline.includes("Product Range") ||
+    discipline.includes("Label Design")
+  ) {
+    return {
+      kicker: "Range logic",
+      title: "How the system created difference without losing recognition.",
+      challenge: "The shelf problem",
+      approach: "The range system",
+      deliverables: "What changed across the pack",
+      outcome: "The design outcome",
+      gallery: "See the range in use.",
+    };
+  }
+
+  if (
+    discipline.includes("Brand") ||
+    discipline.includes("Identity") ||
+    discipline.includes("Naming") ||
+    discipline.includes("Campaign")
+  ) {
+    return {
+      kicker: "System logic",
+      title: "How the identity idea became a usable system.",
+      challenge: "The brand problem",
+      approach: "The core idea",
+      deliverables: "The system in use",
+      outcome: "The design outcome",
+      gallery: "See the system in use.",
+    };
+  }
+
+  if (discipline.includes("Product Design") || discipline.includes("Product Concepts")) {
+    return {
+      kicker: "Product expression",
+      title: "How the idea was built into the object people would actually meet.",
+      challenge: "The product problem",
+      approach: "The design logic",
+      deliverables: "What was developed",
+      outcome: "The review value",
+      gallery: "See the product direction in use.",
+    };
+  }
+
+  if (discipline.includes("3D Visualisation")) {
+    return {
+      kicker: "Concept logic",
+      title: "How an abstract proposition became something people could evaluate.",
+      challenge: "The communication problem",
+      approach: "The visualisation logic",
+      deliverables: "What was made visible",
+      outcome: "The review value",
+      gallery: "See the concept in use.",
+    };
+  }
+
+  return {
+    kicker: "How the work came together",
+    title: "What needed solving, and how I approached it.",
+    challenge: "The brief",
+    approach: "The idea",
+    deliverables: "What I made",
+    outcome: "What the design changed",
+    gallery: "See the idea in use.",
+  };
+};
 
 const serviceLinks = [
   {
@@ -89,6 +185,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     service.signals.some((signal) => project.discipline.includes(signal)),
   );
   const leadImageDimensions = getImageDimensions(project.images[0]);
+  const storyLanguage = getStoryLanguage(project.discipline);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -221,25 +318,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <section className={`${styles.story} brand-project-story`} aria-labelledby="case-thinking">
             <header>
-              <p>How the work came together</p>
-              <h2 id="case-thinking">What needed solving, and how I approached it.</h2>
+              <p>{storyLanguage.kicker}</p>
+              <h2 id="case-thinking">{storyLanguage.title}</h2>
             </header>
 
             <div className={`${styles.storyFields} brand-story-fields`}>
               <section>
-                <h3>The brief</h3>
+                <h3>{storyLanguage.challenge}</h3>
                 <p>{project.challenge}</p>
               </section>
               <section>
-                <h3>The idea</h3>
+                <h3>{storyLanguage.approach}</h3>
                 <p>{project.approach}</p>
               </section>
               <section>
-                <h3>What I made</h3>
+                <h3>{storyLanguage.deliverables}</h3>
                 <p>{project.deliverables}</p>
               </section>
               <section>
-                <h3>What it achieved</h3>
+                <h3>{storyLanguage.outcome}</h3>
                 <p>{project.outcome}</p>
               </section>
             </div>
@@ -249,7 +346,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <section className={`${styles.gallery} brand-project-gallery`} aria-labelledby="work-shown-title">
               <header>
                 <p>{project.images.length - 1} more view{project.images.length === 2 ? "" : "s"} from the project</p>
-                <h2 id="work-shown-title">See the idea in use.</h2>
+                <h2 id="work-shown-title">{storyLanguage.gallery}</h2>
               </header>
 
               <div className={styles.imageGrid}>

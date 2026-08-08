@@ -30,6 +30,7 @@ const routes = [
   "/services/brand-identity-design-singapore/",
   "/services/experiential-exhibition-design-singapore/",
   "/services/packaging-product-design-singapore/",
+  "/work/healthhub-caregiver-ux/",
   "/work/modajar-fashion-brand-identity/",
   "/work/dow-chinaplas-exhibition-design/",
   "/work/sginnovate-brand-identity/",
@@ -48,7 +49,7 @@ page.setDefaultNavigationTimeout(20_000);
 
 for (const route of routes) {
   try {
-    await page.goto(new URL(route, baseUrl), { waitUntil: "domcontentloaded" });
+    await page.goto(new URL(route, baseUrl).toString(), { waitUntil: "domcontentloaded" });
     await page.evaluate(async () => document.fonts.ready);
 
     const issues = await page.evaluate(
@@ -156,7 +157,7 @@ for (const route of routes) {
           checkColour(".brand-cta > p", expectedColours.lime, "CV gunmetal CTA label");
         }
 
-        if (currentRoute.startsWith("/work/")) {
+        if (currentRoute.startsWith("/work/") && currentRoute !== "/work/healthhub-caregiver-ux/") {
           checkColour(
             ".brand-project-story h2",
             expectedColours.lime,
@@ -166,6 +167,14 @@ for (const route of routes) {
             ".brand-project-gallery h2",
             expectedColours.violet,
             "project paper gallery heading",
+          );
+        }
+
+        if (currentRoute === "/work/healthhub-caregiver-ux/") {
+          checkColour(
+            ".site-page--healthhub footer p",
+            expectedColours.lime,
+            "HealthHub gunmetal CTA label",
           );
         }
 
