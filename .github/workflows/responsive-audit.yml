@@ -55,6 +55,9 @@ jobs:
       - name: Audit responsive layouts
         run: node scripts/responsive-audit.mjs
 
+      - name: Audit product transition proof
+        run: node scripts/transition-proof-audit.mjs
+
       - name: Audit minimum font size
         run: node scripts/font-size-audit.mjs
 
