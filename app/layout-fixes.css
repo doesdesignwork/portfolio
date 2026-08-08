@@ -61,7 +61,7 @@
 
   .site-page--home aside[data-side-index] nav {
     width: auto !important;
-    max-width: 100% !important;
+    max-width: none !important;
     margin: 0 0 auto auto !important;
     padding: 4px 0 0 !important;
     align-self: flex-end !important;
@@ -69,7 +69,7 @@
     flex-direction: row !important;
     justify-content: flex-end !important;
     align-items: flex-start !important;
-    gap: clamp(10px, 0.8vw, 14px) !important;
+    gap: 4px !important;
   }
 
   .site-page--home aside[data-side-index] nav a {
