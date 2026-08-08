@@ -90,6 +90,7 @@
 
 /* --------------------------------------------------------------------------
    Collision guard for large editorial text and kinetic headings.
+   Keep kinetic scaling, but never enlarge beyond the layout box.
    -------------------------------------------------------------------------- */
 
 .site-page :where(
@@ -104,10 +105,15 @@
   min-width: 0 !important;
 }
 
-.site-page [data-scroll-heading-motion="true"] {
+.text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
   position: relative;
   z-index: 1;
   max-width: 100% !important;
+  transform:
+    perspective(900px)
+    translate3d(0, var(--scroll-heading-y), 0)
+    rotateX(var(--scroll-heading-tilt))
+    scale(clamp(0.9, var(--scroll-heading-scale), 1)) !important;
 }
 
 @media (max-width: 1180px) {
