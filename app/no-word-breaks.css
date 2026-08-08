@@ -51,3 +51,11 @@
   overflow-wrap: normal !important;
   word-break: normal !important;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .text-motion-enabled .site-page [data-scroll-heading-motion="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
