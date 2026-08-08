@@ -141,13 +141,13 @@ export const viewport: Viewport = {
 const productPracticeWork = {
   "@type": "CreativeWork",
   "@id": `${siteUrl}/work/healthhub-caregiver-ux/#creative-work`,
-  identifier: "gerard-teo-product-practice-healthhub-caregiver-ux",
+  identifier: "gerard-teo-product-practice-healthhub-medical-literacy",
   url: `${siteUrl}/work/healthhub-caregiver-ux/`,
-  name: "HealthHub Caregiver UX Capstone",
-  headline: "A caregiver journey designed around context, language and confidence",
+  name: "HealthHub Medical Literacy UX Capstone",
+  headline: "Put the explanation where the confusion is",
   description:
-    "NTU PaCE UX and Digital Product Management capstone exploring caregiver appointment and medical-translation flows.",
-  genre: ["UX Design", "Digital Product Design", "Healthcare", "Academic Capstone"],
+    "NTU PaCE UX and Digital Product Management capstone using survey research, interviews, prioritisation, prototyping and Maze usability testing to explore plain-language explanations for lab results.",
+  genre: ["UX Design", "Digital Product Design", "Healthcare", "Usability Testing", "Academic Capstone"],
   contributor: { "@id": `${siteUrl}/#person` },
   isPartOf: { "@id": `${siteUrl}/#profile-page` },
   dateCreated: "2026",
