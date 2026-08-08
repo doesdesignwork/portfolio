@@ -11,6 +11,15 @@ const roundToDevicePixel = (value: number) => {
   return Math.round(value * density) / density;
 };
 
+const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3);
+
+const renderCounterValue = (template: string, progress: number) => {
+  const eased = easeOutCubic(clamp(progress, 0, 1));
+  return template.replace(/\d+/g, (token) =>
+    String(Math.round(Number(token) * eased)),
+  );
+};
+
 export default function SiteImageMotion() {
   const pathname = usePathname();
 
@@ -19,8 +28,13 @@ export default function SiteImageMotion() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const activeTargets = new Set<HTMLElement>();
     const targets = new Set<HTMLElement>();
+    const activeHeadings = new Set<HTMLElement>();
+    const headings = new Set<HTMLElement>();
     const loadListeners: Array<[HTMLImageElement, () => void]> = [];
+    const counterFrames = new Set<number>();
     let observer: IntersectionObserver | null = null;
+    let headingObserver: IntersectionObserver | null = null;
+    let counterObserver: IntersectionObserver | null = null;
     let frame = 0;
     let setupFrame = 0;
 
@@ -39,6 +53,27 @@ export default function SiteImageMotion() {
           clamp((0.5 - progress) * range * 2, -range, range),
         );
         target.style.setProperty("--scroll-image-y", `${offset}px`);
+      });
+
+      activeHeadings.forEach((heading) => {
+        const bounds = heading.getBoundingClientRect();
+        const entryStart = viewportHeight * 0.94;
+        const entryEnd = viewportHeight * 0.34;
+        const progress = clamp(
+          (entryStart - bounds.top) / Math.max(1, entryStart - entryEnd),
+          0,
+          1,
+        );
+        const eased = easeOutCubic(progress);
+        const y = roundToDevicePixel((1 - eased) * 34 - eased * 3);
+        const tilt = (1 - eased) * 1.6;
+        const scale = 0.972 + eased * 0.028;
+        const opacity = 0.28 + eased * 0.72;
+
+        heading.style.setProperty("--scroll-heading-y", `${y}px`);
+        heading.style.setProperty("--scroll-heading-tilt", `${tilt.toFixed(3)}deg`);
+        heading.style.setProperty("--scroll-heading-scale", scale.toFixed(4));
+        heading.style.setProperty("--scroll-heading-opacity", opacity.toFixed(3));
       });
     };
 
@@ -81,8 +116,47 @@ export default function SiteImageMotion() {
       observer?.observe(target);
     };
 
+    const registerHeading = (heading: HTMLElement) => {
+      if (headings.has(heading)) return;
+      headings.add(heading);
+      heading.dataset.scrollHeadingMotion = "true";
+      heading.style.setProperty("--scroll-heading-y", "34px");
+      heading.style.setProperty("--scroll-heading-tilt", "1.6deg");
+      heading.style.setProperty("--scroll-heading-scale", "0.972");
+      heading.style.setProperty("--scroll-heading-opacity", "0.28");
+      headingObserver?.observe(heading);
+    };
+
+    const animateCounter = (counter: HTMLElement) => {
+      if (counter.dataset.counterAnimated === "true") return;
+      const template = counter.dataset.counterTemplate || counter.textContent?.trim() || "";
+      if (!/\d/.test(template)) return;
+
+      counter.dataset.counterAnimated = "true";
+      counter.dataset.counterTemplate = template;
+      const start = performance.now();
+      const duration = 1050;
+
+      const tick = (now: number) => {
+        const progress = clamp((now - start) / duration, 0, 1);
+        counter.textContent = renderCounterValue(template, progress);
+
+        if (progress < 1) {
+          const nextFrame = window.requestAnimationFrame(tick);
+          counterFrames.add(nextFrame);
+        } else {
+          counter.textContent = template;
+          counter.classList.add("is-counter-complete");
+        }
+      };
+
+      counter.textContent = renderCounterValue(template, 0);
+      const counterFrame = window.requestAnimationFrame(tick);
+      counterFrames.add(counterFrame);
+    };
+
     const setup = () => {
-      root.classList.add("image-motion-enabled");
+      root.classList.add("image-motion-enabled", "text-motion-enabled");
       if (reduceMotion.matches) root.classList.add("motion-reduced");
 
       if (!reduceMotion.matches) {
@@ -101,6 +175,35 @@ export default function SiteImageMotion() {
             queueUpdate();
           },
           { rootMargin: "18% 0px 18% 0px", threshold: 0 },
+        );
+
+        headingObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const heading = entry.target as HTMLElement;
+              if (entry.isIntersecting) {
+                activeHeadings.add(heading);
+                heading.dataset.scrollHeadingActive = "true";
+              } else {
+                activeHeadings.delete(heading);
+                heading.removeAttribute("data-scroll-heading-active");
+              }
+            });
+            queueUpdate();
+          },
+          { rootMargin: "12% 0px 12% 0px", threshold: 0 },
+        );
+
+        counterObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const counter = entry.target as HTMLElement;
+              animateCounter(counter);
+              counterObserver?.unobserve(counter);
+            });
+          },
+          { threshold: 0.42, rootMargin: "0px 0px -8% 0px" },
         );
       }
 
@@ -123,6 +226,28 @@ export default function SiteImageMotion() {
         image.addEventListener("load", onLoad, { once: true });
       });
 
+      const largeHeadings = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          ".site-page main h1, .site-page main h2, .site-page article h1, .site-page article h2, .site-page footer h2",
+        ),
+      );
+      largeHeadings.forEach(registerHeading);
+
+      const counters = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          ".site-page--home .brand-hero-proof dt",
+        ),
+      );
+      counters.forEach((counter) => {
+        counter.dataset.counterTemplate = counter.textContent?.trim() || "";
+        counter.dataset.scrollCounter = "true";
+        if (reduceMotion.matches) {
+          counter.dataset.counterAnimated = "true";
+          return;
+        }
+        counterObserver?.observe(counter);
+      });
+
       update();
     };
 
@@ -132,17 +257,35 @@ export default function SiteImageMotion() {
 
     return () => {
       observer?.disconnect();
+      headingObserver?.disconnect();
+      counterObserver?.disconnect();
       window.removeEventListener("scroll", queueUpdate);
       window.removeEventListener("resize", queueUpdate);
       loadListeners.forEach(([image, listener]) => image.removeEventListener("load", listener));
       if (frame) window.cancelAnimationFrame(frame);
       if (setupFrame) window.cancelAnimationFrame(setupFrame);
+      counterFrames.forEach((counterFrame) => window.cancelAnimationFrame(counterFrame));
       targets.forEach((target) => {
         target.style.removeProperty("--scroll-image-y");
         target.removeAttribute("data-scroll-image-motion");
         target.removeAttribute("data-scroll-image-active");
       });
-      root.classList.remove("image-motion-enabled", "motion-reduced");
+      headings.forEach((heading) => {
+        heading.style.removeProperty("--scroll-heading-y");
+        heading.style.removeProperty("--scroll-heading-tilt");
+        heading.style.removeProperty("--scroll-heading-scale");
+        heading.style.removeProperty("--scroll-heading-opacity");
+        heading.removeAttribute("data-scroll-heading-motion");
+        heading.removeAttribute("data-scroll-heading-active");
+      });
+      document.querySelectorAll<HTMLElement>("[data-scroll-counter]").forEach((counter) => {
+        const template = counter.dataset.counterTemplate;
+        if (template) counter.textContent = template;
+        counter.removeAttribute("data-scroll-counter");
+        counter.removeAttribute("data-counter-animated");
+        counter.removeAttribute("data-counter-template");
+      });
+      root.classList.remove("image-motion-enabled", "text-motion-enabled", "motion-reduced");
     };
   }, [pathname]);
 
