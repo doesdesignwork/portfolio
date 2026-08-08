@@ -20,6 +20,21 @@ const renderCounterValue = (template: string, progress: number) => {
   );
 };
 
+const kineticHeadingScale = (progress: number) => {
+  const p = clamp(progress, 0, 1);
+  const peakAt = 0.68;
+  const startScale = 0.9;
+  const peakScale = 1.055;
+
+  if (p <= peakAt) {
+    const entry = easeOutCubic(p / peakAt);
+    return startScale + (peakScale - startScale) * entry;
+  }
+
+  const settle = easeOutCubic((p - peakAt) / (1 - peakAt));
+  return peakScale + (1 - peakScale) * settle;
+};
+
 export default function SiteImageMotion() {
   const pathname = usePathname();
 
@@ -57,18 +72,18 @@ export default function SiteImageMotion() {
 
       activeHeadings.forEach((heading) => {
         const bounds = heading.getBoundingClientRect();
-        const entryStart = viewportHeight * 0.94;
-        const entryEnd = viewportHeight * 0.34;
+        const entryStart = viewportHeight * 0.98;
+        const entryEnd = viewportHeight * 0.27;
         const progress = clamp(
           (entryStart - bounds.top) / Math.max(1, entryStart - entryEnd),
           0,
           1,
         );
         const eased = easeOutCubic(progress);
-        const y = roundToDevicePixel((1 - eased) * 34 - eased * 3);
-        const tilt = (1 - eased) * 1.6;
-        const scale = 0.972 + eased * 0.028;
-        const opacity = 0.28 + eased * 0.72;
+        const y = roundToDevicePixel((1 - eased) * 48 - eased * 4);
+        const tilt = (1 - eased) * 2.2;
+        const scale = kineticHeadingScale(progress);
+        const opacity = 0.12 + eased * 0.88;
 
         heading.style.setProperty("--scroll-heading-y", `${y}px`);
         heading.style.setProperty("--scroll-heading-tilt", `${tilt.toFixed(3)}deg`);
@@ -119,11 +134,14 @@ export default function SiteImageMotion() {
     const registerHeading = (heading: HTMLElement) => {
       if (headings.has(heading)) return;
       headings.add(heading);
-      heading.dataset.scrollHeadingMotion = "true";
-      heading.style.setProperty("--scroll-heading-y", "34px");
-      heading.style.setProperty("--scroll-heading-tilt", "1.6deg");
-      heading.style.setProperty("--scroll-heading-scale", "0.972");
-      heading.style.setProperty("--scroll-heading-opacity", "0.28");
+      heading.dataset.scrollHeadingMotion = "kinetic-scale";
+      heading.style.setProperty("--scroll-heading-y", "48px");
+      heading.style.setProperty("--scroll-heading-tilt", "2.2deg");
+      heading.style.setProperty("--scroll-heading-scale", "0.9");
+      heading.style.setProperty("--scroll-heading-opacity", "0.12");
+
+      const textAlign = window.getComputedStyle(heading).textAlign;
+      heading.style.transformOrigin = textAlign === "right" ? "100% 62%" : textAlign === "center" ? "50% 62%" : "0 62%";
       headingObserver?.observe(heading);
     };
 
@@ -199,7 +217,7 @@ export default function SiteImageMotion() {
             });
             queueUpdate();
           },
-          { rootMargin: "12% 0px 12% 0px", threshold: 0 },
+          { rootMargin: "18% 0px 18% 0px", threshold: 0 },
         );
 
         counterObserver = new IntersectionObserver(
@@ -234,12 +252,18 @@ export default function SiteImageMotion() {
         image.addEventListener("load", onLoad, { once: true });
       });
 
-      const largeHeadings = Array.from(
+      const headingCandidates = Array.from(
         document.querySelectorAll<HTMLElement>(
           ".site-page main h1, .site-page main h2, .site-page main h3, .site-page article h1, .site-page article h2, .site-page article h3, .site-page footer h2, .site-page footer h3",
         ),
-      ).filter((heading) => Number.parseFloat(window.getComputedStyle(heading).fontSize) >= 30);
-      largeHeadings.forEach(registerHeading);
+      );
+
+      headingCandidates
+        .filter((heading) => {
+          const size = Number.parseFloat(window.getComputedStyle(heading).fontSize);
+          return heading.tagName !== "H3" || size >= 24;
+        })
+        .forEach(registerHeading);
 
       const counters = Array.from(
         document.querySelectorAll<HTMLElement>(
@@ -283,6 +307,7 @@ export default function SiteImageMotion() {
         heading.style.removeProperty("--scroll-heading-tilt");
         heading.style.removeProperty("--scroll-heading-scale");
         heading.style.removeProperty("--scroll-heading-opacity");
+        heading.style.removeProperty("transform-origin");
         heading.removeAttribute("data-scroll-heading-motion");
         heading.removeAttribute("data-scroll-heading-active");
       });
