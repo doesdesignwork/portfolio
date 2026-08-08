@@ -1,0 +1,62 @@
+/*
+ * HealthHub case-study readability floor.
+ * Keep utility copy and prototype labels at 16px without flattening large
+ * evidence numbers, quotes or display typography.
+ */
+
+.site-page--healthhub :is(
+  [class*="breadcrumb"],
+  [class*="heroMeta"] p,
+  [class*="facts"] dd,
+  [class*="flowHero"] > header > p,
+  [class*="sectionHead"] > p,
+  [class*="sectionHeadDark"] > p,
+  [class*="flowStep"] > span,
+  [class*="flowStep"] p,
+  [class*="signalGrid"] small,
+  [class*="quote"] cite,
+  [class*="chosen"] > span,
+  [class*="notChosen"] > span,
+  [class*="hmw"] > span,
+  [class*="learningGrid"] > article > span,
+  [class*="roadmapGrid"] > article > span,
+  [class*="chosen"] li,
+  [class*="screenLabel"],
+  [class*="phoneStatus"],
+  [class*="brandMini"],
+  [class*="patientBar"] span,
+  [class*="patientBar"] b,
+  [class*="contextBanner"],
+  [class*="reportTitle"],
+  [class*="guidance"],
+  [class*="filterBar"],
+  [class*="pdfBar"],
+  [class*="labCard"],
+  [class*="labCardFocus"],
+  [class*="modal"],
+  [class*="nextAction"],
+  [class*="labCard"] > div > span,
+  [class*="labCardFocus"] > div > span,
+  [class*="modal"] > span,
+  [class*="modal"] p,
+  [class*="modal"] button,
+  [class*="roadmapGrid"] li,
+  [class*="outcome"] > div:first-child > p,
+  [class*="next"] small,
+  [class*="next"] span,
+  [class*="cta"] > p,
+  [class*="cta"] a
+) {
+  font-size: var(--brand-readable-min, 16px) !important;
+  line-height: 1.45 !important;
+}
+
+/* The mock interface can stay dense, but not illegible. */
+.site-page--healthhub :is(
+  [class*="resultCard"] small,
+  [class*="labCard"] small,
+  [class*="labCardFocus"] small
+) {
+  font-size: var(--brand-readable-min, 16px) !important;
+  line-height: 1.45 !important;
+}
