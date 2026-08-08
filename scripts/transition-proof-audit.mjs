@@ -91,6 +91,10 @@ for (const viewport of viewports) {
           assertions.push("HealthHub product-practice case study is not visible");
         }
 
+        if (document.querySelector("[data-section-counter]") || document.body.textContent?.includes("01 / 05")) {
+          assertions.push("Retired GT / section counter marker is still present");
+        }
+
         const roleLink = document.querySelector('a[href^="mailto:g@doesdesignwork.com?subject=Role"]');
         const projectLink = document.querySelector('a[href^="mailto:g@doesdesignwork.com?subject=Project"]');
         if (!roleLink) assertions.push("Discuss a role conversion path is missing");
@@ -98,14 +102,21 @@ for (const viewport of viewports) {
       }
 
       if (route === "/work/healthhub-caregiver-ux/") {
+        const text = document.body.textContent ?? "";
         if (!root.classList.contains("site-page--healthhub")) {
           assertions.push("HealthHub route quality marker is missing");
         }
-        if (!document.body.textContent?.includes("not a commissioned HealthHub feature")) {
+        if (!text.includes("Academic capstone") || !text.includes("not a commissioned or shipped HealthHub feature")) {
           assertions.push("Academic/non-commissioned disclosure is missing");
         }
-        if (!document.body.textContent?.includes("Research synthesis")) {
-          assertions.push("UX research evidence is missing");
+        if (!text.includes("76") || !text.includes("10") || !text.includes("32")) {
+          assertions.push("Primary research sample evidence is missing");
+        }
+        if (!text.includes("How might we")) {
+          assertions.push("Product-framing HMW evidence is missing");
+        }
+        if (!text.includes("69.2%") || !text.includes("Maze")) {
+          assertions.push("Usability-validation evidence is missing");
         }
       }
 
@@ -116,7 +127,7 @@ for (const viewport of viewports) {
       failures.push({ viewport: viewport.name, route, ...result, runtimeErrors });
       console.error(`FAIL ${viewport.name} ${route}`);
       if (result.overflow) console.error("  - horizontal overflow detected");
-      for (const issue of result.undersized.slice(0, 12)) console.error(`  - undersized: ${issue}`);
+      for (const issue of result.undersized.slice(0, 16)) console.error(`  - undersized: ${issue}`);
       for (const issue of result.assertions) console.error(`  - assertion: ${issue}`);
       for (const issue of runtimeErrors.slice(0, 8)) console.error(`  - runtime: ${issue}`);
     } else {
