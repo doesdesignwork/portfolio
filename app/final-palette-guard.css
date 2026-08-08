@@ -3,9 +3,15 @@
  * The portfolio's visual rule is deliberately simple:
  * violet is the signal on paper; lime is the signal on gunmetal.
  *
- * Page-level CSS modules can be emitted after global styles by Next.js, so these
- * selectors use enough specificity to preserve that rule across route chunks.
+ * Page-level CSS modules can be emitted after global styles by Next.js. In the
+ * manifesto we also scope the signal token itself so older route rules that
+ * reference --brand-signal still resolve to the correct dark-surface accent.
  */
+
+/* Dark sections inherit a local signal token where older rules still use it. */
+.site-page.site-page--home main .brand-home-manifesto {
+  --brand-signal: var(--brand-signal-on-dark) !important;
+}
 
 /* Paper: violet signal. */
 .site-page.site-page--home main #top h1 em,
