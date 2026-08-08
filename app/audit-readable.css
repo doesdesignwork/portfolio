@@ -4,7 +4,9 @@
 .site-page--home .audit-product-signal span,
 .site-page--home .project-evidence,
 .site-page--home .product-study-kicker,
+.site-page--home .product-study-copy > span,
 .site-page--home .product-flow-step b,
+.site-page--home .product-flow-step span,
 .site-page--home .product-study-caption small {
   font-size: var(--brand-readable-min, 16px) !important;
   line-height: 1.45 !important;
@@ -14,7 +16,7 @@
   font-size: var(--brand-readable-min, 16px) !important;
 }
 
-.site-page--healthhub :where(p, span, small, b, dt, dd, a) {
+.site-page--healthhub :where(p, span, small, b, strong, dt, dd, a) {
   font-size: max(1em, var(--brand-readable-min, 16px)) !important;
 }
 
