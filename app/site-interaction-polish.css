@@ -1,0 +1,271 @@
+/*
+ * DOES DESIGN WORK / INTERACTION POLISH
+ *
+ * Final interaction layer for the persistent navigation and availability CTA.
+ * Keeps the site editorial at rest, then adds a stronger response on intent.
+ */
+
+/* --------------------------------------------------------------------------
+   Frosted translucent top navigation
+   -------------------------------------------------------------------------- */
+
+.brand-header,
+.interior-header {
+  background: rgba(37, 42, 46, 0.62) !important;
+  border-bottom-color: rgba(250, 249, 246, 0.16) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.32) contrast(1.02) !important;
+  backdrop-filter: blur(22px) saturate(1.32) contrast(1.02) !important;
+  box-shadow: 0 10px 34px rgba(37, 42, 46, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Remove CV action buttons while preserving CV in persistent navigation
+   -------------------------------------------------------------------------- */
+
+.site-page--home [class*="heroActions"] a[href="/cv/"],
+.site-page--home .brand-contact-links a[href="/cv/"],
+.site-page--healthhub nav[aria-label="Next actions"] a[href="/cv/"],
+.site-page--cv a[download][href*="cv" i],
+.site-page--cv a[download][href$=".pdf" i] {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Morphing availability CTA / desktop rail
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 961px) {
+  aside[data-side-index] {
+    overflow: visible !important;
+  }
+
+  aside[data-side-index] [data-availability] {
+    position: relative !important;
+    z-index: 8;
+    width: 100%;
+    margin: 0 !important;
+    overflow: visible !important;
+    transform-origin: left bottom;
+  }
+
+  aside[data-side-index] [data-availability-link] {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-height: 96px;
+    padding: 9px 0 6px;
+    display: block;
+    overflow: visible;
+    color: var(--brand-muted) !important;
+    font-family: var(--brand-font-display) !important;
+    font-size: 15px !important;
+    font-weight: 720 !important;
+    line-height: 1.48 !important;
+    letter-spacing: 0.035em !important;
+    text-transform: uppercase;
+    transition:
+      color 420ms ease,
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  aside[data-side-index] [data-availability-link]::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    left: -14px;
+    bottom: -14px;
+    width: 204px;
+    height: 142px;
+    background:
+      radial-gradient(circle at 22% 78%, rgba(90, 79, 207, 0.58), transparent 34%),
+      linear-gradient(145deg, #2f3439 0%, var(--brand-ink) 58%, #1d2124 100%);
+    border: 1px solid rgba(90, 79, 207, 0.34);
+    border-radius: 58% 42% 54% 46% / 46% 60% 40% 54%;
+    box-shadow:
+      0 20px 48px rgba(37, 42, 46, 0.22),
+      inset 0 0 0 1px rgba(250, 249, 246, 0.025);
+    opacity: 0.9;
+    transform: translate3d(-58px, 42px, 0) scale(0.12);
+    transform-origin: 18% 82%;
+    transition:
+      transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 360ms ease,
+      box-shadow 760ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: ddw-availability-liquid 5.8s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  aside[data-side-index] [data-availability-link]::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -5px;
+    bottom: 3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 999px;
+    background: var(--brand-signal);
+    box-shadow: 0 0 0 0 rgba(90, 79, 207, 0.18);
+    opacity: 0.82;
+    transform: scale(0.72);
+    transition:
+      left 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      bottom 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 360ms ease,
+      box-shadow 720ms ease;
+    animation: ddw-availability-orbit 5.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    pointer-events: none;
+  }
+
+  aside[data-side-index] [data-availability-link] > span,
+  aside[data-side-index] [data-right-work],
+  aside[data-side-index] [data-availability-link] > i {
+    position: relative;
+    z-index: 2;
+  }
+
+  aside[data-side-index] [data-right-work] {
+    display: inline-block;
+    color: var(--brand-signal) !important;
+    font-weight: 820 !important;
+    transform-origin: left center;
+    transition:
+      color 420ms ease,
+      transform 620ms cubic-bezier(0.16, 1, 0.3, 1),
+      letter-spacing 620ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: ddw-right-word-breathe 5.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  aside[data-side-index] [data-availability-link] > i {
+    position: absolute;
+    right: -76px;
+    bottom: 9px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(196, 207, 79, 0.46);
+    border-radius: 50%;
+    background: rgba(196, 207, 79, 0.08) !important;
+    color: var(--brand-signal-on-dark);
+    font-style: normal;
+    opacity: 0;
+    transform: translate3d(-18px, 8px, 0) scale(0.5) rotate(-28deg);
+    transition:
+      opacity 300ms ease 80ms,
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 60ms,
+      background 300ms ease;
+  }
+
+  aside[data-side-index] [data-availability-link] > i::before {
+    content: "↗";
+    font-family: var(--brand-font-text);
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1;
+  }
+
+  aside[data-side-index] [data-availability-link]:hover,
+  aside[data-side-index] [data-availability-link]:focus-visible {
+    color: var(--brand-paper-bright) !important;
+    transform: translate3d(2px, -3px, 0);
+    outline-offset: 8px;
+  }
+
+  aside[data-side-index] [data-availability-link]:hover::before,
+  aside[data-side-index] [data-availability-link]:focus-visible::before {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    box-shadow:
+      0 28px 70px rgba(37, 42, 46, 0.28),
+      0 0 0 1px rgba(90, 79, 207, 0.08),
+      inset 0 0 0 1px rgba(250, 249, 246, 0.035);
+  }
+
+  aside[data-side-index] [data-availability-link]:hover::after,
+  aside[data-side-index] [data-availability-link]:focus-visible::after {
+    left: 126px;
+    bottom: 99px;
+    opacity: 1;
+    transform: scale(1.18);
+    box-shadow:
+      0 0 0 7px rgba(90, 79, 207, 0.12),
+      0 0 26px rgba(90, 79, 207, 0.48);
+    animation: none;
+  }
+
+  aside[data-side-index] [data-availability-link]:hover [data-right-work],
+  aside[data-side-index] [data-availability-link]:focus-visible [data-right-work] {
+    color: var(--brand-signal-on-dark) !important;
+    letter-spacing: 0.12em;
+    transform: translate3d(3px, -1px, 0) rotate(-2deg) scale(1.08);
+    animation: none;
+  }
+
+  aside[data-side-index] [data-availability-link]:hover > i,
+  aside[data-side-index] [data-availability-link]:focus-visible > i {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes ddw-availability-liquid {
+  0% {
+    border-radius: 58% 42% 54% 46% / 46% 60% 40% 54%;
+  }
+  34% {
+    border-radius: 43% 57% 62% 38% / 58% 42% 58% 42%;
+  }
+  68% {
+    border-radius: 64% 36% 45% 55% / 38% 54% 46% 62%;
+  }
+  100% {
+    border-radius: 48% 52% 59% 41% / 55% 45% 63% 37%;
+  }
+}
+
+@keyframes ddw-availability-orbit {
+  0%, 42%, 100% {
+    transform: translate3d(0, 0, 0) scale(0.72);
+    box-shadow: 0 0 0 0 rgba(90, 79, 207, 0.16);
+  }
+  50% {
+    transform: translate3d(7px, -4px, 0) scale(1);
+    box-shadow: 0 0 0 6px rgba(90, 79, 207, 0.08);
+  }
+  62% {
+    transform: translate3d(1px, -1px, 0) scale(0.8);
+    box-shadow: 0 0 0 1px rgba(90, 79, 207, 0.04);
+  }
+}
+
+@keyframes ddw-right-word-breathe {
+  0%, 40%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    letter-spacing: 0.035em;
+  }
+  48% {
+    transform: translate3d(1px, -1px, 0) scale(1.08);
+    letter-spacing: 0.08em;
+  }
+  58% {
+    transform: translate3d(0, 0, 0) scale(1.02);
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  aside[data-side-index] [data-availability-link],
+  aside[data-side-index] [data-availability-link]::before,
+  aside[data-side-index] [data-availability-link]::after,
+  aside[data-side-index] [data-right-work],
+  aside[data-side-index] [data-availability-link] > i {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  aside[data-side-index] [data-right-work] {
+    color: var(--brand-signal) !important;
+  }
+}
