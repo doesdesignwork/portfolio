@@ -134,7 +134,8 @@ export default function SiteImageMotion() {
     const registerHeading = (heading: HTMLElement) => {
       if (headings.has(heading)) return;
       headings.add(heading);
-      heading.dataset.scrollHeadingMotion = "kinetic-scale";
+      heading.dataset.scrollHeadingMotion = "true";
+      heading.dataset.scrollHeadingKinetic = "scale";
       heading.style.setProperty("--scroll-heading-y", "48px");
       heading.style.setProperty("--scroll-heading-tilt", "2.2deg");
       heading.style.setProperty("--scroll-heading-scale", "0.9");
@@ -309,6 +310,7 @@ export default function SiteImageMotion() {
         heading.style.removeProperty("--scroll-heading-opacity");
         heading.style.removeProperty("transform-origin");
         heading.removeAttribute("data-scroll-heading-motion");
+        heading.removeAttribute("data-scroll-heading-kinetic");
         heading.removeAttribute("data-scroll-heading-active");
       });
       document.querySelectorAll<HTMLElement>("[data-scroll-counter]").forEach((counter) => {
