@@ -12,6 +12,7 @@ import "./readable-type-scale.css";
 import "./amber-gunmetal.css";
 import "./audit-readable.css";
 import "./final-palette-guard.css";
+import "./no-word-breaks.css";
 
 const siteTitle =
   "Gerard Teo | Art Director, Senior Brand & Experience Designer in Singapore";
