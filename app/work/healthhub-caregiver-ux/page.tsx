@@ -72,7 +72,7 @@ const structuredData = {
 
 export default function HealthHubCaregiverUxPage() {
   return (
-    <div className={`${styles.page} site-page site-page--interior`}>
+    <div className={`${styles.page} site-page site-page--interior site-page--healthhub`}>
       <InteriorHeader />
 
       <main className={styles.main}>
