@@ -55,10 +55,15 @@
   line-height: 1.5 !important;
 }
 
-/* Deliberate compact scale for the desktop side-menu navigation only. */
+/*
+ * Deliberate compact scale for the desktop side-menu navigation only.
+ * Keep the five vertical labels on a tight shared text track so the group
+ * terminates on the inner rail alignment line instead of drifting toward the
+ * outer border.
+ */
 .site-page--home aside[data-side-index] nav a {
   font-size: 14px !important;
-  line-height: 1.45 !important;
+  line-height: 1 !important;
 }
 
 .site-page--home .brand-home-manifesto > p:first-child,
