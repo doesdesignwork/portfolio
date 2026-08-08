@@ -71,34 +71,41 @@
 /*
  * Footer contact matrix.
  *
- * The legacy module still contains a three-column rule. With four links that
- * pushed the last item into a new row and produced the broken stair-step border
- * visible around LinkedIn. The final layout is explicitly two equal columns by
- * two rows until the phone breakpoint.
+ * Keep this area intentionally to three actions. The CV remains available in
+ * the primary navigation and hero CTA, so its repeated footer tile is hidden.
+ * The remaining actions occupy three equal columns with only vertical dividers.
  */
 .site-page--home [class*="contactLinks"] {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   grid-auto-rows: minmax(138px, auto) !important;
   gap: 0 !important;
   border-top: 1px solid rgba(250, 249, 246, 0.44) !important;
+  border-bottom: 1px solid rgba(250, 249, 246, 0.44) !important;
 }
 
 .site-page--home [class*="contactLinks"] > a {
   min-height: 138px !important;
-  padding: 24px clamp(22px, 3vw, 36px) 28px 0 !important;
-  border-left: 0 !important;
-  border-bottom: 0 !important;
+  padding: 24px clamp(22px, 3vw, 36px) 28px !important;
+  border: 0 !important;
 }
 
-.site-page--home [class*="contactLinks"] > a:nth-child(even) {
-  padding-left: clamp(22px, 3vw, 36px) !important;
-  padding-right: 0 !important;
+/* CV is already surfaced in the header and hero, so keep the footer to 3 columns. */
+.site-page--home [class*="contactLinks"] > a:nth-child(3) {
+  display: none !important;
+}
+
+.site-page--home [class*="contactLinks"] > a:first-child {
+  padding-left: 0 !important;
+}
+
+.site-page--home [class*="contactLinks"] > a:nth-child(2),
+.site-page--home [class*="contactLinks"] > a:nth-child(4) {
   border-left: 1px solid rgba(250, 249, 246, 0.44) !important;
 }
 
-.site-page--home [class*="contactLinks"] > a:nth-child(-n + 2) {
-  border-bottom: 1px solid rgba(250, 249, 246, 0.44) !important;
+.site-page--home [class*="contactLinks"] > a:nth-child(4) {
+  padding-right: 0 !important;
 }
 
 /* Stack the biography and the metrics before the desktop columns become tight. */
@@ -214,9 +221,9 @@
     font-size: clamp(42px, 6.5vw, 58px) !important;
   }
 
-  /* Keep the four contact actions in a stable 2 × 2 matrix on tablets. */
+  /* Preserve the three-column contact layout on tablets and landscape phones. */
   .site-page--home [class*="contactLinks"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     grid-auto-rows: minmax(120px, auto) !important;
   }
 
@@ -265,21 +272,23 @@
     grid-column: 1 !important;
   }
 
-  /* Phones use one clean contact stack with no orphaned column borders. */
+  /* Phones stack the same three contact actions vertically. */
   .site-page--home [class*="contactLinks"] {
     grid-template-columns: minmax(0, 1fr) !important;
     grid-auto-rows: auto !important;
+    border-bottom: 0 !important;
   }
 
   .site-page--home [class*="contactLinks"] > a,
-  .site-page--home [class*="contactLinks"] > a:nth-child(even) {
+  .site-page--home [class*="contactLinks"] > a:nth-child(2),
+  .site-page--home [class*="contactLinks"] > a:nth-child(4) {
     min-height: 104px !important;
     padding: 20px 0 !important;
     border-left: 0 !important;
     border-bottom: 1px solid rgba(250, 249, 246, 0.44) !important;
   }
 
-  .site-page--home [class*="contactLinks"] > a:last-child {
+  .site-page--home [class*="contactLinks"] > a:nth-child(4) {
     border-bottom: 0 !important;
   }
 }
