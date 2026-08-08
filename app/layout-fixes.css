@@ -11,7 +11,7 @@
    Never force a wide metric and a paragraph into the same narrow row.
    -------------------------------------------------------------------------- */
 
-@media (min-width: 1280px) {
+@media (min-width: 1000px) {
   .site-page--home .brand-hero-proof {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
@@ -27,6 +27,11 @@
     gap: clamp(18px, 1.8vw, 28px) !important;
     align-content: end !important;
     align-items: end !important;
+  }
+
+  .site-page--home .brand-hero-proof > div + div {
+    border-top: 0 !important;
+    border-left: 1px solid var(--brand-line) !important;
   }
 
   .site-page--home .brand-hero-proof dt {
@@ -45,8 +50,23 @@
 .site-page--home .brand-hero-proof dd,
 .site-page--home .brand-hero-proof dd * {
   overflow-wrap: normal !important;
-  word-break: keep-all !important;
+  word-break: normal !important;
   hyphens: none !important;
+}
+
+/* Give the hero headline its own row before the desktop columns become cramped. */
+@media (max-width: 1279px) {
+  .site-page--home [class*="heroStatement"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: clamp(30px, 4vw, 46px) !important;
+    align-items: start !important;
+  }
+
+  .site-page--home [class*="heroStatement"] > div {
+    width: min(100%, 680px) !important;
+    max-width: 680px !important;
+    padding-top: 0 !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
