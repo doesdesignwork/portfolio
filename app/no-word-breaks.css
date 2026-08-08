@@ -1,0 +1,50 @@
+/*
+ * DOES DESIGN WORK / WHOLE-WORD WRAPPING GUARD
+ *
+ * Editorial copy should wrap only at natural spaces. Several display statements
+ * are semantic <p> or <span> elements, so protecting headings alone is not enough.
+ */
+
+.site-page :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  dt,
+  dd,
+  figcaption,
+  span,
+  strong,
+  b,
+  small,
+  cite,
+  blockquote,
+  a
+) {
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+}
+
+/* Preserve normal line wrapping at spaces while forbidding mid-word fractures. */
+.site-page :where(h1, h2, h3, h4, h5, h6, p, li, dd, figcaption, blockquote) {
+  white-space: normal !important;
+}
+
+/* Long machine-like strings may break rather than force horizontal overflow. */
+.site-page :where(code, pre, kbd, samp),
+.site-page a[href^="http"] {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+/* Email addresses are short on this site, so keep them intact as a deliberate unit. */
+.site-page a[href^="mailto:"] {
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
