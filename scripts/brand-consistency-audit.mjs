@@ -9,6 +9,7 @@ const routes = [
   "/services/brand-identity-design-singapore/",
   "/services/experiential-exhibition-design-singapore/",
   "/services/packaging-product-design-singapore/",
+  "/work/healthhub-caregiver-ux/",
   "/work/modajar-fashion-brand-identity/",
   "/work/brewerkz-beer-packaging/",
   "/work/american-express-dbs-card-concepts/",
@@ -231,8 +232,8 @@ for (const viewport of viewports) {
 
           const matrix = document.querySelector(".brand-capability-matrix");
           const groups = matrix ? [...matrix.querySelectorAll(":scope > section")].filter(visible) : [];
-          if (!visible(matrix) || groups.length !== 3) {
-            problems.push(`capability matrix expected 3 groups, found ${groups.length}`);
+          if (!visible(matrix) || groups.length !== 4) {
+            problems.push(`capability matrix expected 4 groups, found ${groups.length}`);
           }
 
           for (const container of [proof, matrix]) {
@@ -270,9 +271,20 @@ for (const viewport of viewports) {
                 problems.push(`proof row is not full width at ${window.innerWidth}px`);
               }
             }
+          }
+
+          if (visible(matrix)) {
+            const matrixWidth = matrix.getBoundingClientRect().width;
+            const expectedColumns = window.innerWidth <= 640 ? 1 : window.innerWidth <= 1279 ? 2 : 4;
+            const expectedGroupWidth = matrixWidth / expectedColumns;
+            const widthTolerance = Math.max(4, expectedGroupWidth * 0.08);
+
             for (const group of groups) {
-              if (group.getBoundingClientRect().width < (matrix?.getBoundingClientRect().width ?? 0) * 0.9) {
-                problems.push(`capability group is not full width at ${window.innerWidth}px`);
+              const groupWidth = group.getBoundingClientRect().width;
+              if (Math.abs(groupWidth - expectedGroupWidth) > widthTolerance) {
+                problems.push(
+                  `capability group width ${groupWidth.toFixed(1)}px does not match ${expectedColumns}-column layout at ${window.innerWidth}px`,
+                );
               }
             }
           }
