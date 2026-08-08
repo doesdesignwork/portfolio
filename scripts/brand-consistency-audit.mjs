@@ -265,10 +265,18 @@ for (const viewport of viewports) {
             }
           }
 
-          if (window.innerWidth <= 1279) {
+          if (visible(proof)) {
+            const proofWidth = proof.getBoundingClientRect().width;
+            const expectedColumns = window.innerWidth >= 1000 ? 3 : 1;
+            const expectedRowWidth = proofWidth / expectedColumns;
+            const widthTolerance = Math.max(4, expectedRowWidth * 0.08);
+
             for (const row of proofRows) {
-              if (row.getBoundingClientRect().width < (proof?.getBoundingClientRect().width ?? 0) * 0.9) {
-                problems.push(`proof row is not full width at ${window.innerWidth}px`);
+              const rowWidth = row.getBoundingClientRect().width;
+              if (Math.abs(rowWidth - expectedRowWidth) > widthTolerance) {
+                problems.push(
+                  `proof row width ${rowWidth.toFixed(1)}px does not match ${expectedColumns}-column layout at ${window.innerWidth}px`,
+                );
               }
             }
           }
