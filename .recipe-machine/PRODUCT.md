@@ -38,8 +38,20 @@ Short, useful, confident. No startup hype, faux-chef poetry, or unnecessary tech
 - Editorial portfolio pages with tiny labels, section numbers, huge dead space, and decorative metadata.
 - Recipe blogs that bury the recipe under storytelling.
 
+
 ## Recipe scope
 - Recipe type supports Meals only, Juices only, or Meals + juices.
 - Meal-time intent supports Any time, Breakfast, Lunch, and Dinner.
 - Juice recipes must use juice-friendly produce only and must never suggest meat, eggs, grains, dairy, oils, or sauces in a juice.
 - Meal-time selection must materially change recipe ranking and generation, including the built-in fallback engine.
+
+
+## Image generation reliability
+- Recipe content must never wait for or fail because food-image generation is unavailable.
+- Generate food images in the background after recipe cards are visible.
+- Use a free-provider failover chain: fast public image route first, Hugging Face ZeroGPU backup second.
+- Retry transient image failures automatically with conservative backoff.
+- If all providers fail, keep the complete recipe visible and show a calm per-card retry state.
+- Provide a batch-level Retry missing images action when any card is missing a visual.
+- Let users switch food-image generation off; a single card can still request an image manually later.
+- Never require a paid API key or account for the default image flow.
