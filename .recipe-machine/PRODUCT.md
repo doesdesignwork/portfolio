@@ -37,3 +37,9 @@ Short, useful, confident. No startup hype, faux-chef poetry, or unnecessary tech
 - Glassmorphism-heavy layouts.
 - Editorial portfolio pages with tiny labels, section numbers, huge dead space, and decorative metadata.
 - Recipe blogs that bury the recipe under storytelling.
+
+## Recipe scope
+- Recipe type supports Meals only, Juices only, or Meals + juices.
+- Meal-time intent supports Any time, Breakfast, Lunch, and Dinner.
+- Juice recipes must use juice-friendly produce only and must never suggest meat, eggs, grains, dairy, oils, or sauces in a juice.
+- Meal-time selection must materially change recipe ranking and generation, including the built-in fallback engine.
